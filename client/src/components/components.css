@@ -1,0 +1,30 @@
+.circle-icon {
+    background: #ffffff;
+    padding:10px;
+    border-radius: 50%;
+}
+.circle-icon:hover {
+    color:#fafafa;
+    background: #ef5350;
+    padding:10px;
+    border-radius: 50%;
+}
+.links{
+    color:#bdbdbd;
+    text-decoration-line: none;
+}
+.active_class{
+    color:#fafafa;
+}
+.links:hover{
+    color:#757575;
+    text-decoration-line: none;
+}
+.login_btn{
+    color:#03a9f4;
+    text-decoration-line: none;
+}
+.login_btn:hover{
+    color:#fafafa;
+    text-decoration-line: none;
+}
