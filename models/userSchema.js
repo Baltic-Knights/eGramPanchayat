@@ -2,7 +2,9 @@ const mongoose=require('mongoose');
 const Schema=mongoose.Schema;
 
 const userSchema=new Schema({
-    googleId:String
+    googleId:String,
+    username:String,
+    picture:String
 });
 
 module.exports=mongoose.model('users',userSchema);

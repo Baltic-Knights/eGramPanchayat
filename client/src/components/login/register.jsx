@@ -1,6 +1,7 @@
 import React from "react";
 import loginImg from "../../login.svg";
 import './login.css';
+import {Redirect } from 'react-router-dom'
 import {Row,Col, Card,Container,Form,Button} from 'react-bootstrap';
 class Register extends React.Component {
   constructor(props) {
@@ -8,6 +9,7 @@ class Register extends React.Component {
   }
 
   render() {
+    if(!this.props.user){
     return (
       <Container>
       <Row className="justify-content-md-center">
@@ -40,7 +42,14 @@ class Register extends React.Component {
       </Row>
     </Container>
     );
+    }else{
+    return <Redirect to="/"/>
+   }
   }
 }
-
+const mapStateToProps=(state)=>{
+  return {
+    user:state.auth
+  }
+}
 export default Register;

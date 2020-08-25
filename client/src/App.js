@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.css';
@@ -12,7 +12,13 @@ import Village from './components/Village';
 import Loginpage from './components/login';
 import Footer from './components/footer';
 import {BrowserRouter,Route,Switch} from 'react-router-dom';
-function App() {
+import {connect} from 'react-redux';
+import {getUserAction} from './actions/getUserAction';
+
+function App(props) {
+  useEffect(()=>{
+     props.fetch_user()
+  },[])
   return (
     <>
     <BrowserRouter>
@@ -32,4 +38,9 @@ function App() {
   );
 }
 
-export default App;
+const mapDispatchToProps=(dispatch)=>{
+      return{
+        fetch_user:()=>{dispatch(getUserAction())}
+      }
+}
+export default connect(null,mapDispatchToProps)(App);

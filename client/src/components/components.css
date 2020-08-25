@@ -9,6 +9,11 @@
     padding:10px;
     border-radius: 50%;
 }
+.profileImg{
+    width:40px;
+    border-radius: 50%;
+    height:40px
+}
 .links{
     color:#bdbdbd;
     text-decoration-line: none;

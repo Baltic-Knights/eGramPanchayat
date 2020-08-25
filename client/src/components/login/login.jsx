@@ -1,6 +1,8 @@
 import React from "react";
 import loginImg from "../../login.svg";
 import './login.css';
+import {connect} from 'react-redux';
+import {Redirect } from 'react-router-dom'
 import {Row,Col, Card,Container,Button,Form} from 'react-bootstrap';
 
 const required = (val) => val && val.length;
@@ -16,6 +18,7 @@ class Login extends React.Component {
     alert("Thank you for your Feedback: " + JSON.stringify(values));   
 }
   render() {
+    if(!this.props.user){
     return (
       <Container fluid>
       <Row className="justify-content-md-center">
@@ -58,8 +61,15 @@ class Login extends React.Component {
       </Row>
     </Container>
     );
+    }else{
+      return <Redirect to="/"/>
+    }
   }
 }
-
-export default Login;
+const mapStateToProps=(state)=>{
+    return {
+      user:state.auth
+    }
+}
+export default connect(mapStateToProps)(Login);
 

@@ -7,15 +7,15 @@ module.exports=(app)=>{
       , 'https://www.googleapis.com/auth/plus.profile.emails.read' ] }
     ));
     app.get( '/auth/google/callback', 
-    passport.authenticate( 'google'));
+    passport.authenticate( 'google'),(req,res)=>{
+      res.redirect("http://localhost:3000/")
+    });
 
-    app.get('/current_user',(req,res)=>{
+    app.get('/api/current_user',(req,res)=>{
         res.send(req.user);
     });
     app.get('/api/logout',(req,res)=>{
-      console.log(req.user._id);
-      User.remove({_id:req.user._id});
       req.logout();
-      res.send(req.user);
+      res.redirect("http://localhost:3000/")
     })
 }
