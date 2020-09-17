@@ -3,10 +3,12 @@ const app=express();
 const mongoose=require('mongoose');
 const passport=require('passport');
 const keys = require('./config/keys');
+const authRouter=require('./routes/authRouter')
 const cookieSession=require('cookie-session');
 const PORT=process.env.PORT || 5000;
-mongoose.connect("mongodb+srv://Rohit:Rohit123@cluster0.pqyei.mongodb.net/user?retryWrites=true&w=majority",
-{ useNewUrlParser: true },()=>{
+mongoose.connect("mongodb+srv://eGram:@TeamIAF@cluster0.jtyap.mongodb.net/eGramPanchayat?retryWrites=true&w=majority",
+{ useNewUrlParser: true,
+    useUnifiedTopology: true },()=>{
     console.log("Connected to DB");
 });
 app.use(cookieSession({
@@ -14,10 +16,12 @@ app.use(cookieSession({
     keys:[keys.COOKIEKEY]
 }));
 app.use(passport.initialize());
+app.use(express.json());
 app.use(passport.session());
+app.use('/user',authRouter);
 require('./models/userSchema');
 require('./services/passport');
-require('./routes/authRouter')(app);
+require('./routes/oAuthRouter')(app);
 app.listen(PORT,()=>{
     console.log("Server connected successfully on "+PORT);
 });
