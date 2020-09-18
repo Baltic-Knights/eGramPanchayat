@@ -1,5 +1,6 @@
 const express=require('express');
 const app=express();
+const cors=require('cors');
 const mongoose=require('mongoose');
 const passport=require('passport');
 const keys = require('./config/keys');
@@ -15,6 +16,7 @@ app.use(cookieSession({
     maxAge:30*24*60*60*1000,
     keys:[keys.COOKIEKEY]
 }));
+app.use(cors());
 app.use(passport.initialize());
 app.use(express.json());
 app.use(passport.session());
