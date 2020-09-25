@@ -15,10 +15,13 @@ exports.add=(req,res)=>{
         department,
         schemeId:Math.random().toString()
     });
+    if(req.file){
+        _scheme.picture=key.API+'/public/'+req.file.filename;
+    }
     _scheme.save((error,data)=>{
            if(error){
                return res.status(400).json({
-                   message:"Something went wrong!"
+                   message:error
                });
            }
            if(data){

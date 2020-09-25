@@ -4,6 +4,7 @@ const cors=require('cors');
 const mongoose=require('mongoose');
 const passport=require('passport');
 const keys = require('./config/keys');
+const path=require('path');
 const authRouter=require('./routes/authRouter')
 const schemeRouter=require('./routes/schemeRouter')
 const cookieSession=require('cookie-session');
@@ -21,6 +22,7 @@ app.use(cors());
 app.use(passport.initialize());
 app.use(express.json());
 app.use(passport.session());
+app.use('/public',express.static(path.join(__dirname,'schemeUploads')));
 app.use('/user',authRouter);
 app.use('/schemes',schemeRouter);
 require('./models/userSchema');
