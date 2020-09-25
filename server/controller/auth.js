@@ -25,6 +25,9 @@ exports.signup=(req,res)=>{
         password,
         username:Math.random().toString()
     });
+    if(req.body.role){
+        _user.role=req.body.role
+    }
     _user.save((error,data)=>{
            if(error){
                return res.status(400).json({

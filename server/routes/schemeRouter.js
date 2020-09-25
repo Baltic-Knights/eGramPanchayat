@@ -1,6 +1,7 @@
 const express=require('express');
 const multer=require('multer');
 const shortid=require('shortid');
+const { requireSignIn, adminMiddleware } = require('../middlewares');
 const path=require('path');
 const Router=express.Router();
 const { add,view } = require('../controller/scheme');
@@ -12,7 +13,7 @@ const storage=multer.diskStorage({
     }
 });
 const upload=multer({storage});
-Router.post('/add',upload.single('picture'),add);
+Router.post('/add',requireSignIn, adminMiddleware,upload.single('picture'),add);
 
 Router.get('/view',view);
 
