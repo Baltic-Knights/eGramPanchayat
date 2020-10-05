@@ -4,10 +4,6 @@ import './login.css';
 import {Redirect } from 'react-router-dom'
 import {Row,Col, Card,Container,Form,Button} from 'react-bootstrap';
 class Register extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     if(!this.props.user){
     return (
@@ -47,9 +43,9 @@ class Register extends React.Component {
    }
   }
 }
-const mapStateToProps=(state)=>{
-  return {
-    user:state.auth
-  }
-}
+// // const mapStateToProps=(state)=>{
+// //   return {
+// //     user:state.auth
+// //   }
+// }
 export default Register;
