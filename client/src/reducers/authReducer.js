@@ -1,4 +1,4 @@
-import { constants } from "../actions/constants"
+import { constants } from "../helpers/constants"
 
 const initState={
     token:null,
@@ -11,7 +11,7 @@ const initState={
     authenticate:false,
     authenticating:false
 }
-export default (state=initState,action)=>{
+export const authReducer=(state=initState,action)=>{
     switch(action.type){
         case constants.LOGIN_REQUEST:
             state={

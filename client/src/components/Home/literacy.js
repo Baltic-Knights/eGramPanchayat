@@ -1,24 +1,32 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { Line } from 'react-chartjs-2';
 import {Card } from 'react-bootstrap';
+import {useDispatch,useSelector} from 'react-redux';
+import {literacyFetch} from '../../actions/chartsAction';
+
 const Literacy = () => {
+    const dispatch=useDispatch()
+    const Record=useSelector((state)=>state.chartsData)
+    useEffect(()=>{
+            dispatch((literacyFetch()));  
+    },[])
     return (
         <Card>
             <Card.Title className="text-center mt-3"><h2>Literacy from last 5 Surveys.</h2></Card.Title>
             <Card.Body className="">
             <Line
                     data={{
-                        labels: ["1971","1981","1991","2001","2011"],
+                        labels:Record.litYears,
                         datasets: [
                             {
-                                data:[30,40,50,60,65,68],
+                                data:Record.litMenCount,
                                 label: 'Men',
                                 borderColor: '#3333ff',
                                 fill: true,
 
                             },
                             {
-                                data:[15,20,24,27,30],
+                                data:Record.litWomenCount,
                                 label: 'women',
                                 borderColor: 'red',
                                 fill: true,

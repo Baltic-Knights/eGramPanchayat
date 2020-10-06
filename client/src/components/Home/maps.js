@@ -11,42 +11,42 @@ import {
 Geocode.setApiKey("AIzaSyCAIcQc27TZC5bpIoBt_2AnU5lHGIiZQ2s");
 Geocode.enableDebug();
 class Maps extends Component {
-  state = {
-    address: '',
-    city: '',
-    area: '',
-    state: '',
-    zoom: 15,
-    height: 400,
-    mapPosition: {
-      lat: 0,
-      lng: 0
-    },
-    markerPosition: {
-      lat: 0,
-      lng: 0
-    }
-  }
-  getCity = (addressArray) => {
-    let city = "";
-    for (let index = 0; index < addressArray.length; index++) {
-      if (addressArray[index].types[0] && 'administrative_area_level_2' === addressArray[index].types[0]) {
-        city = addressArray[index].long_name;
-        return city;
-      }
-    }
-  }
-  MarkerDragged = (event) => {
-    let newLat = event.latLng.lat();
-    let newLng = event.latLng.lng();
-    Geocode.fromLatLng(newLat, newLng)
-      .then(response => {
-        const address = response.results[0].formatted_address;
-        const addressArray = response.results[0].address_components;
-        const city = this.getCity(addressArray);
-        console.log(city);
-      })
-  }
+  // state = {
+  //   address: '',
+  //   city: '',
+  //   area: '',
+  //   state: '',
+  //   zoom: 15,
+  //   height: 400,
+  //   mapPosition: {
+  //     lat: 0,
+  //     lng: 0
+  //   },
+  //   markerPosition: {
+  //     lat: 0,
+  //     lng: 0
+  //   }
+  // }
+  // getCity = (addressArray) => {
+  //   let city = "";
+  //   for (let index = 0; index < addressArray.length; index++) {
+  //     if (addressArray[index].types[0] && 'administrative_area_level_2' === addressArray[index].types[0]) {
+  //       city = addressArray[index].long_name;
+  //       return city;
+  //     }
+  //   }
+  // }
+  // MarkerDragged = (event) => {
+  //   let newLat = event.latLng.lat();
+  //   let newLng = event.latLng.lng();
+  //   Geocode.fromLatLng(newLat, newLng)
+  //     .then(response => {
+  //       const address = response.results[0].formatted_address;
+  //       const addressArray = response.results[0].address_components;
+  //       const city = this.getCity(addressArray);
+  //       console.log(city);
+  //     })
+  // }
 
   render() {
     const MapWithAMarker = withScriptjs(withGoogleMap(props =>
@@ -60,7 +60,7 @@ class Maps extends Component {
           position={{ lat: 18.960340, lng: 73.803062 }}
         >
           <InfoWindow>
-            <div>Hello Here</div>
+            <div>Kadadhe,Pune,Maharashtra</div>
           </InfoWindow>
         </Marker>
       </GoogleMap>));

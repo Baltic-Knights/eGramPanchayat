@@ -63,27 +63,6 @@ exports.signin=(req,res)=>{
             })
         }
     }
-    // const {
-    //     firstname,
-    //     lastname,
-    //     email,
-    //     password
-    // }=req.body;
-    // const _user=new User({
-    //    firstname,
-    //     lastname,
-    //     email,
-    //     password,
-    //     username:Math.random().toString()
-    // });
-    // _user.save((error,data)=>{
-    //        if(data){
-    //            return res.status(201).json({
-    //                message:"user created successfully..!"
-    //            });
-    //        }
-    // })
+ 
 })
 }
-
-

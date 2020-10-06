@@ -1,23 +1,30 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { Bar } from 'react-chartjs-2';
-import { Card } from 'react-bootstrap'
+import { Card } from 'react-bootstrap';
+import {useDispatch,useSelector} from 'react-redux';
+import {populationFetch} from '../../actions/chartsAction';
 const Population = () => {
+    const dispatch=useDispatch()
+    const Record=useSelector((state)=>state.chartsData)
+    useEffect(()=>{
+            dispatch((populationFetch()));  
+    },[])
     const data = {
-        labels: ["1971", "1981", "1991", "2001", "2011"],
+        labels: Record.popYears,
         datasets: [
             {
                 label: "Men",
-                data: [900, 1012, 1280, 1354, 1500],
+                data: Record.popMenCount,
                 backgroundColor: "#a6dcef"
             },
             {
                 label: "Women",
-                data: [700, 900, 1100, 1200, 1300],
+                data: Record.popWomenCount,
                 backgroundColor: "#fe7171"
             },
             {
                 label: "Children",
-                data: [550, 600, 700, 800, 900],
+                data: Record.popChildrenCount,
                 backgroundColor: "#d2e603"
             }
         ]
@@ -31,10 +38,6 @@ const Population = () => {
                     options={
                         {
                             tooltips: { mode: "index" },
-                            animation: {
-                                // duration: 2000,
-                                // easing: "easeBounceOut"
-                            }
                         }
                     } />
             </Card.Body>

@@ -7,6 +7,8 @@ const keys = require('./config/keys');
 const path=require('path');
 const authRouter=require('./routes/authRouter')
 const schemeRouter=require('./routes/schemeRouter')
+const popRouter=require('./routes/popRouter')
+const litRouter=require('./routes/litRouter')
 const cookieSession=require('cookie-session');
 const PORT=process.env.PORT || 5000;
 mongoose.connect("mongodb+srv://eGram:@TeamIAF@cluster0.jtyap.mongodb.net/eGramPanchayat?retryWrites=true&w=majority",
@@ -24,6 +26,8 @@ app.use(express.json());
 app.use(passport.session());
 app.use('/public',express.static(path.join(__dirname,'schemeUploads')));
 app.use('/user',authRouter);
+app.use('/populate',popRouter);
+app.use('/literate',litRouter);
 app.use('/schemes',schemeRouter);
 require('./models/userSchema');
 require('./services/passport');

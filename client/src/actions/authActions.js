@@ -1,4 +1,4 @@
-import {constants} from '../constants';
+import {constants} from '../helpers/constants';
 import axiosInstance from '../helpers/axios';
 
 export const login=(user)=>{
