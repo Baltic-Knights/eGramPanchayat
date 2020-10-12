@@ -18,7 +18,6 @@ export const literacyFetch=()=>{
         const popData=await axiosInstance.get('/literate/fetch');
         if(popData.status===200){
             const {years,menCount,womenCount}=popData.data.data[0];
-            console.log(popData)
             dispatch({
                 type:constants.LITERACY_FETCH,
                 payload:{years,menCount,womenCount}

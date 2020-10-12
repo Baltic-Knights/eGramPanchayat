@@ -26,7 +26,7 @@ exports.add=(req,res)=>{
            }
            if(data){
                return res.status(201).json({
-                   message:"scheme added successfully..!"
+                   message:data
                });
            }
     })
