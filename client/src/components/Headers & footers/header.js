@@ -64,7 +64,7 @@ const Header=(props)=>{
                             <div className="ml-3"><span className="fa fa-credit-card fa-lg mr-2"></span>Revenue Payment</div></NavLink>
                     
                     <NavDropdown className="mt-0" title="Documents" id="collasible-nav-dropdown">
-                    <NavDropdown.Item href="#action/3.1">Residential Certificate</NavDropdown.Item>
+                    <NavDropdown.Item href="/residence">Residential Certificate</NavDropdown.Item>
                     <NavDropdown.Item href="#action/3.2">Home Revenue Receipt</NavDropdown.Item>
                     <NavDropdown.Item href="#action/3.3">Water Revenue Receipt</NavDropdown.Item>
                     <NavDropdown.Item href="#action/3.4">Farm Revenue Receipt</NavDropdown.Item>

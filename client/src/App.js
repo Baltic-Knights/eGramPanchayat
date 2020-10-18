@@ -14,7 +14,7 @@ import Footer from './components/Headers & footers/footer';
 import {BrowserRouter,Route,Switch} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {getUserAction} from './actions/getUserAction';
-
+import Residence from './components/Residence/Residence'
 function App(props) {
   useEffect(()=>{
      props.fetch_user()
@@ -30,6 +30,7 @@ function App(props) {
             <Route path="/village" component={Village}></Route>
             <Route path="/payment" component={Payment}></Route>
             <Route path="/about" component={About}></Route>
+            <Route path="/residence" component={Residence}></Route>
         </Switch>
         <Footer/>
     </BrowserRouter>
