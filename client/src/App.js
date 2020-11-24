@@ -5,16 +5,19 @@ import 'font-awesome/css/font-awesome.css';
 import 'bootstrap-social/bootstrap-social.css';
 import Header from './components/Headers & footers/header';
 import Home from './components/Home/Home';
-import Schemes from './components/Schemes';
-import Payment from './components/Payment';
-import About from './components/About';
-import Village from './components/Village';
+import Schemes from './components/schemes/Schemes';
+import Payment from './components/payment/Payment';
+import Admin from './components/admin center/admin';
+import About from './components/about us/about us';
+import Village from './components/about village/About';
 import Loginpage from './components/login';
+import PaymentReceipt from './components/payment receipt/PaymentReceipt'
 import Footer from './components/Headers & footers/footer';
 import {BrowserRouter,Route,Switch} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {getUserAction} from './actions/getUserAction';
-import Residence from './components/Residence/Residence'
+import Residence from './components/Residence/Residence';
+import Revenue from './components/Revenue tax/Revenue';
 function App(props) {
   useEffect(()=>{
      props.fetch_user()
@@ -31,6 +34,9 @@ function App(props) {
             <Route path="/payment" component={Payment}></Route>
             <Route path="/about" component={About}></Route>
             <Route path="/residence" component={Residence}></Route>
+            <Route path="/revenue" component={Revenue}></Route>
+            <Route path="/admin" component={Admin}></Route>
+            <Route path="/payreceipt" component={PaymentReceipt}></Route>
         </Switch>
         <Footer/>
     </BrowserRouter>

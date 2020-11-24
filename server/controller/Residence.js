@@ -1,7 +1,7 @@
 const ResData = require('../models/residenceSchema');
 const key = require('../config/keys')
 const pdf=require('html-pdf')
-const pdfTemplate=require('../documents/index')
+const pdfTemplate=require('../documents/Residence Certificate/index')
 exports.create = (req, res) => {
     console.log(req.file)
     const name = req.body.name;

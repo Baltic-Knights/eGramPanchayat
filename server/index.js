@@ -9,18 +9,26 @@ const authRouter=require('./routes/authRouter')
 const schemeRouter=require('./routes/schemeRouter')
 const popRouter=require('./routes/popRouter')
 const ResRouter=require('./routes/ResRouter')
+const paymentRouter=require('./routes/paymentRouter')
+const comRouter=require('./routes/committeeRouter.js')
+const RevenueRouter=require('./routes/revenueRoute')
 const litRouter=require('./routes/litRouter')
 const cookieSession=require('cookie-session');
 const PORT=process.env.PORT || 5000;
 mongoose.connect("mongodb+srv://eGram:@TeamIAF@cluster0.jtyap.mongodb.net/eGramPanchayat?retryWrites=true&w=majority",
 { useNewUrlParser: true,
-    useUnifiedTopology: true },()=>{
+    useUnifiedTopology: true,
+     useFindAndModify: true },()=>{
     console.log("Connected to DB");
 });
 app.use(cookieSession({
     maxAge:30*24*60*60*1000,
     keys:[keys.COOKIEKEY]
 }));
+
+// const parseUrl = express.urlencoded({ extended: false });
+// const parseJson = express.json({ extended: false });
+
 app.use(cors());
 app.use(passport.initialize());
 app.use(express.json());
@@ -31,7 +39,10 @@ app.use('/user',authRouter);
 app.use('/populate',popRouter);
 app.use('/literate',litRouter);
 app.use('/residence',ResRouter);
+app.use('/revenue',RevenueRouter);
 app.use('/schemes',schemeRouter);
+app.use('/committee',comRouter);
+app.use('/pay',paymentRouter);
 require('./models/userSchema');
 require('./services/passport');
 require('./routes/oAuthRouter')(app);
