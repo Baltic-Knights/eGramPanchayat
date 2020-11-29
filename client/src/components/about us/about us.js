@@ -9,7 +9,7 @@ import { Row, Col, Container } from 'react-bootstrap';
 class Village extends React.Component {
   render() {
     return (
-      <Container fluid>
+      <Container fluid className="mb-5">
         <Row className="d-flex justify-content-center text-center">
           <Col className="mt-5">
             <h2 className="head">Team Baltic Knights.</h2>

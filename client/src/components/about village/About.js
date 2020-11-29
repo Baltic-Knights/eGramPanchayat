@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Col, Row, Carousel, Table } from 'react-bootstrap';
 import children from './carousel images/children1.jpg';
 import houses from './carousel images/houses1.jpg';
@@ -10,22 +10,54 @@ import river from './carousel images/rivers1.jpg';
 import powerhouse from './carousel images/power house1.jpg';
 import temple from './carousel images/khandoba.jpg';
 import { useDispatch, useSelector } from 'react-redux';
-import { committeeFetch } from '../../actions/committeeActions';
+import { committeeFetch } from '../../Redux/actions/committeeActions';
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
+
 const About = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
         dispatch(committeeFetch());
     }, [])
-    const Record = useSelector((state) => state);
-    console.log(Record.committee);
-    if (Record === undefined) {
-        return (
-            <>
+    const Record = useSelector((state) => state.committee);
+    let currentCommittee = "";
+    let previousCommittee = "";
+    if (Record.current.Name) {
+        console.log(Record);
+        currentCommittee = Record?.current.Name.map((name, key) => {
+            return (
+                <tr>
+                    <td>{key + 1}</td>
+                    <td>{name}</td>
+                    <td>{Record?.current.designation[key]}</td>
+                    <td>{Record?.current.contact[key]}</td>
+                </tr>
+            );
+        });
+        previousCommittee = Record?.previous.Name.map((name, key) => {
+            return (
+                <tr>
+                    <td>{key + 1}</td>
+                    <td>{name}</td>
+                    <td>{Record?.previous.workingPeriod[key]}</td>
+                    <td>{Record?.previous.caste[key]}</td>
+                </tr>
+            );
+        });
+    }
 
-                <Container fluid>
-                    <Row className="d-flex justify-content-md-center">
-                        <Col className="col-md-10 col-xs-6 mt-2">
+
+    return (
+        <>
+
+            <Container fluid className="">
+                <Row className="d-flex justify-content-md-center ml-0 mr-0">
+                    <Col className="col-md-10 col-xs-6 mt-2">
+                        <FadeTransform
+                            in
+                            transformProps={{
+                                exitTransform: 'scale(0.5) translateY(-50%)'
+                            }}>
                             <Carousel>
                                 <Carousel.Item interval={1000}>
                                     <img
@@ -135,13 +167,19 @@ const About = () => {
                                     </Carousel.Caption>
                                 </Carousel.Item>
                             </Carousel>
-                        </Col>
-                    </Row>
-                </Container>
-                <Container fluid className="mt-4">
-                    <Row className="d-flex justify-content-md-center">
-                        <Col className="col-md-6 col-xs-6 mt-2">
-                            <h3>Last 5 village heads of village:</h3>
+                        </FadeTransform>
+                    </Col>
+                </Row>
+            </Container>
+            <Container fluid className="mt-4">
+                <Row className="d-flex justify-content-md-center">
+                    <Col className="col-md-6 col-xs-6 mt-2">
+                        <h3>Last 5 village heads of village:</h3>
+                        <FadeTransform
+                            in
+                            transformProps={{
+                                exitTransform: 'scale(0.5) translateY(-50%)'
+                            }}>
                             <Table striped bordered hover className="mt-3">
                                 <thead>
                                     <tr>
@@ -152,28 +190,17 @@ const About = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td></td>
-                                        <td>1990-1995</td>
-                                        <td>Maratha</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Abhay ram shinde.</td>
-                                        <td>1995-2000</td>
-                                        <td>Buddha</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td></td>
-                                        <td>@twitter</td>
-                                    </tr>
+                                    {previousCommittee}
                                 </tbody>
-                            </Table>
-                        </Col>
-                        <Col className="col-md-6 col-xs-6 mt-2">
-                            <h3>Members of current committee:</h3>
+                            </Table></FadeTransform>
+                    </Col>
+                    <Col className="col-md-6 col-xs-6 mt-2">
+                        <h3>Members of current committee:</h3>
+                        <FadeTransform
+                            in
+                            transformProps={{
+                                exitTransform: 'scale(0.5) translateY(-50%)'
+                            }}>
                             <Table striped bordered hover className="mt-3">
                                 <thead>
                                     <tr>
@@ -184,46 +211,16 @@ const About = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        {/* <td>{Record.current.Name[0]}</td> */}
-                                        <td></td>
-                                        <td>@mdo</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        {/* <td>{Record.current.Name[1]}</td> */}
-                                        <td>Thornton</td>
-                                        <td>@fat</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        {/* <td>{Record.current.Name[2]}</td> */}
-                                        <td>@twitter</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        {/* <td>{Record.current.Name[3]}</td> */}
-                                        <td>@twitter</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        {/* <td>{Record.current.Name[4]}</td> */}
-                                        <td>@twitter</td>
-                                    </tr>
+                                    {currentCommittee}
                                 </tbody>
-                            </Table>
-                        </Col>
-                    </Row>
-                </Container>
-            </>
-        );
-    }else {
-  return(
-      <div>Loading...</div>
-  );
+                            </Table></FadeTransform>
+                    </Col>
+                </Row>
+            </Container>
+        </>
+    );
 }
-    
-}
+
+
 
 export default About;

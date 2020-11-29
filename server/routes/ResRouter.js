@@ -3,7 +3,7 @@ const multer=require('multer');
 const shortid=require('shortid');
 const Router=express.Router();
 const path=require('path')
-const { create, download } = require('../controller/Residence');
+const { create,read, download } = require('../controller/Residence');
 const storage=multer.diskStorage({
     destination:function(req,file,cb){
         cb(null,path.join(path.dirname(__dirname),'residence'));
@@ -14,6 +14,7 @@ const storage=multer.diskStorage({
 const upload=multer({storage});
 Router.post('/create',upload.single('picture'),create);
 
+Router.get('/readApplicants',read);
 Router.get('/download',download);
 
 module.exports=Router;

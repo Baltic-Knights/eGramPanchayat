@@ -1,4 +1,4 @@
-import {constants} from '../helpers/constants';
+import { constants } from "../actions/constants"
 
 const initState={
     previous:{},
@@ -8,7 +8,6 @@ const initState={
 export const committeeReducer=(state=initState,action)=>{
     switch(action.type){
         case constants.COMM_FETCH:
-            console.log(action.payload.previous)
             return state={
                 ...state,
                 previous:action.payload.previous,

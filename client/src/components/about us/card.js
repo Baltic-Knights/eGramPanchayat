@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
 import { Card } from 'react-bootstrap';
 import './card-style.css';
+import { FadeTransform } from 'react-animation-components';
+
 class Cards extends Component {
     render() {
         return (
+            <FadeTransform
+            in
+            transformProps={{
+                exitTransform: 'scale(0.5) translateY(-50%)'
+            }}>
             <Card className="carding shadow">
                 <div className="overflow"><Card.Img className="card-img-top overflow" src={this.props.imgsrc} /></div>
                 <Card.Body className="carding-body mb-1">
@@ -26,6 +33,7 @@ class Cards extends Component {
                 </Card.Body>
                
             </Card>
+            </FadeTransform>
         );
     }
 

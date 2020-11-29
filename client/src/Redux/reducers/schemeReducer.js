@@ -1,4 +1,4 @@
-import {constants} from '../helpers/constants';
+import { constants } from "../actions/constants"
 
 const initState={
     data:[]

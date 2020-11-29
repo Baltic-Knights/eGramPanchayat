@@ -2,7 +2,9 @@ import React,{useEffect} from "react";
 import { Bar } from 'react-chartjs-2';
 import { Card } from 'react-bootstrap';
 import {useDispatch,useSelector} from 'react-redux';
-import {populationFetch} from '../../actions/chartsAction';
+import {populationFetch} from '../../Redux/actions/chartsAction';
+import { FadeTransform } from 'react-animation-components';
+
 const Population = () => {
     const dispatch=useDispatch()
     const Record=useSelector((state)=>state.chartsData)
@@ -30,6 +32,11 @@ const Population = () => {
         ]
     }
     return (
+        <FadeTransform
+            in
+            transformProps={{
+                exitTransform: 'scale(0.5) translateY(-50%)'
+            }}>
         <Card className="col-md-11">
             <Card.Title className="text-center mt-3"><h2>Population from last 5 Surveys.</h2></Card.Title>
             <Card.Body className="mt-2">
@@ -42,6 +49,7 @@ const Population = () => {
                     } />
             </Card.Body>
         </Card>
+        </FadeTransform>
     );
 }
 

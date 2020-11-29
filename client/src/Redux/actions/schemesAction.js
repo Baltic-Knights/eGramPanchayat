@@ -1,5 +1,5 @@
-import {constants} from '../helpers/constants';
-import axiosInstance from '../helpers/axios';
+import {constants} from '../actions/constants';
+import axiosInstance from '../../helpers/axios';
 
 export const fetchSchemes=()=>{
     return async (dispatch)=>{

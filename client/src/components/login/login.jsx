@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import loginImg from "../../login.svg";
 import './login.css';
-import {login} from '../../actions/authActions'
+import {login} from '../../Redux/actions/authActions'
 import { Row, Col, Card, Container, Button, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 const Login = () => {

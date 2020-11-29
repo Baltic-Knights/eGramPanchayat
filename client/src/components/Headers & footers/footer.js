@@ -5,7 +5,7 @@ import {NavLink} from 'react-router-dom';
 class Footer extends Component{
     render(){
         return(
-            <Container fluid className="mt-4">
+            <Container fluid className="">
                 <Row className="d-flex justify-content-md-between justify-content-sm-center bg-dark">
                     <div className="mt-3 text-white col-md-4 col-sm-12">
                        <h3>Team Baltic Knights.</h3>
