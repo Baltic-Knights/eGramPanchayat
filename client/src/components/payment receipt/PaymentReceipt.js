@@ -39,6 +39,7 @@ const PaymentReceipt = () => {
                                             <Form.Label>Name:</Form.Label></Col>
                                             <Col className="col-md-7">
                                                 <Form.Control type="name"
+                                                    autoComplete="off"
                                                     placeholder="Enter applicant's full name"
                                                     name="name"
                                                     value={name}
@@ -51,6 +52,7 @@ const PaymentReceipt = () => {
                                             <Form.Label>Email Id:</Form.Label></Col>
                                             <Col className="col-md-7">
                                                 <Form.Control type="email id"
+                                                    autoComplete="off"
                                                     placeholder="Enter email id"
                                                     name="email"
                                                     value={email}

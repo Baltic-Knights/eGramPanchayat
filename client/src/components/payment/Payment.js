@@ -97,6 +97,7 @@ const Payment = () => {
                                             <Form.Label>Name:</Form.Label></Col>
                                             <Col className="col-md-7">
                                                 <Form.Control type="name"
+                                                    autoComplete="off"
                                                     placeholder="Enter applicant's full name"
                                                     name="name"
                                                     value={name}
@@ -109,6 +110,7 @@ const Payment = () => {
                                             <Form.Label>Email Id:</Form.Label></Col>
                                             <Col className="col-md-7">
                                                 <Form.Control type="email id"
+                                                    autoComplete="off"
                                                     placeholder="Enter email id"
                                                     name="email"
                                                     value={email}
@@ -121,6 +123,7 @@ const Payment = () => {
                                             <Form.Label>Mobile Number:</Form.Label></Col>
                                             <Col className="col-md-7">
                                                 <Form.Control type="mobile number:"
+                                                    autoComplete="off"
                                                     placeholder="Enter mobile number:"
                                                     name="number"
                                                     value={number}
@@ -148,6 +151,7 @@ const Payment = () => {
                                             <Row><Col className="col-md-3 offset-md-1"><Form.Label>Amount to pay:</Form.Label></Col>
                                                 <Col className="col-md-7">
                                                     <Form.Control type="amount"
+                                                        autoComplete="off"
                                                         placeholder="Enter Amount"
                                                         name="Amount"
                                                         value={amount}

@@ -8,22 +8,20 @@ import FileSaver from 'file-saver';
 import { saveAs } from 'file-saver';
 const Residence = () => {
     const [name, setName] = useState("");
-    const [UID, setUID] = useState("");
-    const [picture, setPicture] = useState('');
+    const [UID, setUID] = useState();
     const generatePDF = e => {
         e.preventDefault();
         const residenceData = {
             name: name,
-            UID: UID,
-            picture
+            UID: Number(UID),
         }
         console.log(residenceData);
         axiosInstance.post('residence/create', residenceData)
-        .then(() => axiosInstance.get('residence/download', { responseType: 'blob' }))
-        .then((res) => { 
-            const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
-            saveAs(pdfBlob, 'generatedDocument.pdf')
-          })
+        // .then(() => axiosInstance.get('residence/download', { responseType: 'blob' }))
+        // .then((res) => { 
+        //     const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
+        //     saveAs(pdfBlob, 'generatedDocument.pdf')
+        //   })
 
     }
     const downloadPDF = e => {
@@ -71,6 +69,7 @@ const Residence = () => {
                                             <Form.Label>Name:</Form.Label></Col>
                                             <Col className="col-md-7">
                                                 <Form.Control type="name"
+                                                    autoComplete="off"
                                                     placeholder="Enter applicant's full name"
                                                     name="name"
                                                     value={name}
@@ -83,6 +82,7 @@ const Residence = () => {
                                             <Row><Col className="col-md-3 offset-md-1"><Form.Label>Adhar Number:</Form.Label></Col>
                                                 <Col className="col-md-7">
                                                     <Form.Control type="name"
+                                                        autoComplete="off"
                                                         placeholder="Enter Adhar Number"
                                                         name="UID"
                                                         value={UID}
@@ -90,19 +90,8 @@ const Residence = () => {
                                                     />
                                                 </Col></Row>
                                         </Form.Group></Col></Row>
-                                    <Row><Col>
-                                        <Form.Group controlId="formGroupFile">
-                                            <Row><Col className="col-md-3 offset-md-1"><Form.Label>Passport Size Photo:</Form.Label></Col>
-                                                <Col className="col-md-7">
-                                                    <Form.Control type="file"
-                                                        accept="image/*"
-                                                        onChange={(e) => setPicture(e.target.files[0])}
-                                                    />
-                                                </Col></Row>
-                                        </Form.Group></Col></Row>
                                     <div className="text-center mt-4">
                                         <Button variant="primary" type="submit" onClick={generatePDF}>Apply</Button>
-                                        {/* <Button variant="primary" type="submit" onClick={downloadPDF} className="ml-3">Download PDF</Button> */}
                                     </div>
                                 </Form>
                             </Card.Body>

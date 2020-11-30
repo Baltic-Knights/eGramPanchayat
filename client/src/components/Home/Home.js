@@ -9,7 +9,7 @@ const Home = () => {
         <Container fluid className="mb-3">
             <Row className="text-center mt-5">
                 <Col>
-                    <h1 className="font-weight-bold">ग्रामपंचायत कडधे आपले सहर्ष स्वागत करत आहे.</h1>
+                    <h1 className="font-weight-bold">ग्रामपंचायत तांदूळवाडी आपले सहर्ष स्वागत करत आहे.</h1>
                 </Col>
             </Row>
             <Container fluid>

@@ -57,7 +57,7 @@ module.exports = (data) => {
           <div class="center">
               <img src="https://i1.wp.com/govtjobtips.in/wp-content/uploads/2019/07/Untitled-3-1.png?w=628&ssl=1" class="head">
               <h3 class="center">ग्रामपंचायत कार्यालय:कडधे</h3>
-              <h3 class="center">तालुका:खेड,जिल्हा:पुणे.</h3>
+              <h3 class="center">तालुका:वाळवा,जिल्हा:सांगली.</h3>
           </div>
           <hr>
           <div class="center">
@@ -66,26 +66,25 @@ module.exports = (data) => {
           </div>
           <div class="container">
               <div>
-                  <p>Certificate No:</p>
-                  <p>Dispatch No:</p>
+               <p>Certificate No:${Math.floor(Math.random() * 100)}</p>
+                  <p>Dispatch No:${Math.floor(Math.random() * 100)}</p>
               </div>
               <div>
                   <div class="cmp"><p>Date:${`${today.getDate()}. ${today.getMonth() + 1}. ${today.getFullYear()}.`}</p></div>
-                  <div class="cmp"><img src=${data.picture} class="head"></div>
               </div>
           </div>
   
           <div style="margin-top: 0px;" >
-              <p class="paragraph">सरपंच / ग्रामसेवक / ग्रामविकास अधिकारी ग्रामपंचायत कडधे ता.खेड जि.पुणे
+              <p class="paragraph">सरपंच / ग्रामसेवक / ग्रामविकास अधिकारी ग्रामपंचायत तांदूळवाडी ता.वाळवा जि.सांगली
                   यांजकडुन दाखला देण्यात येतो की श्री / श्रीमती / कु ${data.name} आधार क्रमांक ${data.UID} हे
-                  ग्रामपंचायत कडधे हद्दीतील मौजे कडधे ता. खेड जि. पुणे, महाराष्ट्र येथील कायमचे रहिवासी आहेत.
+                  ग्रामपंचायत कडधे हद्दीतील मौजे तांदूळवाडी ता. वाळवा जि. सांगली, महाराष्ट्र येथील कायमचे रहिवासी आहेत.
                   सदर दाखला त्यांचे विनंती अर्जानुसार, रहिवासी पुराव्याची पडताळणी व स्थानिक चौकशीच्या आधारे
                   देण्यात येत आहे.
               </p>
           </div>
           <div class="container">
               <div>
-                  <p>Place:Kadadhe.</p>
+                  <p>Place:Tandulwadi.</p>
               </div>
               <div>
                   <div class="cmp"><img src="https://i1.wp.com/govtjobtips.in/wp-content/uploads/2019/07/Untitled-3-1.png?w=628&ssl=1" class="head"></div>

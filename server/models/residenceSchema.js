@@ -4,7 +4,7 @@ const residenceSchema=new mongoose.Schema({
         type:String
     },
     UID:{
-        type:String
+        type:Number
     },
     picture:{
         type:String

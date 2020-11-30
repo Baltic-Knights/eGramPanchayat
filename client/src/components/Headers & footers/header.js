@@ -39,11 +39,17 @@ const Header = (props) => {
                 return (
                     <>
                         {/* <img className="profileImg mr-3" alt="poor network" src={props.user.picture}/> */}
-                        <Button variant="outline-primary">
+                        {/* <Button variant="outline-primary">
                             <NavLink exact className="active_class login_btn" to="/api/logout">
                                 <span className="fa fa-sign-out fa-lg mr-2"></span>
                                     Logout
                                 </NavLink>
+                        </Button></> */}
+                        <Button variant="outline-primary">
+                        <NavLink exact className="active_class login_btn" to="/login">
+                            <span className="fa fa-sign-in fa-lg mr-2"></span>
+                            Login
+                        </NavLink>
                         </Button></>
                 )
         }

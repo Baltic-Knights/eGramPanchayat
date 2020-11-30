@@ -52,15 +52,15 @@ class Maps extends Component {
     const MapWithAMarker = withScriptjs(withGoogleMap(props =>
       <GoogleMap
         defaultZoom={15}
-        defaultCenter={{ lat: 18.960340, lng: 73.803062 }}
+        defaultCenter={{ lat: 16.995237807472055, lng: 74.30745251030498 }}
       >
         <Marker
           draggable={true}
           onDragEnd={this.MarkerDragged}
-          position={{ lat: 18.960340, lng: 73.803062 }}
+          position={{ lat: 16.995237807472055, lng: 74.30745251030498 }}
         >
           <InfoWindow>
-            <div>Kadadhe,Pune,Maharashtra</div>
+            <div>Tandulwadi,Sangli,Maharashtra</div>
           </InfoWindow>
         </Marker>
       </GoogleMap>));

@@ -3,6 +3,9 @@ const revenueSchema=new mongoose.Schema({
     name:{
         type:String
     },
+    UID:{
+        type:Number
+    },
     home_tax:{
         type:Number
     },

@@ -20,27 +20,27 @@ const About = () => {
         dispatch(committeeFetch());
     }, [])
     const Record = useSelector((state) => state.committee);
+    // console.log(Record)
     let currentCommittee = "";
     let previousCommittee = "";
-    if (Record.current.Name) {
-        console.log(Record);
-        currentCommittee = Record?.current.Name.map((name, key) => {
+    if (Record.current.designation) {
+        currentCommittee = Record?.current?.Name.map((name, key) => {
             return (
-                <tr>
+                <tr id={key}>
                     <td>{key + 1}</td>
                     <td>{name}</td>
-                    <td>{Record?.current.designation[key]}</td>
-                    <td>{Record?.current.contact[key]}</td>
+                    <td>{Record?.current?.designation[key]}</td>
+                    <td>{Record?.current?.contact[key]}</td>
                 </tr>
             );
         });
-        previousCommittee = Record?.previous.Name.map((name, key) => {
+        previousCommittee = Record?.previous?.Name.map((name, key) => {
             return (
-                <tr>
+                <tr id={key}>
                     <td>{key + 1}</td>
                     <td>{name}</td>
-                    <td>{Record?.previous.workingPeriod[key]}</td>
-                    <td>{Record?.previous.caste[key]}</td>
+                    <td>{Record?.previous?.workingPeriod[key]}</td>
+                    <td>{Record?.previous?.Caste[key]}</td>
                 </tr>
             );
         });

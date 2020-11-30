@@ -2,80 +2,67 @@ const ResData = require('../models/residenceSchema');
 const key = require('../config/keys')
 const pdf = require('html-pdf')
 const pdfTemplate = require('../documents/Residence Certificate/index')
-const fs=require("fs")
-const path=require("path")
+const fs = require("fs")
+const path = require("path");
+const { nextTick } = require('process');
+// const fileUpload = require('express-fileupload');
+// const express = require('express');
+// const app = express();
+// app.use(fileUpload());
 let Name = "";
+
 exports.create = (req, res) => {
-    console.log(req.file)
+    // console.log(req.body)
     const name = req.body.name;
     Name = name;
     const number = req.body.UID;
-    ResData.findOne({ UID: number })
-        .exec((err, response) => {
-            if (err) {
-                return res.status(500).json({
-                    error: err
+    ResData.findOne({ UID: req.body.UID })
+        .then(data => {
+            if (data) {
+                console.log(data)
+                pdf.create(pdfTemplate(data), {}).toFile(data.name + '.pdf', (err, success) => {
+                    return res.status(200).json({
+                        msg: "successful"
+                    })
+                })
+            } else {
+                const data = new ResData({
+                    name,
+                    UID: number
+                });
+                data.save()
+                pdf.create(pdfTemplate(data), {}).toFile(name + '.pdf', (err) => {
+                    return res.status(200).json({
+                        error: "successful"
+                    })
                 })
             }
-            if (response) {
-                pdf.create(pdfTemplate(response), {}).toFile('../'+name + '.pdf'+name + '.pdf', (err) => {
-                    // if (err) {
-                    //     return res.status(500).json({
-                    //         error: err
-                    //     })
-                    // }
-                    return res.send(Promise.resolve())
-                })
-            }
-            const data = new ResData({
-                name,
-                UID: number
-            });
-
-            // if (req.file) {
-            //     data.picture = key.API + '/public/' + req.file.filename;
-            // }
-            data.save(
-            //     (error, data) => {
-            //     if (error) {
-            //         return res.status(400).json({
-            //             message: error
-            //         });
-            //     }
-            //     if (data) {
-            //         return res.status(201).json({
-            //             data: data
-            //         });
-            //     }
-            // }
-            )
-            pdf.create(pdfTemplate(data), {}).toFile('../'+name + '.pdf', (err) => {
-                // if (err) {
-                //     return res.status(500).json({
-                //         error: err
-                //     })
-                // }
-                 return res.send(Promise.resolve())
-
-            })
         })
-        
 
+    // // const file = req.files.file;
+    // // data.picture = key.API + '/public/' + file.filename;
+    // // console.log(data.picture);
+    // // file.mv(`${__dirname}/applicants/${file.name}`, err => {
+    // //     if (err) {
+    // //         console.error(err);
+    // //         return res.status(200).send(err);
+    // //     }
+    // // });
 }
-exports.read=(req,res)=>{
+exports.read = (req, res) => {
     ResData.find()
-    .exec((err,response)=>{
-        if(response){
-            return res.status(200).json({
-                 data:response
+        .exec((err, response) => {
+            if (response) {
+                return res.status(200).json({
+                    data: response
+                })
+                if (err) {
+                    return res.status(500).json({
+                        data: err
+                    })
+                }
+            }
         })
-        if(err){
-            return res.status(500).json({
-                data:err
-       })
-        }
-    }
-    })
 }
 exports.download = (req, res) => {
     // // console.log(Name)
@@ -97,7 +84,10 @@ exports.download = (req, res) => {
     //     res.send(data)
     // })
     console.log(path.dirname(__dirname))
-    res.sendFile(`../${Name}.pdf`);
+    // res.sendFile(`${Name}.pdf`);
+    res.status(200).json({
+        data: 'reach'
+    })
 }
 
 
