@@ -3,6 +3,9 @@ const revenueSchema=new mongoose.Schema({
     name:{
         type:String
     },
+    date:{
+        type:Date
+    },
     UID:{
         type:Number
     },

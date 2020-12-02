@@ -31,7 +31,7 @@ function AdResidence() {
             name: name,
             UID: Number(UID),
         }
-        console.log(residenceData);
+        // console.log(residenceData);
         axiosInstance.post('residence/download', residenceData)
         store.addNotification({
             title: 'Application Approved!',
@@ -50,6 +50,7 @@ function AdResidence() {
         //     saveAs(pdfBlob, 'generatedDocument.pdf')
         //   })
         })
+        window.location.reload(false);
     }
     const Reject = (UID) => {
         // e.preventDefault();
@@ -62,7 +63,7 @@ function AdResidence() {
         store.addNotification({
             title: 'Application Rejected!',
             message: 'Send Notification to villager.',
-            type: "success",
+            type: "danger",
             container: 'top-right',
             animationIn: ["animated", "fadeIn"],
             animationOut: ["animated", "fadeOut"],
@@ -71,6 +72,7 @@ function AdResidence() {
                 showIcon: true
             }
         }) 
+        window.location.reload(false);
     }
     if (applicants?.applicants?.data) {
         const activeKey = applicants?.applicants?.data[0]._id;
@@ -87,8 +89,8 @@ function AdResidence() {
                                 <h6 className="mt-3">Adhar Number:{data.UID}</h6>
                                 <h6 className="mt-3">Application Date:{new Date().getDate()}/{new Date().getMonth()}/{new Date().getFullYear()}.</h6>
                                 <div className="mt-4">
-                                    <FcIcons.FcApprove className="icons" size={30} onClick={((e) => Approve(data.name, data.UID))} />
-                                    <FcIcons.FcDisapprove className="ml-3 icons" size={30} onClick={((e) => Reject(data.UID))} />
+                                    <FcIcons.FcApprove className="icons" size={40} onClick={((e) => Approve(data.name, data.UID))} />
+                                    <FcIcons.FcDisapprove className="ml-3 icons" size={40} onClick={((e) => Reject(data.UID))} />
                                     {/* <MdIcons.MdDelete className="ml-3 icons" size={30} /> */}
                                 </div>
                             </Card.Body>

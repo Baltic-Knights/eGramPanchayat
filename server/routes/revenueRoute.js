@@ -1,9 +1,15 @@
 const express=require('express');
 const Router=express.Router();
-const { create,download } = require('../controller/revenue');
+const { create,download,approve,readData,reject } = require('../controller/revenue');
 
 Router.post('/create',create);
 
-Router.get('/download',download);
+Router.post('/approve',approve);
+
+Router.post('/reject',reject);
+
+Router.get('/readData',readData);
+
+Router.post('/download',download);
 
 module.exports=Router;

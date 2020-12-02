@@ -3,6 +3,9 @@ const residenceSchema=new mongoose.Schema({
     name:{
         type:String
     },
+    date:{
+        type:Date
+    },
     UID:{
         type:Number
     },

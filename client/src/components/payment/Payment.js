@@ -143,7 +143,7 @@ const Payment = () => {
                                             >
                                                 <option value="Residential Certificate.">Residential Certificate.</option>
                                                 <option value="Revenue tax receipt.">Revenue tax receipt.</option>
-                                                <option value="Payment Receipt.">Payment Receipt.</option>
+                                               
                                             </Form.Control>
                                         </Col></Row>
                                     <Row><Col>

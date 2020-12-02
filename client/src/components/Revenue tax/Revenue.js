@@ -5,6 +5,9 @@ import { saveAs } from 'file-saver';
 import RevenueImg from './revenue.jpg'
 import { Container, Card, Form, Button, Row, Col } from 'react-bootstrap';
 import { FadeTransform } from 'react-animation-components';
+import { store } from 'react-notifications-component';
+import 'react-notifications-component/dist/theme.css';
+import 'animate.css';
 
 const Residence = () => {
     const [name, setName] = useState("");
@@ -17,7 +20,7 @@ const Residence = () => {
     const [warrant, setWarrant] = useState();
 
     const generatePDF = e => {
-        e.preventDefault();
+        // e.preventDefault();
         const revenueData = {
             name:name,
             UID:Number(UID),
@@ -26,10 +29,24 @@ const Residence = () => {
             health_tax: Number(health),
             light_tax: Number(light),
             penalty_tax: Number(penalty),
-            warrant_tax: Number(warrant)
+            warrant_tax: Number(warrant),
+            date:new Date()
         }
         console.log(revenueData);
         axiosInstance.post('revenue/create', revenueData)
+        store.addNotification({
+            title: 'Registration Successful!!',
+            message: 'Your Application is Submitted Successfully!',
+            type: "success",
+            container: 'top-right',
+            animationIn: ["animated", "fadeIn"],
+            animationOut: ["animated", "fadeOut"],
+            dismiss: {
+                duration: 3000,
+                showIcon: true
+            }
+        })
+        
         // .then(()=>axiosInstance.get('residence/download',{responseType:"blob"}))
         // .then((res)=>{
         //     const pdfBlob=new Blob([res.data],{type:'application/pdf'});
@@ -77,86 +94,8 @@ const Residence = () => {
                                                     />
                                                 </Col></Row>
                                         </Form.Group></Col></Row>
-                                    <Row><Col>
-                                        <Form.Group controlId="formGroupPassword">
-                                            <Row><Col className="col-md-3 offset-md-1"><Form.Label>Home Tax:</Form.Label></Col>
-                                                <Col className="col-md-7">
-                                                    <Form.Control type="tax"
-                                                        autoComplete="off"
-                                                        placeholder="Home tax"
-                                                        name="home tax"
-                                                        value={home}
-                                                        onChange={(e) => setHome(e.target.value)}
-                                                    />
-                                                </Col></Row>
-                                        </Form.Group></Col></Row>
-                                    <Row><Col>
-                                        <Form.Group controlId="formGroupPassword">
-                                            <Row><Col className="col-md-3 offset-md-1"><Form.Label>Light Tax:</Form.Label></Col>
-                                                <Col className="col-md-7">
-                                                    <Form.Control type="tax"
-                                                        autoComplete="off"
-                                                        placeholder="Light tax"
-                                                        name="Light tax"
-                                                        value={light}
-                                                        onChange={(e) => setLight(e.target.value)}
-                                                    />
-                                                </Col></Row>
-                                        </Form.Group></Col></Row>
-                                    <Row><Col>
-                                        <Form.Group controlId="formGroupFile">
-                                            <Row><Col className="col-md-3 offset-md-1"><Form.Label>Health tax:</Form.Label></Col>
-                                                <Col className="col-md-7">
-                                                    <Form.Control type="tax"
-                                                        autoComplete="off"
-                                                        placeholder="Health tax"
-                                                        name="Health tax"
-                                                        value={health}
-                                                        onChange={(e) => setHealth(e.target.value)}
-                                                    />
-                                                </Col></Row>
-                                        </Form.Group></Col></Row>
-                                    <Row><Col>
-                                        <Form.Group controlId="formGroupFile">
-                                            <Row><Col className="col-md-3 offset-md-1"><Form.Label>Water Tax:</Form.Label></Col>
-                                                <Col className="col-md-7">
-                                                    <Form.Control type="tax"
-                                                        autoComplete="off"
-                                                        placeholder="Water tax"
-                                                        name="Water tax"
-                                                        value={water}
-                                                        onChange={(e) => setWater(e.target.value)}
-                                                    />
-                                                </Col></Row>
-                                        </Form.Group></Col></Row>
-                                    <Row><Col>
-                                        <Form.Group controlId="formGroupFile">
-                                            <Row><Col className="col-md-3 offset-md-1"><Form.Label>Penalty Tax:</Form.Label></Col>
-                                                <Col className="col-md-7">
-                                                    <Form.Control type="tax"
-                                                        autoComplete="off"
-                                                        placeholder="Penalty tax"
-                                                        name="Penalty tax"
-                                                        value={penalty}
-                                                        onChange={(e) => setPenalty(e.target.value)}
-                                                    />
-                                                </Col></Row>
-                                        </Form.Group></Col></Row>
-                                    <Row><Col>
-                                        <Form.Group controlId="formGroupFile">
-                                            <Row><Col className="col-md-3 offset-md-1"><Form.Label>Warrant Tax:</Form.Label></Col>
-                                                <Col className="col-md-7">
-                                                    <Form.Control type="tax"
-                                                        autoComplete="off"
-                                                        placeholder="Warrant tax"
-                                                        name="Warrant tax"
-                                                        value={warrant}
-                                                        onChange={(e) => setWarrant(e.target.value)}
-                                                    />
-                                                </Col></Row>
-                                        </Form.Group></Col></Row>
                                     <div className="text-center mt-4">
-                                        <Button variant="primary" type="submit">Download PDF</Button>
+                                        <Button variant="primary" type="submit">Apply</Button>
                                     </div>
                                 </Form>
                             </Card.Body>

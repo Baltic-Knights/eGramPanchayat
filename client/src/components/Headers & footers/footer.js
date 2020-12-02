@@ -9,6 +9,8 @@ class Footer extends Component{
                 <Row className="d-flex justify-content-md-between justify-content-sm-center bg-dark">
                     <div className="mt-3 text-white col-md-4 col-sm-12">
                        <h3>Team Baltic Knights.</h3>
+                       <p className="mt-4">I dream of a Digital India where knowledge is strength-and empowers the people.</p>
+                       <p className="">-Narendra Modi.</p>
                     </div>
                     <div className="mt-3 text-white col-md-4 col-sm-12">
                        <h3>Quick Links:</h3>

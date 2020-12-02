@@ -15,14 +15,16 @@ exports.create = (req, res) => {
     const name = req.body.name;
     Name = name;
     const number = req.body.UID;
+    const date=req.body.date
     ResData.findOne({ UID: req.body.UID })
         .then(data => {
             if (data) {
-                console.log(data)
+                
             } else {
                 const data = new ResData({
                     name,
-                    UID: number
+                    UID: number,
+                    date
                 });
                 data.save()
             }

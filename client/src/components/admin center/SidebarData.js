@@ -25,7 +25,7 @@ export const SidebarData = [
     cName: 'nav-text'
   },
   {
-    title: 'Revenue Payment',
+    title: 'Payment',
     link: '/adRevenue',
     icon: <MdIcons.MdPayment />,
     cName: 'nav-text'

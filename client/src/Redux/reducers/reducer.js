@@ -4,6 +4,7 @@ import {chartsReducer} from './chartsReducer';
 import {schemeReducer} from './schemeReducer';
 import {committeeReducer} from './committeeReducer';
 import {residenceReducer} from './ResidenceReducer';
+import {revenueReducer} from './revenueReducer';
 
 import { combineReducers } from 'redux';
 
@@ -13,6 +14,7 @@ const rootReducer=combineReducers({
     chartsData:chartsReducer,
     schemes:schemeReducer,
     committee:committeeReducer,
-    residence:residenceReducer
+    residence:residenceReducer,
+    revenue:revenueReducer
 });
 export default rootReducer;

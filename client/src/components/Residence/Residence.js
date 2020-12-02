@@ -13,11 +13,13 @@ import 'animate.css';
 const Residence = () => {
     const [name, setName] = useState("");
     const [UID, setUID] = useState();
+    
     const generatePDF = e => {
-
+        
         const residenceData = {
             name: name,
             UID: Number(UID),
+            date:new Date()
         }
         console.log(residenceData);
         axiosInstance.post('residence/create', residenceData)

@@ -1,12 +1,12 @@
 import {constants} from '../actions/constants';
 import axiosInstance from '../../helpers/axios';
 
-export const readApplicants=()=>{
+export const readRevenue=()=>{
     return async (dispatch)=>{
-        const applicantData=await axiosInstance.get('residence/readApplicants');
-        if(applicantData.status===200){
-            const data=applicantData;
-            // console.log(applicantData)
+        const revenueData=await axiosInstance.get('revenue/readData');
+        if(revenueData.status===200){
+            const data=revenueData;
+            console.log(revenueData)
             dispatch({
                 type:constants.APP_FETCH,
                 payload:data
