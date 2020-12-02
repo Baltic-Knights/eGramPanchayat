@@ -2,6 +2,11 @@ import React, { useState } from 'react'
 import Sidebar from '../Sidebar';
 import axiosInstance from '../../../helpers/axios';
 import { Container, Row, Col, Card, Button, Form } from 'react-bootstrap';
+import { store } from 'react-notifications-component';
+import 'react-notifications-component/dist/theme.css';
+import 'animate.css';
+import { FadeTransform } from 'react-animation-components';
+
 function AdVillage() {
     const [PrevFirstname, setPrevFirstname] = useState("");
     const [PrevSecondname, setPrevSecondname] = useState("");
@@ -38,7 +43,7 @@ function AdVillage() {
 
     
     const submitCurrRecord = (e) => {
-        e.preventDefault();
+        // e.preventDefault();
         const current={
             ID:101,
             Name:[CurrFirstname,CurrSecondname,CurrThirdname,CurrFourthname,CurrFifthname],
@@ -46,10 +51,23 @@ function AdVillage() {
             contact:[CurrFirstCaste,CurrSecondCaste,CurrThirdCaste,CurrFourthCaste,CurrFifthCaste]
         }
         console.log(current)
-        axiosInstance.post('currCommittee/addData', current)
+        axiosInstance.post('currCommittee/addData', current);
+        store.addNotification({
+            title: 'Records updated successfully!!',
+            message: 'current committee data is updated!!',
+            type: "success",                         
+            container: 'top-right',                
+            animationIn: ["animated", "fadeIn"],     
+            animationOut: ["animated", "fadeOut"],   
+            dismiss: {
+              duration: 3000,
+              showIcon:true
+            }
+          })
+          
     }
     const submitPrevRecord = (e) => {
-        e.preventDefault();
+        // e.preventDefault();
         const previous={
             ID:102,
             Name:[PrevFirstname,PrevSecondname,PrevThirdname,PrevFourthname,PrevFifthname],
@@ -57,7 +75,19 @@ function AdVillage() {
             Caste:[PrevFirstCaste,PrevSecondCaste,PrevThirdCaste,PrevFourthCaste,PrevFifthCaste]
         }
         console.log(previous)
-        axiosInstance.post('prevCommittee/addData', previous)
+        axiosInstance.post('prevCommittee/addData', previous);
+        store.addNotification({
+            title: 'Records updated successfully!!',
+            message: 'Previous committee data is updated!!',
+            type: "success",                         
+            container: 'top-right',                
+            animationIn: ["animated", "fadeIn"],     
+            animationOut: ["animated", "fadeOut"],   
+            dismiss: {
+              duration: 3000,
+              showIcon:true
+            }
+          })
     }
     return (
         <Container fluid className="m-0 p-0">
@@ -67,6 +97,11 @@ function AdVillage() {
                 </Col>
                 <Col className="col-md-7 mt-5 mb-3 text-center">
                     <h1 className="">About Village Section.</h1>
+                    <FadeTransform
+                        in
+                        transformProps={{
+                            exitTransform: 'scale(0.5) translateY(-50%)'
+                        }}>
                     <Card className="mt-3">
                         <Card.Header>Last 5 Village Heads.</Card.Header>
                         <Card.Body>
@@ -229,7 +264,12 @@ function AdVillage() {
                                 <Button className="mt-4" type="submit" onClick={submitPrevRecord}>Update Records</Button>
                             </Form>
                         </Card.Body>
-                    </Card>
+                    </Card></FadeTransform>
+                    <FadeTransform
+                        in
+                        transformProps={{
+                            exitTransform: 'scale(0.5) translateY(-50%)'
+                        }}>
                     <Card className="mt-3">
                         <Card.Header>Current Gram panchayat committee.</Card.Header>
                         <Card.Body>
@@ -392,7 +432,7 @@ function AdVillage() {
                                 <Button className="mt-4" type="submit" onClick={submitCurrRecord}>Update Records</Button>
                             </Form>
                         </Card.Body>
-                    </Card>
+                    </Card></FadeTransform>
                 </Col>
             </Row>
         </Container>

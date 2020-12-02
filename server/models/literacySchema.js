@@ -1,5 +1,8 @@
 const mongoose=require('mongoose');
 const literacySchema=new mongoose.Schema({
+    ID:{
+        type:Number
+    },
     years:{
         type:[Number],
         required:true,

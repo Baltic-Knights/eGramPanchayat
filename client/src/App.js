@@ -44,7 +44,7 @@ function App(props) {
           <Route path="/about" component={About}></Route>
           <Route path="/residence" component={Residence}></Route>
           <Route path="/revenue" component={Revenue}></Route>
-          <Route path="/adHome" component={Admin}></Route>
+          <Route path="/admin" component={Admin}></Route>
           <Route path="/payreceipt" component={PaymentReceipt}></Route>
           <Route path="/adHome" component={AdHome}></Route>
           <Route path="/adRevenue" component={AdRevenue}></Route>

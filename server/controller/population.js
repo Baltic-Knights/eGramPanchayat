@@ -2,27 +2,42 @@ const Record = require('../models/populationSchema');
 
 exports.addRecord = (req, res) => {
     const years = req.body.years;
+    const ID = req.body.ID;
     const menCount = req.body.menCount;
     const womenCount = req.body.womenCount;
     const childrenCount = req.body.childrenCount;
-    const data = new Record({
-        years,
-        menCount,
-        womenCount,
-        childrenCount
-    });
-    data.save((error, data) => {
-        if (error) {
-            return res.status(400).json({
-                message: error
+    Record.updateOne({ID:req.body.ID},
+        {$set:{
+            years:years,
+            menCount:menCount,
+            womenCount:womenCount,
+            childrenCount:childrenCount
+        }}
+        ,function(err,result){
+            return res.status(200).json({
+                message: "Successful"
             });
         }
-        if (data) {
-            return res.status(201).json({
-                data: data
-            });
-        }
-    })
+        )
+    // const data = new Record({
+    //     ID,
+    //     years,
+    //     menCount,
+    //     womenCount,
+    //     childrenCount
+    // });
+    // data.save((error, data) => {
+    //     if (error) {
+    //         return res.status(400).json({
+    //             message: error
+    //         });
+    //     }
+    //     if (data) {
+    //         return res.status(201).json({
+    //             data: data
+    //         });
+    //     }
+    // })
 }
 
 exports.fetchRecord = (req, res) => {
