@@ -12,7 +12,6 @@ const { nextTick } = require('process');
 let Name = "";
 
 exports.create = (req, res) => {
-    // console.log(req.body)
     const name = req.body.name;
     Name = name;
     const number = req.body.UID;
@@ -20,22 +19,12 @@ exports.create = (req, res) => {
         .then(data => {
             if (data) {
                 console.log(data)
-                pdf.create(pdfTemplate(data), {}).toFile(data.name + '.pdf', (err, success) => {
-                    return res.status(200).json({
-                        msg: "successful"
-                    })
-                })
             } else {
                 const data = new ResData({
                     name,
                     UID: number
                 });
                 data.save()
-                pdf.create(pdfTemplate(data), {}).toFile(name + '.pdf', (err) => {
-                    return res.status(200).json({
-                        error: "successful"
-                    })
-                })
             }
         })
 
@@ -49,6 +38,17 @@ exports.create = (req, res) => {
     // //     }
     // // });
 }
+
+exports.reject = (req, res) => {
+    const number = req.body.UID;
+    ResData.deleteOne({ UID: req.body.UID })
+        .then(data => {
+            return res.status(200).json({
+                data: "Rejected"
+            })
+        })
+}
+
 exports.read = (req, res) => {
     ResData.find()
         .exec((err, response) => {
@@ -64,29 +64,12 @@ exports.read = (req, res) => {
             }
         })
 }
+
 exports.download = (req, res) => {
-    // // console.log(Name)
-    // // res.sendFile(key.API + `'/public/${Name}.pdf`)
-    // const src = fs.createReadStream(key.API + `'/public/${Name}.pdf`);
-
-    // res.writeHead(200, {
-    //   'Content-Type': 'application/pdf',
-    //   'Content-Disposition': 'attachment; filename=sample.pdf',
-    //   'Content-Transfer-Encoding': 'Binary'
-    // });
-
-    // src.pipe(res); 
-
-    // var file =key.API +`/public/residence/${Name}.pdf`;
-    // console.log(file)
-    // fs.readFile(file, function (err, data) {
-    //     res.contentType("application/pdf");
-    //     res.send(data)
-    // })
-    console.log(path.dirname(__dirname))
-    // res.sendFile(`${Name}.pdf`);
-    res.status(200).json({
-        data: 'reach'
+    pdf.create(pdfTemplate(req.body), {}).toFile(req.body.name + '.pdf', (err, success) => {
+        return res.status(200).json({
+            msg: "successful"
+        })
     })
 }
 

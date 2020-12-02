@@ -7,7 +7,6 @@ const Sidebar = () => {
         <>
             <div className="Sidebar">
                 <ul className="SidebarList">
-                    <Stagger in>
                     {SidebarData.map((val, key) => {
                         return (
                             <Fade in>
@@ -24,7 +23,6 @@ const Sidebar = () => {
                             </Fade>
                         );
                     })}
-                    </Stagger>
                 </ul>
             </div>
         </>

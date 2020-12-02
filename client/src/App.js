@@ -10,7 +10,7 @@ import Payment from './components/payment/Payment';
 import Admin from './components/admin center/admin';
 import About from './components/about us/about us';
 import Village from './components/about village/About';
-import Loginpage from './components/login';
+import Loginpage from './components/loginPage';
 import PaymentReceipt from './components/payment receipt/PaymentReceipt'
 import Footer from './components/Headers & footers/footer';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
@@ -24,6 +24,7 @@ import AdRevenueReceipt from './components/admin center/pages/adRevenueReceipt';
 import AdSchemes from './components/admin center/pages/adSchemes';
 import AdVillage from './components/admin center/pages/adVillage';
 import AdResidence from './components/admin center/pages/adResidence';
+import ReactNotification from 'react-notifications-component';
 
 function App(props) {
   useEffect(() => {
@@ -32,6 +33,7 @@ function App(props) {
   return (
     <>
       <BrowserRouter>
+      <ReactNotification />
         <Header />
         <Switch>
           <Route path="/" exact component={Home}></Route>
@@ -42,7 +44,7 @@ function App(props) {
           <Route path="/about" component={About}></Route>
           <Route path="/residence" component={Residence}></Route>
           <Route path="/revenue" component={Revenue}></Route>
-          <Route path="/admin" component={Admin}></Route>
+          <Route path="/adHome" component={Admin}></Route>
           <Route path="/payreceipt" component={PaymentReceipt}></Route>
           <Route path="/adHome" component={AdHome}></Route>
           <Route path="/adRevenue" component={AdRevenue}></Route>

@@ -6,17 +6,33 @@ import { Container, Card, Form, Button, Row, Col } from 'react-bootstrap';
 import { FadeTransform } from 'react-animation-components';
 import FileSaver from 'file-saver';
 import { saveAs } from 'file-saver';
+import { store } from 'react-notifications-component';
+import 'react-notifications-component/dist/theme.css';
+import 'animate.css';
+
 const Residence = () => {
     const [name, setName] = useState("");
     const [UID, setUID] = useState();
     const generatePDF = e => {
-        e.preventDefault();
+
         const residenceData = {
             name: name,
             UID: Number(UID),
         }
         console.log(residenceData);
         axiosInstance.post('residence/create', residenceData)
+        store.addNotification({
+            title: 'Registration Successful!!!',
+            message: 'Your Application is Submitted Successfully.',
+            type: "success",                         
+            container: 'top-right',                
+            animationIn: ["animated", "fadeIn"],     
+            animationOut: ["animated", "fadeOut"],   
+            dismiss: {
+              duration: 3000,
+              showIcon:true
+            }
+          })
         // .then(() => axiosInstance.get('residence/download', { responseType: 'blob' }))
         // .then((res) => { 
         //     const pdfBlob = new Blob([res.data], { type: 'application/pdf' });

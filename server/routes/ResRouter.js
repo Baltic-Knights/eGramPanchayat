@@ -1,10 +1,11 @@
 const express=require('express');
 const Router=express.Router();
-const { create,read, download } = require('../controller/Residence');
+const { create,read, download,reject } = require('../controller/Residence');
 
 Router.post('/create',create);
 
 Router.get('/readApplicants',read);
-Router.get('/download',download);
+Router.post('/reject',reject);
+Router.post('/download',download);
 
 module.exports=Router;

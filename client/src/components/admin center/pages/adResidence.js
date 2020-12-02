@@ -4,20 +4,78 @@ import Sidebar from '../Sidebar';
 import { Container, Row, Col, Card, Accordion } from 'react-bootstrap';
 import { readApplicants } from '../../../Redux/actions/residenceActions';
 import { FadeTransform, Fade, Stagger } from 'react-animation-components';
+import * as FcIcons from "react-icons/fc";
+import * as MdIcons from "react-icons/md";
+import axiosInstance from '../../../helpers/axios';
+import { store } from 'react-notifications-component';
+import 'react-notifications-component/dist/theme.css';
+import 'animate.css';
+import { BeatLoader } from 'react-spinner';
+import { css } from "@emotion/react";
+import './pages.css';
 
 function AdResidence() {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(readApplicants())
     }, [])
+    const override = css`
+        display: block;
+        margin: 0 auto;
+        border-color: red;
+    `;
     const applicants = useSelector(state => state.residence);
-    let cards="";
-    if (applicants.applicants[0]) {
-        console.log(applicants.applicants[0]._id)
-        const activeKey = applicants?.applicants[0]._id;
-        cards = applicants?.applicants.map((data,id) => {
+    let cards = "";
+    const Approve = (name, UID) => {
+        const residenceData = {
+            name: name,
+            UID: Number(UID),
+        }
+        console.log(residenceData);
+        axiosInstance.post('residence/download', residenceData)
+        store.addNotification({
+            title: 'Application Approved!',
+            message: 'Residence certificate generated sucessfully!',
+            type: "info",
+            container: 'top-right',
+            animationIn: ["animated", "fadeIn"],
+            animationOut: ["animated", "fadeOut"],
+            dismiss: {
+                duration: 3000,
+                showIcon: true
+            }
+        // .then(() => axiosInstance.get('residence/download', { responseType: 'blob' }))
+        // .then((res) => { 
+        //     const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
+        //     saveAs(pdfBlob, 'generatedDocument.pdf')
+        //   })
+        })
+    }
+    const Reject = (UID) => {
+        // e.preventDefault();
+        // console.log(name,UID)
+        const residenceData = {
+            UID: Number(UID),
+        }
+        console.log(residenceData);
+        axiosInstance.post('residence/reject', residenceData)
+        store.addNotification({
+            title: 'Application Rejected!',
+            message: 'Send Notification to villager.',
+            type: "success",
+            container: 'top-right',
+            animationIn: ["animated", "fadeIn"],
+            animationOut: ["animated", "fadeOut"],
+            dismiss: {
+                duration: 3000,
+                showIcon: true
+            }
+        }) 
+    }
+    if (applicants?.applicants?.data) {
+        const activeKey = applicants?.applicants?.data[0]._id;
+        cards = applicants?.applicants.data.map((data, id) => {
             return (
-                <Fade in>
                 <Card className="col-md-12 col-sm-12 mt-5">
                     <Accordion className="myAccordian" defaultActiveKey={activeKey}>
                         <Accordion.Toggle as={Card.Header} className="back" eventKey={data._id}>
@@ -25,27 +83,28 @@ function AdResidence() {
                         </Accordion.Toggle>
                         <Accordion.Collapse eventKey={data._id}>
                             <Card.Body>
-                                {/* <Media tag="li">
-                                <img
-                                    width={200}
-                                    height={200}
-                                    className="mr-3"
-                                    src={data.picture}
-                                    alt={data.title}
-                                />
-                                <Media.Body className="">
-                                    <p><b>Description:</b><br />{data.description}</p>
-                                    <p><b>Department:</b><br />{data.department}</p>
-                                    <Button href={data.weblink} target="blank" className="mr-auto">Apply Now</Button>
-                                </Media.Body>
-                            </Media> */}
+                                <h6 className="">Applicant Name:{data.name}</h6>
+                                <h6 className="mt-3">Adhar Number:{data.UID}</h6>
+                                <h6 className="mt-3">Application Date:{new Date().getDate()}/{new Date().getMonth()}/{new Date().getFullYear()}.</h6>
+                                <div className="mt-4">
+                                    <FcIcons.FcApprove className="icons" size={30} onClick={((e) => Approve(data.name, data.UID))} />
+                                    <FcIcons.FcDisapprove className="ml-3 icons" size={30} onClick={((e) => Reject(data.UID))} />
+                                    {/* <MdIcons.MdDelete className="ml-3 icons" size={30} /> */}
+                                </div>
                             </Card.Body>
+
                         </Accordion.Collapse>
                     </Accordion>
                 </Card>
-                </Fade>
             )
         })
+    } else if(!applicants){
+        cards=`<BeatLoader
+            css={override}
+            size={150}
+            color={"#123abc"}
+            loading
+        />`
     }
 
     return (

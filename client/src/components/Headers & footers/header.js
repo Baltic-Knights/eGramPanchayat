@@ -98,7 +98,7 @@ const Header = (props) => {
                         </NavDropdown.Item>
                         </NavDropdown>
                     
-                    <NavLink exact activeClassName="active_class" className="links" to="/admin">
+                    <NavLink exact activeClassName="active_class" className="links" to="/adHome">
                         <div className="ml-3">
                         Admin Center</div>
                     </NavLink>

@@ -97,7 +97,7 @@ const Payment = () => {
                                             <Form.Label>Name:</Form.Label></Col>
                                             <Col className="col-md-7">
                                                 <Form.Control type="name"
-                                                    autoComplete="off"
+                                                    autocomplete="off"
                                                     placeholder="Enter applicant's full name"
                                                     name="name"
                                                     value={name}
@@ -110,7 +110,7 @@ const Payment = () => {
                                             <Form.Label>Email Id:</Form.Label></Col>
                                             <Col className="col-md-7">
                                                 <Form.Control type="email id"
-                                                    autoComplete="off"
+                                                    autocomplete="off"
                                                     placeholder="Enter email id"
                                                     name="email"
                                                     value={email}
@@ -123,7 +123,7 @@ const Payment = () => {
                                             <Form.Label>Mobile Number:</Form.Label></Col>
                                             <Col className="col-md-7">
                                                 <Form.Control type="mobile number:"
-                                                    autoComplete="off"
+                                                    autocomplete="off"
                                                     placeholder="Enter mobile number:"
                                                     name="number"
                                                     value={number}
