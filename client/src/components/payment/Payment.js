@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import PaymentImg from './payment.jpg';
+import { Control, LocalForm, Errors } from 'react-redux-form';
 import { Container, Card, Form, Button, Row, Col } from 'react-bootstrap';
 import { FadeTransform } from 'react-animation-components';
 
+const required = (val) => val && val.length;
+const maxLength = (len) => (val) => !(val) || (val.length <= len);
+const minLength = (len) => (val) => val && (val.length >= len);
+const isNumber = (val) => !isNaN(Number(val));
+const validText = (val) => /^[a-zA-Z]+ [a-zA-Z]+$/i.test(val);
+const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
+const validMobile=(val)=> /^((\+){1}91){1}[1-9]{1}[0-9]{9}$/i.test(val);
 const Payment = () => {
     const [name, setName] = useState("");
     const [amount, setAmount] = useState("");
@@ -91,51 +99,96 @@ const Payment = () => {
                             <Card.Img varient="top" className="pic mt-1 col-md-6 col-sm-10 offset-md-3" src={PaymentImg}></Card.Img>
                             <div className="text-center mt-4 mb-4"><span className="fa fa-star fa-lg mr-2"></span><span className="fa fa-star fa-lg mr-2"></span><span className="fa fa-star fa-lg mr-2"></span><span className="fa fa-star fa-lg mr-2"></span><span className="fa fa-star fa-lg mr-2"></span></div>
                             <Card.Body>
-                                <Form onSubmit={handleSubmit}>
-                                    <Form.Group controlId="formGroupName">
+                                <LocalForm onSubmit={handleSubmit}>
+                                    <div className="form-group">
                                         <Row><Col className="col-md-3 offset-md-1">
                                             <Form.Label>Name:</Form.Label></Col>
                                             <Col className="col-md-7">
-                                                <Form.Control type="name"
+                                                <Control.text 
+                                                    model=".name"
+                                                    className="form-control"
                                                     autocomplete="off"
                                                     placeholder="Enter applicant's full name"
                                                     name="name"
                                                     value={name}
                                                     onChange={(e) => setName(e.target.value)}
+                                                    validators={{
+                                                        required, validText, maxLength: maxLength(20), minLength: minLength(3)
+                                                    }}
+                                                />
+                                                 <Errors
+                                                    className="text-danger"
+                                                    model=".name"
+                                                    show="touched"
+                                                    messages={{
+                                                        required: 'Required ',
+                                                        validText: 'Enter a valid Name!',
+                                                        maxLength: 'Length should be less than 20 characters!',
+                                                        minLength: 'Length should be greater than 3 characters!'
+                                                    }}
                                                 />
                                             </Col></Row>
-                                    </Form.Group>
-                                    <Form.Group controlId="formGroupEmail">
+                                    </div>
+                                    <div className="form-group">
                                         <Row><Col className="col-md-3 offset-md-1">
                                             <Form.Label>Email Id:</Form.Label></Col>
                                             <Col className="col-md-7">
-                                                <Form.Control type="email id"
+                                                <Control.text 
+                                                    model=".email"
+                                                    className="form-control"
                                                     autocomplete="off"
                                                     placeholder="Enter email id"
                                                     name="email"
                                                     value={email}
                                                     onChange={(e) => setEmail(e.target.value)}
+                                                    validators={{
+                                                        required, validEmail
+                                                    }}
+                                                />
+                                                <Errors
+                                                    className="text-danger"
+                                                    model=".email"
+                                                    show="touched"
+                                                    messages={{
+                                                        required: 'Required ',
+                                                        validText: 'Enter a valid Email!'
+                                                    }}
                                                 />
                                             </Col></Row>
-                                    </Form.Group>
-                                    <Form.Group controlId="formGroupNumber">
+                                    </div>
+                                    <div className="form-group">
                                         <Row><Col className="col-md-3 offset-md-1">
                                             <Form.Label>Mobile Number:</Form.Label></Col>
                                             <Col className="col-md-7">
-                                                <Form.Control type="mobile number:"
+                                                <Control.text 
+                                                    model=".mobile"
+                                                    className="form-control"
                                                     autocomplete="off"
                                                     placeholder="Enter mobile number:"
                                                     name="number"
                                                     value={number}
                                                     onChange={(e) => setNumber(e.target.value)}
+                                                    validators={{
+                                                        required, validMobile
+                                                    }}
+                                                />
+                                                <Errors
+                                                    className="text-danger"
+                                                    model=".mobile"
+                                                    show="touched"
+                                                    messages={{
+                                                        required: 'Required ',
+                                                        validMobile: 'Enter a valid Mobile number starting from +91!'
+                                                    }}
                                                 />
                                             </Col></Row>
-                                    </Form.Group>
+                                    </div>
                                     <Row><Col className="col-md-3 offset-md-1"><Form.Label>select receipt option:</Form.Label></Col>
                                         <Col className="col-md-7">
-                                            <Form.Control
+                                            <Control.select
+                                                model=".reason"
                                                 as="select"
-                                                className="my-1 mr-sm-2"
+                                                className="my-1 mr-sm-2 form-control"
                                                 id="inlineFormCustomSelectPref"
                                                 custom
                                                 value={reason}
@@ -144,13 +197,15 @@ const Payment = () => {
                                                 <option value="Residential Certificate.">Residential Certificate.</option>
                                                 <option value="Revenue tax receipt.">Revenue tax receipt.</option>
                                                
-                                            </Form.Control>
+                                            </Control.select>
                                         </Col></Row>
                                     <Row><Col>
-                                        <Form.Group controlId="formGroupPassword">
+                                    <div className="form-group">
                                             <Row><Col className="col-md-3 offset-md-1"><Form.Label>Amount to pay:</Form.Label></Col>
                                                 <Col className="col-md-7">
-                                                    <Form.Control type="amount"
+                                                    <Control.text 
+                                                        model=".amount"
+                                                        className="form-control"
                                                         autoComplete="off"
                                                         placeholder="Enter Amount"
                                                         name="Amount"
@@ -158,11 +213,11 @@ const Payment = () => {
                                                         onChange={(e) => setAmount(e.target.value)}
                                                     />
                                                 </Col></Row>
-                                        </Form.Group></Col></Row>
+                                        </div></Col></Row>
                                     <div className="text-center mt-4">
                                         <Button variant="primary" type="submit">Pay Now</Button>
                                     </div>
-                                </Form>
+                                </LocalForm>
                             </Card.Body>
                         </Card></FadeTransform></Col>
             </Row>

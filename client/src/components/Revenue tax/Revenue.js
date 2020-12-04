@@ -1,36 +1,29 @@
 import React, { useState } from 'react';
 import './revenue.css';
 import axiosInstance from '../../helpers/axios';
-import { saveAs } from 'file-saver';
-import RevenueImg from './revenue.jpg'
+// import { saveAs } from 'file-saver';
+import RevenueImg from './revenue.jpg';
+import { Control, LocalForm, Errors } from 'react-redux-form';
 import { Container, Card, Form, Button, Row, Col } from 'react-bootstrap';
 import { FadeTransform } from 'react-animation-components';
 import { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import 'animate.css';
 
+const required = (val) => val && val.length;
+const maxLength = (len) => (val) => !(val) || (val.length <= len);
+const minLength = (len) => (val) => val && (val.length >= len);
+const isNumber = (val) => !isNaN(Number(val));
+const validText = (val) => /^[a-zA-Z]+ [a-zA-Z]+$/i.test(val);
+
 const Residence = () => {
     const [name, setName] = useState("");
-    const [home, setHome] = useState();
     const [UID, setUID] = useState();
-    const [water, setWater] = useState();
-    const [health, setHealth] = useState();
-    const [light, setLight] = useState();
-    const [penalty, setPenalty] = useState();
-    const [warrant, setWarrant] = useState();
 
     const generatePDF = e => {
-        // e.preventDefault();
         const revenueData = {
             name:name,
-            UID:Number(UID),
-            home_tax: Number(home),
-            water_tax: Number(water),
-            health_tax: Number(health),
-            light_tax: Number(light),
-            penalty_tax: Number(penalty),
-            warrant_tax: Number(warrant),
-            date:new Date()
+            UID:Number(UID)
         }
         console.log(revenueData);
         axiosInstance.post('revenue/create', revenueData)
@@ -67,37 +60,69 @@ const Residence = () => {
                             <Card.Img varient="top" className="pic mt-1 col-md-6 col-sm-10 offset-md-3" src={RevenueImg}></Card.Img>
                             <div className="text-center mt-4 mb-4"><span className="fa fa-star fa-lg mr-2"></span><span className="fa fa-star fa-lg mr-2"></span><span className="fa fa-star fa-lg mr-2"></span><span className="fa fa-star fa-lg mr-2"></span><span className="fa fa-star fa-lg mr-2"></span></div>
                             <Card.Body>
-                                <Form onSubmit={generatePDF}>
-                                    <Form.Group controlId="formGroupEmail">
+                                <LocalForm onSubmit={generatePDF}>
+                                    <div className="form-group">
                                         <Row><Col className="col-md-3 offset-md-1">
                                             <Form.Label>Name:</Form.Label></Col>
                                             <Col className="col-md-7">
-                                                <Form.Control type="name"
+                                                <Control.text
+                                                    model=".name"
+                                                    className="form-control"
                                                     autoComplete="off"
                                                     placeholder="Enter applicant's full name"
                                                     name="name"
                                                     value={name}
                                                     onChange={(e) => setName(e.target.value)}
+                                                    validators={{
+                                                        required, validText, maxLength: maxLength(20), minLength: minLength(3)
+                                                    }}
+                                                />
+                                                <Errors
+                                                    className="text-danger"
+                                                    model=".name"
+                                                    show="touched"
+                                                    messages={{
+                                                        required: 'Required ',
+                                                        validText: 'Enter a valid Name!',
+                                                        maxLength: 'Length should be less than 15 characters!',
+                                                        minLength: 'Length should be greater than 3 characters!'
+                                                    }}
                                                 />
                                             </Col></Row>
-                                    </Form.Group>
+                                    </div>
                                     <Row><Col>
-                                        <Form.Group controlId="formGroupPassword">
+                                        <div className="form-group">
                                             <Row><Col className="col-md-3 offset-md-1"><Form.Label>Adhar Number:</Form.Label></Col>
                                                 <Col className="col-md-7">
-                                                    <Form.Control type="tax"
+                                                    <Control.text
+                                                        model=".adhar"
                                                         autoComplete="off"
+                                                        className="form-control"
                                                         placeholder="Adhar Number"
                                                         name="Adhar Number"
                                                         value={UID}
                                                         onChange={(e) => setUID(e.target.value)}
+                                                        validators={{
+                                                            required, isNumber, maxLength: maxLength(12), minLength: minLength(12)
+                                                        }}
                                                     />
+                                                    <Errors
+                                                    className="text-danger"
+                                                    model=".adhar"
+                                                    show="touched"
+                                                    messages={{
+                                                        required: 'Required ',
+                                                        isNumber: 'Enter a valid Number!',
+                                                        maxLength: 'Length should be less than 12 characters!',
+                                                        minLength: 'Length should be exact 12 characters!'
+                                                    }}
+                                                />
                                                 </Col></Row>
-                                        </Form.Group></Col></Row>
+                                        </div></Col></Row>
                                     <div className="text-center mt-4">
                                         <Button variant="primary" type="submit">Apply</Button>
                                     </div>
-                                </Form>
+                                </LocalForm>
                             </Card.Body>
                         </Card></FadeTransform></Col>
             </Row>

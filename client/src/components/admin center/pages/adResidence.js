@@ -3,9 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import Sidebar from '../Sidebar';
 import { Container, Row, Col, Card, Accordion } from 'react-bootstrap';
 import { readApplicants } from '../../../Redux/actions/residenceActions';
-import { FadeTransform, Fade, Stagger } from 'react-animation-components';
+import {Stagger } from 'react-animation-components';
 import * as FcIcons from "react-icons/fc";
-import * as MdIcons from "react-icons/md";
 import axiosInstance from '../../../helpers/axios';
 import { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
@@ -31,7 +30,6 @@ function AdResidence() {
             name: name,
             UID: Number(UID),
         }
-        // console.log(residenceData);
         axiosInstance.post('residence/download', residenceData)
         store.addNotification({
             title: 'Application Approved!',
@@ -53,8 +51,6 @@ function AdResidence() {
         window.location.reload(false);
     }
     const Reject = (UID) => {
-        // e.preventDefault();
-        // console.log(name,UID)
         const residenceData = {
             UID: Number(UID),
         }

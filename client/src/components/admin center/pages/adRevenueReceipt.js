@@ -1,9 +1,9 @@
-import React, { useEffect,useState,useRef } from 'react';
+import React, { useEffect,useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Sidebar from '../Sidebar';
 import * as FcIcons from "react-icons/fc";
 import { readRevenue } from '../../../Redux/actions/revenueActions';
-import { Container, Row, Card, Col, Accordion,Form,Button } from 'react-bootstrap';
+import { Container, Row, Card, Col, Accordion,Form } from 'react-bootstrap';
 import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 import axiosInstance from '../../../helpers/axios';
 import { store } from 'react-notifications-component';
@@ -24,10 +24,8 @@ function AdRevenue() {
         dispatch(readRevenue())
     }, [])
     const revenue = useSelector(state => state.revenue);
-    // console.log(revenue.revenueData.data)
     let cards = "";
     const generatePDF=(name,uid)=>{
-        // e.preventDefault();
         const revenueData = {
             name:name,
             UID:uid,
@@ -39,7 +37,6 @@ function AdRevenue() {
             warrant_tax: Number(warrant),
             date:new Date()
         }
-        console.log(revenueData);
         axiosInstance.post('revenue/download', revenueData);
         store.addNotification({
             title: 'Application Approved!!',
@@ -56,12 +53,9 @@ function AdRevenue() {
           window.location.reload(false);
     }
     const Reject = (UID) => {
-        // e.preventDefault();
-        // console.log(name,UID)
         const revenueData = {
             UID: Number(UID),
         }
-        // console.log(residenceData);
         axiosInstance.post('revenue/reject', revenueData)
         store.addNotification({
             title: 'Application Rejected!',
@@ -175,9 +169,7 @@ function AdRevenue() {
                                         </Form.Group></Col></Row>
                                     <div className="mt-4">
                                     <FcIcons.FcApprove className="icons" size={40} onClick={((e) => generatePDF(data.name, data.UID))} />
-                                    <FcIcons.FcDisapprove className="ml-3 icons" size={40}  onClick={((e) => Reject(data.UID))} />
-                                    {/* <MdIcons.MdDelete className="ml-3 icons" size={30} /> */}
-                                </div>
+                                    <FcIcons.FcDisapprove className="ml-3 icons" size={40}  onClick={((e) => Reject(data.UID))} />                                </div>
                                 </Form>
                                 
                             </Card.Body>
