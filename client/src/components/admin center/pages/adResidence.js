@@ -3,14 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import Sidebar from '../Sidebar';
 import { Container, Row, Col, Card, Accordion } from 'react-bootstrap';
 import { readApplicants } from '../../../Redux/actions/residenceActions';
-import {Stagger } from 'react-animation-components';
+import { Stagger } from 'react-animation-components';
 import * as FcIcons from "react-icons/fc";
 import axiosInstance from '../../../helpers/axios';
 import { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import 'animate.css';
 import { BeatLoader } from 'react-spinner';
-import { css } from "@emotion/react";
+import { jsx, css } from "@emotion/react";
 import './pages.css';
 
 function AdResidence() {
@@ -42,11 +42,11 @@ function AdResidence() {
                 duration: 3000,
                 showIcon: true
             }
-        // .then(() => axiosInstance.get('residence/download', { responseType: 'blob' }))
-        // .then((res) => { 
-        //     const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
-        //     saveAs(pdfBlob, 'generatedDocument.pdf')
-        //   })
+            // .then(() => axiosInstance.get('residence/download', { responseType: 'blob' }))
+            // .then((res) => { 
+            //     const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
+            //     saveAs(pdfBlob, 'generatedDocument.pdf')
+            //   })
         })
         window.location.reload(false);
     }
@@ -67,7 +67,7 @@ function AdResidence() {
                 duration: 3000,
                 showIcon: true
             }
-        }) 
+        })
         window.location.reload(false);
     }
     if (applicants?.applicants?.data) {
@@ -96,28 +96,35 @@ function AdResidence() {
                 </Card>
             )
         })
-    } else if(!applicants){
-        cards=`<BeatLoader
+    } 
+    // else if (!applicants) {
+        
+    // }
+    if(applicants){
+        return (
+            <Container fluid className="m-0 p-0">
+                <Row className="d-flex">
+                    <Col className="col-md-3">
+                        <Sidebar />
+                    </Col>
+                    <Col className="col-md-7 mt-5 mb-3 text-center">
+                        <h1>Applicants for Residence Certificate.</h1>
+                        <Stagger in><div>{cards}</div></Stagger>
+                    </Col>
+                </Row>
+            </Container>
+        )
+    }else{
+        return(
+            <BeatLoader
             css={override}
             size={150}
             color={"#123abc"}
             loading
-        />`
+        />
+        )
     }
-
-    return (
-        <Container fluid className="m-0 p-0">
-            <Row className="d-flex">
-                <Col className="col-md-3">
-                    <Sidebar />
-                </Col>
-                <Col className="col-md-7 mt-5 mb-3 text-center">
-                    <h1>Applicants for Residence Certificate.</h1>
-                    <Stagger in><div>{cards}</div></Stagger>
-                </Col>
-            </Row>
-        </Container>
-    )
+    
 }
 
 export default AdResidence;

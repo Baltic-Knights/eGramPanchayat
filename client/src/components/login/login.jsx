@@ -1,29 +1,149 @@
-import React from "react";
+import React, { useState } from "react";
 import loginImg from "./login.svg";
 import './login.css';
+import axiosInstance from '../../helpers/axios';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import { Row, Col, Card, Container, Button, Form } from 'react-bootstrap';
 import { FadeTransform } from 'react-animation-components';
-// import { useDispatch, useSelector } from 'react-redux';
+import { authenticate, isAuth } from '../../helpers/auth';
+import { store } from 'react-notifications-component';
+import 'react-notifications-component/dist/theme.css';
+import 'animate.css';
+import history from '../../helpers/history';
+import { GoogleLogin } from 'react-google-login';
+import { keys } from '../../helpers/credentials';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
+
 const required = (val) => val && val.length;
 const minLength = (len) => (val) => val && (val.length >= len);
 const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
-const handleSubmit = (values) => {
 
-}
 const Login = () => {
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const dispatch = useDispatch();
-  //   const auth = useSelector(state => state);
-  //   const userLogin=(e)=>{
-  //       e.preventDefault();
-  //       const user={
-  //           email,password
-  //       }
-  //       dispatch(login(user));
-  //   }
-  //     console.log(auth)
+  const [formData, setFormData] = useState({
+    email: '',
+    password1: '',
+    textChange: 'Sign In'
+  });
+  const { email, password1, textChange } = formData;
+
+  const sendGoogleToken = tokenId => {
+    axiosInstance
+      .post('user/googleLogin', {
+        idToken: tokenId
+      })
+      .then(res => {
+        console.log(res.data);
+        informParent(res);
+        store.addNotification({
+          title: "You are logged in successfully!",
+          message: 'Now you have privileges to explore!',
+          type: "success",
+          container: 'top-right',
+          animationIn: ["animated", "fadeIn"],
+          animationOut: ["animated", "fadeOut"],
+          dismiss: {
+            duration: 3000,
+            showIcon: true
+          }
+        })
+      })
+      .catch(error => {
+        console.log('GOOGLE SIGNIN ERROR', error.response);
+      });
+  };
+
+  const sendFacebookToken = (userID, accessToken) => {
+    axiosInstance
+      .post("user/facebookLogin", {
+        userID,
+        accessToken
+      })
+      .then(res => {
+        console.log(res.data);
+        informParent(res);
+      })
+      .catch(error => {
+        console.log('GOOGLE SIGNIN ERROR', error.response);
+      });
+  };
+
+  const informParent = response => {
+    authenticate(response, () => {
+      isAuth() && isAuth().role === 'admin'
+        ? history.push('/admin')
+        : history.push('/');
+    });
+  };
+
+  const responseGoogle = response => {
+    console.log(response);
+    sendGoogleToken(response.tokenId);
+  };
+
+  const responseFacebook = response => {
+    console.log(response);
+    sendFacebookToken(response.userID, response.accessToken)
+  };
+
+  const handleChange = text => e => {
+    setFormData({ ...formData, [text]: e.target.value });
+  };
+
+  const handleSubmit = (values) => {
+    if (email && password1) {
+      setFormData({ ...formData, textChange: 'Submitting' });
+      axiosInstance.post("user/login", {
+        email, password: password1
+      })
+        .then(res => {
+          authenticate(res, () => {
+            setFormData({
+              ...formData,
+              email: '',
+              password1: '',
+              textChange: 'Submitted'
+            });
+            console.log(isAuth())
+            isAuth() && isAuth().role === 'admin'
+              ? history.push('/admin')
+              : history.push('/');
+            store.addNotification({
+              title: `${res.data.user.name},welcome back!`,
+              message: 'Now you have privileges to explore!',
+              type: "success",
+              container: 'top-right',
+              animationIn: ["animated", "fadeIn"],
+              animationOut: ["animated", "fadeOut"],
+              dismiss: {
+                duration: 3000,
+                showIcon: true
+              }
+            })
+          });
+        })
+        .catch(err => {
+          setFormData({
+            ...formData,
+            email: '',
+            password1: '',
+            textChange: 'Sign In'
+          });
+          console.log(err);
+          store.addNotification({
+            title: `${err.response.data.errors}`,
+            message: 'Try again!',
+            type: "danger",
+            container: 'top-right',
+            animationIn: ["animated", "fadeIn"],
+            animationOut: ["animated", "fadeOut"],
+            dismiss: {
+              duration: 3000,
+              showIcon: true
+            }
+          })
+        });
+    }
+  }
   return (
     <Container fluid>
       <Row className="justify-content-md-center">
@@ -49,6 +169,8 @@ const Login = () => {
                           id="email"
                           className="form-control"
                           placeholder="Enter Your Email Id"
+                          value={email}
+                          onChange={handleChange('email')}
                           validators={{
                             required, validEmail
                           }}
@@ -56,6 +178,7 @@ const Login = () => {
                         <Errors
                           className="text-danger"
                           model=".email"
+
                           show="touched"
                           messages={{
                             required: 'Required ',
@@ -71,36 +194,62 @@ const Login = () => {
                           <Control.text
                             autoComplete="off"
                             model=".password"
+                            type="password"
                             id="password"
                             className="form-control"
                             placeholder="Enter Your Password"
+                            value={password1}
+                            onChange={handleChange('password1')}
                             validators={{
-                              required, minLength:minLength(8)
+                              required, minLength: minLength(8)
                             }}
                           />
                           <Errors
-                          className="text-danger"
-                          model=".password"
-                          show="touched"
-                          messages={{
-                            required: 'Required ',
-                            minLength: 'Password should be greater than 8 characters!'
-                          }}
-                        />
+                            className="text-danger"
+                            model=".password"
+                            show="touched"
+                            messages={{
+                              required: 'Required ',
+                              minLength: 'Password should be greater than 8 characters!'
+                            }}
+                          />
+                          <p className="float-right font-italic mt-2">Forgot Password?</p>
                         </Col></Row>
+
                     </div></Col></Row>
+
                   <div className="text-center mt-2">
                     <Button variant="primary" type="submit">Login</Button>
                   </div>
                 </LocalForm>
                 <div className="text-center mt-3"><i>Or signup with</i></div>
                 <div className="text-center mt-3">
-                  <Button variant="danger" className="mr-5" type="submit"><span className="fa fa-facebook fa-lg mr-2"></span>Facebook</Button>
-                  <a href="/auth/google">
-                    <Button variant="danger" className="ml-5" type="submit">
-                      <span className="fa fa-google-plus fa-lg mr-2"></span>
-                        Google+</Button>
-                  </a>
+                  <FacebookLogin
+                    appId={`${keys.FacebookID}`}
+                    autoLoad={false}
+                    callback={responseFacebook}
+                    render={renderProps => (
+                      <Button variant="danger"
+                        onClick={renderProps.onClick}
+                        className="mr-5"
+                        type="submit"><span className="fa fa-facebook fa-lg mr-2"></span>
+                  Facebook
+                      </Button>
+                    )}
+                  />
+                  <GoogleLogin
+                    clientId={`${keys.GoogleID}`}
+                    onSuccess={responseGoogle}
+                    onFailure={responseGoogle}
+                    cookiePolicy={'single_host_origin'}
+                    render={renderProps => (
+                      <Button variant="danger" onClick={renderProps.onClick}
+                        disabled={renderProps.disabled} className="ml-5" type="submit">
+                        <span className="fa fa-google-plus fa-lg mr-2"></span>
+                        Google+
+                      </Button>
+                    )}
+                  ></GoogleLogin>
                 </div>
               </Card.Body>
             </Card></FadeTransform>

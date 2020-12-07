@@ -1,58 +1,28 @@
 import React, { useEffect } from 'react'
-import { Nav, Navbar, NavDropdown, Button,Dropdown } from 'react-bootstrap';
+import { Nav, Navbar, NavDropdown, Button, Dropdown } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import '../components.css';
-const Header = (props) => {
-    //    const [userdata,setUserData]=useState({
-    //        name:"",
-    //        picture:""
-    //    })
-    useEffect(() => {
-        //    if(props.user){
-        //         setUserData({
-        //             name:props.user.username,
-        //             picture:props.user.picture
-        //         })
-        //    }
+import { isAuth,signout } from '../../helpers/auth';
+import { store } from 'react-notifications-component';
+import 'react-notifications-component/dist/theme.css';
+import 'animate.css';
 
-    }, [])
-    const renderContent = () => {
-        switch (props.user) {
-            case null:
-                return (
-                    <Button variant="outline-primary">
-                        <NavLink exact className="active_class login_btn" to="/login">
-                            <span className="fa fa-sign-in fa-lg mr-2"></span>
-                            Login
-                        </NavLink>
-                    </Button>)
-            case false:
-                return (
-                    <Button variant="outline-primary">
-                        <NavLink exact className="active_class login_btn" to="/login">
-                            <span className="fa fa-sign-in fa-lg mr-2"></span>
-                            Login
-                        </NavLink>
-                    </Button>)
-            default:
-                return (
-                    <>
-                        {/* <img className="profileImg mr-3" alt="poor network" src={props.user.picture}/> */}
-                        {/* <Button variant="outline-primary">
-                            <NavLink exact className="active_class login_btn" to="/api/logout">
-                                <span className="fa fa-sign-out fa-lg mr-2"></span>
-                                    Logout
-                                </NavLink>
-                        </Button></> */}
-                        <Button variant="outline-primary">
-                        <NavLink exact className="active_class login_btn" to="/login">
-                            <span className="fa fa-sign-in fa-lg mr-2"></span>
-                            Login
-                        </NavLink>
-                        </Button></>
-                )
-        }
+const Header = (props) => {
+    const signOut=()=>{
+          signout();
+          store.addNotification({
+            title: "Signed out Successfully!",
+            message: 'You will be redirected on home page!',
+            type: "success",
+            container: 'top-right',
+            animationIn: ["animated", "fadeIn"],
+            animationOut: ["animated", "fadeOut"],
+            dismiss: {
+              duration: 3000,
+              showIcon: true
+            }
+          })
     }
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -96,19 +66,27 @@ const Header = (props) => {
                                 Payment receipt
                         </NavLink>
                         </NavDropdown.Item>
-                        </NavDropdown>
-                    
+                    </NavDropdown>
+
                     <NavLink exact activeClassName="active_class" className="links" to="/adHome">
                         <div className="ml-3">
-                        Admin Center</div>
+                            Admin Center</div>
                     </NavLink>
                     <NavLink exact activeClassName="active_class" className="links" to="/about">
                         <div className="ml-3">
-                        About us</div>
+                            About us</div>
                     </NavLink>
                 </Nav>
                 <Nav className="ml-auto mr-2">
-                    {renderContent()}
+                {isAuth()?<Button variant="outline-primary" onClick={signOut}>
+                            <span className="fa fa-sign-in fa-lg mr-2"></span>
+                            Logout
+                    </Button>:<Button variant="outline-primary">
+                        <NavLink exact className="active_class login_btn" to="/login">
+                            <span className="fa fa-sign-in fa-lg mr-2"></span>
+                            Login
+                        </NavLink>
+                    </Button>}
                 </Nav>
             </Navbar.Collapse>
         </Navbar>

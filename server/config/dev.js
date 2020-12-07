@@ -1,7 +1,12 @@
 module.exports={
-    GoogleClientID:"685829835524-gfheu5mreutbr5amfe3ae1mismum9b6k.apps.googleusercontent.com",
+    GoogleClientID:"685829835524-vclh05h0ia7qrdkbiktkmbul05euueb6.apps.googleusercontent.com",
     GoogleClientSecret:"JBcMtz5QHWso09N5_dQeKCwF",
     COOKIEKEY:"afdsjfodgjhgjlhlvjhpi",
     SECRET_KEY:'@TeamIAF',
-    API:"http://localhost:5000"
+    ResetPassword:'@TeamBalticKnights',
+    API:"http://localhost:5000",
+    EmailKey:"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",
+    EMAIL_TO:"naikaderohit833@gmail.com",
+    clientURL:"http://localhost:3000",
+    EMAIL_FROM:"naikaderohit833@gmail.com"
 }

@@ -11,6 +11,9 @@ import Admin from './components/admin center/admin';
 import About from './components/about us/about us';
 import Village from './components/about village/About';
 import Loginpage from './components/loginPage';
+import Activate from './components/login/activate';
+import Reset from './components/login/reset';
+import Forget from './components/login/forget';
 import PaymentReceipt from './components/payment receipt/PaymentReceipt'
 import Footer from './components/Headers & footers/footer';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
@@ -25,14 +28,14 @@ import AdSchemes from './components/admin center/pages/adSchemes';
 import AdVillage from './components/admin center/pages/adVillage';
 import AdResidence from './components/admin center/pages/adResidence';
 import ReactNotification from 'react-notifications-component';
-
+import history from './helpers/history';
 function App(props) {
   useEffect(() => {
     props.fetch_user()
   }, [])
   return (
     <>
-      <BrowserRouter>
+      <BrowserRouter history={history}>
       <ReactNotification />
         <Header />
         <Switch>
@@ -44,6 +47,9 @@ function App(props) {
           <Route path="/about" component={About}></Route>
           <Route path="/residence" component={Residence}></Route>
           <Route path="/revenue" component={Revenue}></Route>
+          <Route path="/activate/:token" component={Activate}></Route>
+          <Route path="/resetPassword/:token" component={Reset}></Route>
+          <Route path="/forgotPassword" component={Forget}></Route>
           <Route path="/admin" component={Admin}></Route>
           <Route path="/payreceipt" component={PaymentReceipt}></Route>
           <Route path="/adHome" component={AdHome}></Route>

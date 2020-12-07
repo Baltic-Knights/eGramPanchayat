@@ -59,7 +59,7 @@ const Payment = () => {
         form.remove()
     }
     const handleSubmit = async (e) => {
-        e.preventDefault();
+ 
         const str = name.split(" ").join("");
         const paymentData = {
             name: str,
