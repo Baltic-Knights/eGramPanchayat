@@ -9,14 +9,22 @@ exports.create = (req, res) => {
     Revenue.findOne({ UID: req.body.UID })
         .then(data => {
             if (data) {
-
+                return res.status(200).json({
+                    message: "Record already exists!"
+                })
             } else {
                 const data = new Revenue({
                     name,
                     UID: number,
                     date
                 });
-                data.save()
+                data.save((err,data)=>{
+                    if(data){
+                        return res.status(200).json({
+                            message: "Registration Successful!"
+                        })
+                    }
+                })
             }
         })
 
@@ -45,7 +53,7 @@ exports.approve = (req,res) => {
                             })
                         } else if (data) {
                             return res.status(200).json({
-                                msg: "Successful"
+                                message: "records updated!"
                             });
                         }
                     }
@@ -72,7 +80,7 @@ exports.approve = (req,res) => {
                 });
                 data.save();
                     return res.status(200).json({
-                        msg: "successful"
+                        message: "Application Approved!!"
                 })
             }
         })
@@ -83,7 +91,7 @@ exports.reject = (req, res) => {
     Revenue.deleteOne({ UID: req.body.UID })
         .then(data => {
             return res.status(200).json({
-                data: "Rejected"
+                message: "Application Rejected!"
             })
         })
 }
@@ -116,7 +124,7 @@ exports.download = (req, res) => {
     }
     pdf.create(pdfTemplate(req.body,previous), {}).toFile(req.body.name + '.pdf', (err) => {
         return res.status(200).json({
-            msg: "successful"
+            message: "Application Approved!!"
         })
     })
 }

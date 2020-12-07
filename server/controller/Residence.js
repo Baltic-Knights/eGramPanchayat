@@ -5,10 +5,7 @@ const pdfTemplate = require('../documents/Residence Certificate/index')
 const fs = require("fs")
 const path = require("path");
 const { nextTick } = require('process');
-// const fileUpload = require('express-fileupload');
-// const express = require('express');
-// const app = express();
-// app.use(fileUpload());
+
 let Name = "";
 
 exports.create = (req, res) => {
@@ -19,14 +16,22 @@ exports.create = (req, res) => {
     ResData.findOne({ UID: req.body.UID })
         .then(data => {
             if (data) {
-                
+                return res.status(200).json({
+                    message: "Application already submitted!"
+                })
             } else {
                 const data = new ResData({
                     name,
                     UID: number,
                     date
                 });
-                data.save()
+                data.save((err,data)=>{
+                    if(data){
+                        return res.status(200).json({
+                            message: "Registration Successful!"
+                        })
+                    }
+                })
             }
         })
 
@@ -46,7 +51,7 @@ exports.reject = (req, res) => {
     ResData.deleteOne({ UID: req.body.UID })
         .then(data => {
             return res.status(200).json({
-                data: "Rejected"
+                message: "Application Rejected!"
             })
         })
 }
@@ -70,7 +75,7 @@ exports.read = (req, res) => {
 exports.download = (req, res) => {
     pdf.create(pdfTemplate(req.body), {}).toFile(req.body.name + '.pdf', (err, success) => {
         return res.status(200).json({
-            msg: "successful"
+            message: "Application Approved!"
         })
     })
 }

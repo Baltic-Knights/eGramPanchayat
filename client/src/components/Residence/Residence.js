@@ -28,50 +28,22 @@ const Residence = () => {
             UID: Number(UID),
             date: new Date()
         }
-        console.log(residenceData);
+        // console.log(residenceData);
         axiosInstance.post('residence/create', residenceData)
-        store.addNotification({
-            title: 'Registration Successful!!!',
-            message: 'Your Application is Submitted Successfully.',
-            type: "success",
-            container: 'top-right',
-            animationIn: ["animated", "fadeIn"],
-            animationOut: ["animated", "fadeOut"],
-            dismiss: {
-                duration: 3000,
-                showIcon: true
-            }
-        })
-        // .then(() => axiosInstance.get('residence/download', { responseType: 'blob' }))
-        // .then((res) => { 
-        //     const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
-        //     saveAs(pdfBlob, 'generatedDocument.pdf')
-        //   })
-
-    }
-    const downloadPDF = e => {
-        // const res = axiosInstance.get('residence/download', {
-        //     responseType: 'arraybuffer',
-        //     headers: {
-        //         Accept: 'application/pdf',
-        //     },
-        // });
-        // console.log(res)
-        // // const res = axiosInstance.get('residence/download', { responseType: "blob" })
-        // FileSaver.saveAs(
-        //     new Blob([res.data], { type: 'application/pdf' }),
-        //     `sample.pdf`
-        // );
-
-        axiosInstance.get('residence/download', { responseType: 'arraybuffer' })
             .then(res => {
-                const url = window.URL.createObjectURL(new Blob([res.data]
-                    , { type: "application/pdf" }))
-                var link = document.createElement('a');
-                link.href = url;
-                link.setAttribute('download', 'residence.pdf');
-                document.body.appendChild(link);
-                link.click();
+                console.log(res)
+                store.addNotification({
+                    title: `${res.data.message}`,
+                    message: 'Your Application is Submitted Successfully.',
+                    type: "success",
+                    container: 'top-right',
+                    animationIn: ["animated", "fadeIn"],
+                    animationOut: ["animated", "fadeOut"],
+                    dismiss: {
+                        duration: 3000,
+                        showIcon: true
+                    }
+                })
             })
     }
     return (
@@ -135,16 +107,16 @@ const Residence = () => {
                                                         }}
                                                     />
                                                     <Errors
-                                                    className="text-danger"
-                                                    model=".adhar"
-                                                    show="touched"
-                                                    messages={{
-                                                        required: 'Required ',
-                                                        isNumber: 'Enter a valid Number!',
-                                                        maxLength: 'Length should be less than 12 characters!',
-                                                        minLength: 'Length should be exact 12 characters!'
-                                                    }}
-                                                />
+                                                        className="text-danger"
+                                                        model=".adhar"
+                                                        show="touched"
+                                                        messages={{
+                                                            required: 'Required ',
+                                                            isNumber: 'Enter a valid Number!',
+                                                            maxLength: 'Length should be less than 12 characters!',
+                                                            minLength: 'Length should be exact 12 characters!'
+                                                        }}
+                                                    />
                                                 </Col></Row>
                                         </div></Col></Row>
                                     <div className="text-center mt-4">

@@ -31,24 +31,21 @@ function AdResidence() {
             UID: Number(UID),
         }
         axiosInstance.post('residence/download', residenceData)
-        store.addNotification({
-            title: 'Application Approved!',
-            message: 'Residence certificate generated sucessfully!',
-            type: "info",
-            container: 'top-right',
-            animationIn: ["animated", "fadeIn"],
-            animationOut: ["animated", "fadeOut"],
-            dismiss: {
-                duration: 3000,
-                showIcon: true
-            }
-            // .then(() => axiosInstance.get('residence/download', { responseType: 'blob' }))
-            // .then((res) => { 
-            //     const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
-            //     saveAs(pdfBlob, 'generatedDocument.pdf')
-            //   })
-        })
-        window.location.reload(false);
+            .then(res => {
+                store.addNotification({
+                    title: `${res.data.message}`,
+                    message: 'Residence certificate generated sucessfully!',
+                    type: "info",
+                    container: 'top-right',
+                    animationIn: ["animated", "fadeIn"],
+                    animationOut: ["animated", "fadeOut"],
+                    dismiss: {
+                        duration: 3000,
+                        showIcon: true
+                    }
+                })
+                window.location.reload(false);
+            })
     }
     const Reject = (UID) => {
         const residenceData = {
@@ -56,19 +53,22 @@ function AdResidence() {
         }
         console.log(residenceData);
         axiosInstance.post('residence/reject', residenceData)
-        store.addNotification({
-            title: 'Application Rejected!',
-            message: 'Send Notification to villager.',
-            type: "danger",
-            container: 'top-right',
-            animationIn: ["animated", "fadeIn"],
-            animationOut: ["animated", "fadeOut"],
-            dismiss: {
-                duration: 3000,
-                showIcon: true
-            }
+        .then(res=>{
+            store.addNotification({
+                title: `${res.data.message}`,
+                message: 'Send Notification to villager.',
+                type: "danger",
+                container: 'top-right',
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                    duration: 3000,
+                    showIcon: true
+                }
+            })
+            window.location.reload(false);
         })
-        window.location.reload(false);
+        
     }
     if (applicants?.applicants?.data) {
         const activeKey = applicants?.applicants?.data[0]._id;
@@ -96,11 +96,11 @@ function AdResidence() {
                 </Card>
             )
         })
-    } 
+    }
     // else if (!applicants) {
-        
+
     // }
-    if(applicants){
+    if (applicants) {
         return (
             <Container fluid className="m-0 p-0">
                 <Row className="d-flex">
@@ -114,17 +114,17 @@ function AdResidence() {
                 </Row>
             </Container>
         )
-    }else{
-        return(
+    } else {
+        return (
             <BeatLoader
-            css={override}
-            size={150}
-            color={"#123abc"}
-            loading
-        />
+                css={override}
+                size={150}
+                color={"#123abc"}
+                loading
+            />
         )
     }
-    
+
 }
 
 export default AdResidence;

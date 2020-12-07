@@ -37,39 +37,43 @@ function AdRevenue() {
             warrant_tax: Number(warrant),
             date:new Date()
         }
-        axiosInstance.post('revenue/download', revenueData);
-        store.addNotification({
-            title: 'Application Approved!!',
-            message: 'Residence certificate generated sucessfully!',
-            type: "success",                         
-            container: 'top-right',                
-            animationIn: ["animated", "fadeIn"],     
-            animationOut: ["animated", "fadeOut"],   
-            dismiss: {
-              duration: 3000,
-              showIcon:true
-            }
-          })
-          window.location.reload(false);
+        axiosInstance.post('revenue/download', revenueData)
+        .then(res=>{
+            store.addNotification({
+                title: `${res.data.message}`,
+                message: 'Residence certificate generated sucessfully!',
+                type: "success",                         
+                container: 'top-right',                
+                animationIn: ["animated", "fadeIn"],     
+                animationOut: ["animated", "fadeOut"],   
+                dismiss: {
+                  duration: 3000,
+                  showIcon:true
+                }
+              })
+              window.location.reload(false);
+        })
     }
     const Reject = (UID) => {
         const revenueData = {
             UID: Number(UID),
         }
         axiosInstance.post('revenue/reject', revenueData)
-        store.addNotification({
-            title: 'Application Rejected!',
-            message: 'Send Notification to villager.',
-            type: "danger",
-            container: 'top-right',
-            animationIn: ["animated", "fadeIn"],
-            animationOut: ["animated", "fadeOut"],
-            dismiss: {
-                duration: 3000,
-                showIcon: true
-            }
-        }) 
-        window.location.reload(false);
+        .then(res=>{
+            store.addNotification({
+                title: `${res.data.message}`,
+                message: 'Send Notification to villager.',
+                type: "danger",
+                container: 'top-right',
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                    duration: 3000,
+                    showIcon: true
+                }
+            }) 
+            window.location.reload(false);
+        })
     }
     if (revenue?.revenueData?.data) {
         const activeKey = revenue?.revenueData?.data[0]._id;
