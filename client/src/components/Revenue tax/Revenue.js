@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import './revenue.css';
 import axiosInstance from '../../helpers/axios';
-// import { saveAs } from 'file-saver';
+import { Redirect } from 'react-router';
+import { isAuth } from '../../helpers/auth';
 import RevenueImg from './revenue.jpg';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import { Container, Card, Form, Button, Row, Col } from 'react-bootstrap';
@@ -47,6 +48,8 @@ const Residence = () => {
         // })
     }
     return (
+        isAuth() ? isAuth() && isAuth().role === 'admin' || isAuth().role === 'user'
+        ?
         <Container fluid className="mb-3">
             <Row className="justify-content-md-center">
                 <Col className='col-md-5 mt-3' >
@@ -127,7 +130,7 @@ const Residence = () => {
                         </Card></FadeTransform></Col>
             </Row>
 
-        </Container>
+        </Container>:<Redirect to="/"/> : <Redirect to="/login"/>
     )
 }
 

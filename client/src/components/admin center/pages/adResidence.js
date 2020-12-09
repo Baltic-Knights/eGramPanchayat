@@ -12,6 +12,9 @@ import 'animate.css';
 import { BeatLoader } from 'react-spinner';
 import { jsx, css } from "@emotion/react";
 import './pages.css';
+import { Redirect } from 'react-router';
+import { isAuth } from '../../../helpers/auth';
+import history from '../../../helpers/history';
 
 function AdResidence() {
     const dispatch = useDispatch();
@@ -53,22 +56,22 @@ function AdResidence() {
         }
         console.log(residenceData);
         axiosInstance.post('residence/reject', residenceData)
-        .then(res=>{
-            store.addNotification({
-                title: `${res.data.message}`,
-                message: 'Send Notification to villager.',
-                type: "danger",
-                container: 'top-right',
-                animationIn: ["animated", "fadeIn"],
-                animationOut: ["animated", "fadeOut"],
-                dismiss: {
-                    duration: 3000,
-                    showIcon: true
-                }
+            .then(res => {
+                store.addNotification({
+                    title: `${res.data.message}`,
+                    message: 'Send Notification to villager.',
+                    type: "danger",
+                    container: 'top-right',
+                    animationIn: ["animated", "fadeIn"],
+                    animationOut: ["animated", "fadeOut"],
+                    dismiss: {
+                        duration: 3000,
+                        showIcon: true
+                    }
+                })
+                window.location.reload(false);
             })
-            window.location.reload(false);
-        })
-        
+
     }
     if (applicants?.applicants?.data) {
         const activeKey = applicants?.applicants?.data[0]._id;
@@ -97,34 +100,21 @@ function AdResidence() {
             )
         })
     }
-    // else if (!applicants) {
-
-    // }
-    if (applicants) {
-        return (
-            <Container fluid className="m-0 p-0">
-                <Row className="d-flex">
-                    <Col className="col-md-3">
-                        <Sidebar />
-                    </Col>
-                    <Col className="col-md-7 mt-5 mb-3 text-center">
-                        <h1>Applicants for Residence Certificate.</h1>
-                        <Stagger in><div>{cards}</div></Stagger>
-                    </Col>
-                </Row>
-            </Container>
-        )
-    } else {
-        return (
-            <BeatLoader
-                css={override}
-                size={150}
-                color={"#123abc"}
-                loading
-            />
-        )
-    }
-
+    return (
+        isAuth() ? isAuth() && isAuth().role === 'admin' || isAuth().role === 'user'
+        ? 
+        <Container fluid className="m-0 p-0">
+            <Row className="d-flex">
+                <Col className="col-md-3">
+                    <Sidebar />
+                </Col>
+                <Col className="col-md-7 mt-5 mb-3 text-center">
+                    <h1>Applicants for Residence Certificate.</h1>
+                    <Stagger in><div>{cards}</div></Stagger>
+                </Col>
+            </Row>
+        </Container>:<Redirect to="/"/> : <Redirect to="/login"/>
+    )
 }
 
 export default AdResidence;

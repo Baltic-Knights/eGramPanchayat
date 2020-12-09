@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-// import './revenue.css';
+import { Redirect } from 'react-router';
+import { isAuth } from '../../helpers/auth';
 import axiosInstance from '../../helpers/axios';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import PaymentImg from './payment receipt.jpg'
@@ -27,6 +28,8 @@ const PaymentReceipt = () => {
         // console.log(res)
     }
     return (
+        isAuth() ? isAuth() && isAuth().role === 'admin' || isAuth().role === 'user'
+        ?
         <Container fluid className="mb-3">
             <Row className="justify-content-md-center">
                 <Col className='col-md-5 mt-3' >
@@ -105,7 +108,7 @@ const PaymentReceipt = () => {
                         </Card></FadeTransform></Col>
             </Row>
 
-        </Container>
+        </Container>:<Redirect to="/"/> : <Redirect to="/login"/>
     )
 }
 

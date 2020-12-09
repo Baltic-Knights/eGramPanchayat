@@ -25,9 +25,11 @@ import AdHome from './components/admin center/pages/adHome';
 import AdRevenue from './components/admin center/pages/adRevenue';
 import AdRevenueReceipt from './components/admin center/pages/adRevenueReceipt';
 import AdSchemes from './components/admin center/pages/adSchemes';
+import AdVillager from './components/admin center/pages/adVillager';
 import AdVillage from './components/admin center/pages/adVillage';
 import AdResidence from './components/admin center/pages/adResidence';
 import ReactNotification from 'react-notifications-component';
+import privateRouter from './helpers/privateRouter';
 import history from './helpers/history';
 function App(props) {
   useEffect(() => {
@@ -50,6 +52,7 @@ function App(props) {
           <Route path="/activate/:token" component={Activate}></Route>
           <Route path="/resetPassword/:token" component={Reset}></Route>
           <Route path="/forgotPassword" component={Forget}></Route>
+          <Route path="/adVillager" component={AdVillager}></Route>
           <Route path="/admin" component={Admin}></Route>
           <Route path="/payreceipt" component={PaymentReceipt}></Route>
           <Route path="/adHome" component={AdHome}></Route>

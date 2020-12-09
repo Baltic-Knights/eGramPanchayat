@@ -13,8 +13,6 @@ const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => val && (val.length >= len);
 const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
-const validText = (val) => /^[A-Za-z]+$/i.test(val);
-const validMobile=(val)=> /^((\+){1}91){1}[1-9]{1}[0-9]{9}$/i.test(val);
 const validName=(val)=> /^([a-zA-Z0-9]+|[a-zA-Z0-9]+\s{1}[a-zA-Z0-9]{1,}|[a-zA-Z0-9]+\s{1}[a-zA-Z0-9]{3,}\s{1}[a-zA-Z0-9]{1,})$/i.test(val);
 
 const Register = () => {
@@ -22,48 +20,47 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
-  const [number, setNumber] = useState("");
+  const [UID, setUID] = useState("");
 
   const handleSubmit = (values) => {
-    console.log(name, email,number, password1, password2);
+    console.log(name, email,UID, password1, password2);
     const regData = {
       name,
       email,
-      number,
-      password:password1,
-      number
+      UID:Number(UID),
+      password:password1
     }
     if (password1 === password2) {
       axiosInstance.post('user/signup', regData)
         .then(res => {
-          if(res.data.error){
-            store.addNotification({
-              title: `${res.data.error}`,
-              message: 'Try again with another account!',
-              type: "danger",
-              container: 'top-right',
-              animationIn: ["animated", "fadeIn"],
-              animationOut: ["animated", "fadeOut"],
-              dismiss: {
-                duration: 3000,
-                showIcon: true
-              }
-            })
-          }else{
-            store.addNotification({
-              title: `${res.data.message}`,
-              message: 'Check your mailbox for account activation!',
-              type: "success",
-              container: 'top-right',
-              animationIn: ["animated", "fadeIn"],
-              animationOut: ["animated", "fadeOut"],
-              dismiss: {
-                duration: 3000,
-                showIcon: true
-              }
-            })
-          }
-          
+          store.addNotification({
+            title: `${res.data.message}`,
+            message: 'Check your mailbox for account activation!',
+            type: "success",
+            container: 'top-right',
+            animationIn: ["animated", "fadeIn"],
+            animationOut: ["animated", "fadeOut"],
+            dismiss: {
+              duration: 3000,
+              showIcon: true
+            }
+          })
+          window.location.reload(false);
+        })
+        .catch(err=>{
+          store.addNotification({
+            title: `${err.response.data.error}`,
+            message: 'Try again with another account!',
+            type: "danger",
+            container: 'top-right',
+            animationIn: ["animated", "fadeIn"],
+            animationOut: ["animated", "fadeOut"],
+            dismiss: {
+              duration: 3000,
+              showIcon: true
+            }
+          })
+          window.location.reload(false);
         })
     } else {
       store.addNotification({
@@ -96,7 +93,7 @@ const Register = () => {
               <Card.Body>
                 <LocalForm onSubmit={(values) => handleSubmit(values)}>
                   <div className="form-group">
-                    <Row><Col className="col-md-4 offset-md-1">
+                    <Row><Col className="col-md-5 offset-md-1">
                       <Form.Label>Name:</Form.Label>
                     </Col>
                       <Col className="col-md-6">
@@ -126,36 +123,37 @@ const Register = () => {
                   </div>
                   <Row><Col>
                     <div className="form-group">
-                      <Row><Col className="col-md-4 offset-md-1">
-                        <Form.Label>Mobile Number:</Form.Label>
+                      <Row><Col className="col-md-5 offset-md-1">
+                        <Form.Label>Aadhar Number:</Form.Label>
                       </Col>
                         <Col className="col-md-6">
                           <Control.text
-                            model=".mobno"
+                            model=".UID"
                             autoComplete="off"
-                            id="mobno"
-                            value={number}
-                            onChange={e => setNumber(e.target.value)}
+                            id="UID"
+                            value={UID}
+                            onChange={e => setUID(e.target.value)}
                             className="form-control"
-                            placeholder="Enter Your Mobile No"
+                            placeholder="Enter Your Aadhar No"
                             validators={{
-                              required, validMobile
+                              required, maxLength: maxLength(12), minLength: minLength(12)
                             }} />
                           <Errors
                             className="text-danger"
-                            model=".mobno"
+                            model=".UID"
                             show="touched"
                             messages={{
                               required: 'Required ',
-                              validMobile: 'Enter a valid Mobile number starting from +91!'
+                              minLength: 'UID should be 12 digits!',
+                              maxLength: 'UID should be 12 digits!'
                             }}
                           />
                         </Col></Row>
                     </div></Col></Row>
                   <Row><Col>
                     <div className="form-group">
-                      <Row><Col className="col-md-4 offset-md-1">
-                        <Form.Label>Email:</Form.Label>
+                      <Row><Col className="col-md-5 offset-md-1">
+                        <Form.Label>Email Address:</Form.Label>
                       </Col>
                         <Col className="col-md-6">
                           <Control.text
@@ -182,7 +180,7 @@ const Register = () => {
                     </div></Col></Row>
                   <Row><Col>
                     <div className="form-group">
-                      <Row><Col className="col-md-4 offset-md-1">
+                      <Row><Col className="col-md-5 offset-md-1">
                         <Form.Label>Password:</Form.Label>
                       </Col>
                         <Col className="col-md-6">
@@ -211,7 +209,7 @@ const Register = () => {
                     </div></Col></Row>
                   <Row><Col>
                     <div className="form-group">
-                      <Row><Col className="col-md-4 offset-md-1">
+                      <Row><Col className="col-md-5 offset-md-1">
                         <Form.Label>Confirm Password:</Form.Label>
                       </Col>
                         <Col className="col-md-6">

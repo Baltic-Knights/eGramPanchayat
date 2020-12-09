@@ -9,6 +9,8 @@ import axiosInstance from '../../../helpers/axios';
 import { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import 'animate.css';
+import { Redirect } from 'react-router';
+import { isAuth } from '../../../helpers/auth';
 
 function AdRevenue() {
     const [home, setHome] = useState();
@@ -185,6 +187,8 @@ function AdRevenue() {
         })
     }
     return (
+        isAuth() ? isAuth() && isAuth().role === 'admin' || isAuth().role === 'user'
+        ? 
         <Container fluid className="m-0 p-0">
             <Row className="d-flex">
                 <Col className="col-md-3">
@@ -195,7 +199,7 @@ function AdRevenue() {
                     <Stagger in><div>{cards}</div></Stagger>
                 </Col>
             </Row>
-        </Container>
+        </Container>:<Redirect to="/"/> : <Redirect to="/login"/>
     )
 }
 

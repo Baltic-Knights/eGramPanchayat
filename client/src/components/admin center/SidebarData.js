@@ -41,5 +41,11 @@ export const SidebarData = [
     link: '/adRevenueReceipt',
     icon: <GiIcons.GiMoneyStack />,
     cName: 'nav-text'
+  },
+  {
+    title: 'Villager Database',
+    link: '/adVillager',
+    icon: <AiIcons.AiFillDatabase />,
+    cName: 'nav-text'
   }
 ];

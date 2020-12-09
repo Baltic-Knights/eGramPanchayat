@@ -5,8 +5,8 @@ import ResidenceImg from './residence.png';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import { Container, Card, Form, Button, Row, Col } from 'react-bootstrap';
 import { FadeTransform } from 'react-animation-components';
-// import FileSaver from 'file-saver';
-// import { saveAs } from 'file-saver';
+import { Redirect } from 'react-router';
+import { isAuth } from '../../helpers/auth';
 import { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import 'animate.css';
@@ -47,6 +47,8 @@ const Residence = () => {
             })
     }
     return (
+        isAuth() ? isAuth() && isAuth().role === 'admin' || isAuth().role === 'user'
+        ?
         <Container fluid className="mb-3">
             <Row className="justify-content-md-center">
                 <Col className='col-md-5 mt-3' >
@@ -127,7 +129,7 @@ const Residence = () => {
                         </Card></FadeTransform></Col>
             </Row>
 
-        </Container>
+        </Container>:<Redirect to="/"/> : <Redirect to="/login"/>
     )
 }
 

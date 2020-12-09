@@ -38,6 +38,7 @@
     "react-scripts": "3.4.1",
     "react-spinner": "^0.2.7",
     "react-transition-components": "^4.2.0",
+    "reactstrap": "^8.7.1",
     "redux-thunk": "^2.3.0"
   },
   "scripts": {

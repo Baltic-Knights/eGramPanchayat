@@ -4,14 +4,16 @@ import PaymentImg from './payment.jpg';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import { Container, Card, Form, Button, Row, Col } from 'react-bootstrap';
 import { FadeTransform } from 'react-animation-components';
+import { Redirect } from 'react-router';
+import { isAuth } from '../../helpers/auth';
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => val && (val.length >= len);
 const isNumber = (val) => !isNaN(Number(val));
-const validText = (val) => /^[a-zA-Z]+ [a-zA-Z]+$/i.test(val);
+const validText = (val) => /^([a-zA-Z0-9]+|[a-zA-Z0-9]+\s{1}[a-zA-Z0-9]{1,}|[a-zA-Z0-9]+\s{1}[a-zA-Z0-9]{3,}\s{1}[a-zA-Z0-9]{1,})$/i.test(val);
 const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
-const validMobile=(val)=> /^((\+){1}91){1}[1-9]{1}[0-9]{9}$/i.test(val);
+const validMobile = (val) => /^((\+){1}91){1}[1-9]{1}[0-9]{9}$/i.test(val);
 const Payment = () => {
     const [name, setName] = useState("");
     const [amount, setAmount] = useState("");
@@ -59,7 +61,7 @@ const Payment = () => {
         form.remove()
     }
     const handleSubmit = async (e) => {
- 
+
         const str = name.split(" ").join("");
         const paymentData = {
             name: str,
@@ -86,6 +88,8 @@ const Payment = () => {
         post(details);
     }
     return (
+        isAuth() ? isAuth() && isAuth().role === 'admin' || isAuth().role === 'user'
+        ? 
         <Container fluid className="mb-3">
             <Row className="justify-content-md-center">
                 <Col className='col-md-5 mt-3' >
@@ -104,10 +108,10 @@ const Payment = () => {
                                         <Row><Col className="col-md-3 offset-md-1">
                                             <Form.Label>Name:</Form.Label></Col>
                                             <Col className="col-md-7">
-                                                <Control.text 
+                                                <Control.text
                                                     model=".name"
                                                     className="form-control"
-                                                    autocomplete="off"
+                                                    autoComplete="off"
                                                     placeholder="Enter applicant's full name"
                                                     name="name"
                                                     value={name}
@@ -116,7 +120,7 @@ const Payment = () => {
                                                         required, validText, maxLength: maxLength(20), minLength: minLength(3)
                                                     }}
                                                 />
-                                                 <Errors
+                                                <Errors
                                                     className="text-danger"
                                                     model=".name"
                                                     show="touched"
@@ -133,10 +137,10 @@ const Payment = () => {
                                         <Row><Col className="col-md-3 offset-md-1">
                                             <Form.Label>Email Id:</Form.Label></Col>
                                             <Col className="col-md-7">
-                                                <Control.text 
+                                                <Control.text
                                                     model=".email"
                                                     className="form-control"
-                                                    autocomplete="off"
+                                                    autoComplete="off"
                                                     placeholder="Enter email id"
                                                     name="email"
                                                     value={email}
@@ -151,7 +155,7 @@ const Payment = () => {
                                                     show="touched"
                                                     messages={{
                                                         required: 'Required ',
-                                                        validText: 'Enter a valid Email!'
+                                                        validEmail: 'Enter a valid Email!'
                                                     }}
                                                 />
                                             </Col></Row>
@@ -160,10 +164,10 @@ const Payment = () => {
                                         <Row><Col className="col-md-3 offset-md-1">
                                             <Form.Label>Mobile Number:</Form.Label></Col>
                                             <Col className="col-md-7">
-                                                <Control.text 
+                                                <Control.text
                                                     model=".mobile"
                                                     className="form-control"
-                                                    autocomplete="off"
+                                                    autoComplete="off"
                                                     placeholder="Enter mobile number:"
                                                     name="number"
                                                     value={number}
@@ -196,14 +200,14 @@ const Payment = () => {
                                             >
                                                 <option value="Residential Certificate.">Residential Certificate.</option>
                                                 <option value="Revenue tax receipt.">Revenue tax receipt.</option>
-                                               
+
                                             </Control.select>
                                         </Col></Row>
                                     <Row><Col>
-                                    <div className="form-group">
+                                        <div className="form-group">
                                             <Row><Col className="col-md-3 offset-md-1"><Form.Label>Amount to pay:</Form.Label></Col>
                                                 <Col className="col-md-7">
-                                                    <Control.text 
+                                                    <Control.text
                                                         model=".amount"
                                                         className="form-control"
                                                         autoComplete="off"
@@ -211,6 +215,18 @@ const Payment = () => {
                                                         name="Amount"
                                                         value={amount}
                                                         onChange={(e) => setAmount(e.target.value)}
+                                                        validators={{
+                                                            required, isNumber
+                                                        }}
+                                                    />
+                                                    <Errors
+                                                        className="text-danger"
+                                                        model=".amount"
+                                                        show="touched"
+                                                        messages={{
+                                                            required: 'Required ',
+                                                            isNumber: 'Enter an amount in digits!'
+                                                        }}
                                                     />
                                                 </Col></Row>
                                         </div></Col></Row>
@@ -222,7 +238,7 @@ const Payment = () => {
                         </Card></FadeTransform></Col>
             </Row>
 
-        </Container>
+        </Container> :<Redirect to="/"/> : <Redirect to="/login"/>
     )
 }
 

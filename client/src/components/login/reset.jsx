@@ -9,6 +9,7 @@ import axiosInstance from "../../helpers/axios";
 import { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import 'animate.css';
+import history from '../../helpers/history';
 
 const required = (val) => val && val.length;
 const minLength = (len) => (val) => val && (val.length >= len);
@@ -46,6 +47,8 @@ const Reset = ({ match }) => {
                             showIcon: true
                         }
                     })
+                    history.push('/login');
+                    window.location.reload(false);
                 })
                 .catch(err => {
                     store.addNotification({
@@ -60,6 +63,8 @@ const Reset = ({ match }) => {
                             showIcon: true
                         }
                     })
+                    history.push('/login');
+                    window.location.reload(false);
                 });
         } else {
             store.addNotification({

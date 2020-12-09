@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import loginImg from "./login.svg";
 import './login.css';
+import { Link } from 'react-router-dom'
 import axiosInstance from '../../helpers/axios';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import { Row, Col, Card, Container, Button, Form } from 'react-bootstrap';
@@ -12,6 +13,7 @@ import 'animate.css';
 import history from '../../helpers/history';
 import { GoogleLogin } from 'react-google-login';
 import { keys } from '../../helpers/credentials';
+import { Redirect } from 'react-router-dom';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 
 const required = (val) => val && val.length;
@@ -46,6 +48,7 @@ const Login = () => {
             showIcon: true
           }
         })
+        window.location.reload(false);
       })
       .catch(error => {
         console.log('GOOGLE SIGNIN ERROR', error.response);
@@ -61,6 +64,19 @@ const Login = () => {
       .then(res => {
         console.log(res.data);
         informParent(res);
+        store.addNotification({
+          title: "You are logged in successfully!",
+          message: 'Now you have privileges to explore!',
+          type: "success",
+          container: 'top-right',
+          animationIn: ["animated", "fadeIn"],
+          animationOut: ["animated", "fadeOut"],
+          dismiss: {
+            duration: 3000,
+            showIcon: true
+          }
+        })
+        window.location.reload(false);
       })
       .catch(error => {
         console.log('GOOGLE SIGNIN ERROR', error.response);
@@ -70,7 +86,7 @@ const Login = () => {
   const informParent = response => {
     authenticate(response, () => {
       isAuth() && isAuth().role === 'admin'
-        ? history.push('/admin')
+        ? history.push('/adHome')
         : history.push('/');
     });
   };
@@ -119,6 +135,7 @@ const Login = () => {
                 showIcon: true
               }
             })
+            window.location.reload(false);
           });
         })
         .catch(err => {
@@ -128,10 +145,10 @@ const Login = () => {
             password1: '',
             textChange: 'Sign In'
           });
-          console.log(err);
+          // console.log(err);
           store.addNotification({
             title: `${err.response.data.errors}`,
-            message: 'Try again!',
+            message: 'Register yourself!',
             type: "danger",
             container: 'top-right',
             animationIn: ["animated", "fadeIn"],
@@ -141,6 +158,7 @@ const Login = () => {
               showIcon: true
             }
           })
+          window.location.reload(false);
         });
     }
   }
@@ -213,7 +231,9 @@ const Login = () => {
                               minLength: 'Password should be greater than 8 characters!'
                             }}
                           />
-                          <p className="float-right font-italic mt-2">Forgot Password?</p>
+                          <Link to="/forgotPassword">
+                            <p className="float-right text-dark font-italic mt-2">Forgot Password?</p>
+                          </Link>
                         </Col></Row>
 
                     </div></Col></Row>

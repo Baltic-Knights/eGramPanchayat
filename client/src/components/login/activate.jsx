@@ -9,6 +9,8 @@ import axiosInstance from "../../helpers/axios";
 import { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import 'animate.css';
+import { Redirect } from 'react-router-dom'
+import history from '../../helpers/history';
 
 const Activate = ({ match }) => {
     const [formData, setFormData] = useState({
@@ -56,6 +58,8 @@ const Activate = ({ match }) => {
                         showIcon: true
                     }
                 })
+                history.push('/login');
+                window.location.reload(false);
             })
             .catch(err => {
                 store.addNotification({
@@ -70,8 +74,10 @@ const Activate = ({ match }) => {
                         showIcon: true
                     }
                 })
-
+                history.push('/login');
+                window.location.reload(false);
             });
+
     }
     return (
         <Container className="mb-3" fluid>

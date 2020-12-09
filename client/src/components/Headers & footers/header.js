@@ -8,9 +8,9 @@ import { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import 'animate.css';
 
+
 const Header = (props) => {
     const signOut=()=>{
-          signout();
           store.addNotification({
             title: "Signed out Successfully!",
             message: 'You will be redirected on home page!',
@@ -23,6 +23,8 @@ const Header = (props) => {
               showIcon: true
             }
           })
+          signout();
+          
     }
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">

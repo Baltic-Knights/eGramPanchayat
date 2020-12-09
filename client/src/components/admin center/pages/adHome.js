@@ -4,8 +4,11 @@ import axiosInstance from '../../../helpers/axios';
 import { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import 'animate.css';
+import { isAuth } from '../../../helpers/auth';
 import { FadeTransform } from 'react-animation-components';
 import Sidebar from '../Sidebar';
+import history from '../../../helpers/history';
+import { Redirect } from 'react-router';
 
 function AdHome() {
     const [yearOne, setyearOne] = useState();
@@ -50,7 +53,7 @@ function AdHome() {
         const population={
             ID:101,
             years:[Number(yearOne),Number(yearTwo),Number(yearThree),Number(yearFour),Number(yearFive)],
-            menCount:[Number(oneMen),Number(twoMen),Number(threeMen),Number(fourMen),Number(litFiveMen)],
+            menCount:[Number(oneMen),Number(twoMen),Number(threeMen),Number(fourMen),Number(fiveMen)],
             womenCount:[Number(oneWomen),Number(twoWomen),Number(threeWomen),Number(fourWomen),Number(fiveWomen)],
             childrenCount:[Number(oneChildren),Number(twoChildren),Number(threeChildren),Number(fourWomen),Number(fiveChildren)]
         }
@@ -93,6 +96,8 @@ function AdHome() {
           })
     }
     return (
+        isAuth() ? isAuth() && isAuth().role === 'admin' || isAuth().role === 'user'
+        ?
         <Container fluid className="m-0 p-0">
             <Row className="d-flex">
                 <Col className="col-md-3">
@@ -493,7 +498,7 @@ function AdHome() {
                     </Card></FadeTransform>
                 </Col>
             </Row>
-        </Container>
+        </Container>:<Redirect to="/"/> : <Redirect to="/login"/>
     )
 }
 

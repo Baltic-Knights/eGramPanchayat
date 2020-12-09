@@ -1,6 +1,6 @@
 import cookie from 'js-cookie'
 import { GoogleLogout } from 'react-google-login';
-
+import history from '../helpers/history';
 // Set in Cookie
 export const setCookie = (key, value) => {
     if (window !== 'undefiend') {
@@ -67,7 +67,8 @@ export const isAuth = () => {
 export const signout = () => {
     removeCookie('token');
     removeLocalStorage('user');
-    
+    history.push('/login');
+    window.location.reload(false);
 };
 
 export const updateUser = (response, next) => {

@@ -6,6 +6,8 @@ import { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import 'animate.css';
 import { FadeTransform } from 'react-animation-components';
+import { Redirect } from 'react-router';
+import { isAuth } from '../../../helpers/auth';
 
 function AdVillage() {
     const [PrevFirstname, setPrevFirstname] = useState("");
@@ -90,6 +92,8 @@ function AdVillage() {
           })
     }
     return (
+        isAuth() ? isAuth() && isAuth().role === 'admin' || isAuth().role === 'user'
+        ?
         <Container fluid className="m-0 p-0">
             <Row className="d-flex">
                 <Col className="col-md-3">
@@ -435,7 +439,7 @@ function AdVillage() {
                     </Card></FadeTransform>
                 </Col>
             </Row>
-        </Container>
+        </Container>:<Redirect to="/"/> : <Redirect to="/login"/>
     )
 }
 

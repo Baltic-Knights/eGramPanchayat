@@ -9,6 +9,7 @@ const path=require('path');
 const authRouter=require('./routes/authRouter')
 const schemeRouter=require('./routes/schemeRouter')
 const popRouter=require('./routes/popRouter')
+const villagerRouter=require('./routes/villagerRoute')
 const ResRouter=require('./routes/ResRouter')
 const paymentRouter=require('./routes/paymentRouter')
 const currComRouter=require('./routes/currCommitteeRouter.js')
@@ -51,6 +52,7 @@ app.use('/populate',popRouter);
 app.use('/literate',litRouter);
 app.use('/residence',ResRouter);
 app.use('/revenue',RevenueRouter);
+app.use('/villager',villagerRouter);
 app.use('/schemes',schemeRouter);
 app.use('/currCommittee',currComRouter);
 app.use('/prevCommittee',prevComRouter);
