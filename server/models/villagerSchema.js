@@ -7,6 +7,11 @@ const villagerSchema=new mongoose.Schema({
     UID:{
         type:Number,
         required:true
+    },
+    email:{
+        type:String,
+        trim:true,
+        required:true
     }
 },{
     timestamps:true

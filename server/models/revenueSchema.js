@@ -1,7 +1,12 @@
 const mongoose=require('mongoose');
 const revenueSchema=new mongoose.Schema({
     name:{
-        type:String
+        type:String,
+        trim:true
+    },
+    email:{
+        type:String,
+        trim:true
     },
     date:{
         type:Date
@@ -26,6 +31,18 @@ const revenueSchema=new mongoose.Schema({
     },
     warrant_tax:{
         type:Number
+    },
+    picture:{
+        type:String,
+        trim:true
+    },
+    filename:{
+        type:String,
+        trim:true
+    },
+    display:{
+        type:Boolean,
+        default:true
     }
 },{
     timestamps:true

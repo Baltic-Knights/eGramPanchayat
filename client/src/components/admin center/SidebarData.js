@@ -47,5 +47,11 @@ export const SidebarData = [
     link: '/adVillager',
     icon: <AiIcons.AiFillDatabase />,
     cName: 'nav-text'
+  },
+  {
+    title: 'Notifications',
+    link: '/adNotify',
+    icon: <MdIcons.MdNotificationsActive />,
+    cName: 'nav-text'
   }
 ];

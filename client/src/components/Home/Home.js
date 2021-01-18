@@ -3,13 +3,14 @@ import { Container, Row, Col, Card } from 'react-bootstrap';
 import Population from './population';
 import Literacy from './literacy';
 import Maps from './maps';
+import './styles.css'
 import { FadeTransform } from 'react-animation-components';
 const Home = () => {
     return (
         <Container fluid className="mb-3">
             <Row className="text-center mt-5">
                 <Col>
-                    <h1 className="font-weight-bold">ग्रामपंचायत तांदूळवाडी आपले सहर्ष स्वागत करत आहे.</h1>
+                    <h1 className="font-weight-bold marathi">ग्रामपंचायत कडधे आपले सहर्ष स्वागत करत आहे.</h1>
                 </Col>
             </Row>
             <Container fluid>

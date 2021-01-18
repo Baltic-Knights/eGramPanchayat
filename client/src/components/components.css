@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Langar&display=swap');
 .circle-icon {
     background: #ffffff;
     padding:10px;
@@ -32,4 +33,8 @@
 .login_btn:hover{
     color:#fafafa;
     text-decoration-line: none;
+}
+.brand{
+    font-family: 'Langar', cursive;
+    font-size: 35px;
 }

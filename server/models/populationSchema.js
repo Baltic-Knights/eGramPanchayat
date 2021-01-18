@@ -4,7 +4,7 @@ const populationSchema=new mongoose.Schema({
         type:Number
     },
     years:{
-        type:[Number],
+        type:[String],
         required:true,
         max:5,
         min:5

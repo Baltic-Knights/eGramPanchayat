@@ -15,15 +15,18 @@ const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => val && (val.length >= len);
 const validText = (val) => /^([a-zA-Z0-9]+|[a-zA-Z0-9]+\s{1}[a-zA-Z0-9]{1,}|[a-zA-Z0-9]+\s{1}[a-zA-Z0-9]{3,}\s{1}[a-zA-Z0-9]{1,})$/i.test(val);
 const required = (val) => val && val.length;
+const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
 
 function AdHome() {
     const [name, setName] = useState();
     const [UID, setUID] = useState();
+    const [email, setEmail] = useState();
 
     const AddRecord = e => {
         const record = {
             name,
-            UID
+            UID,
+            email
         }
         axiosInstance.post('villager/addRecord', record)
             .then(res => {
@@ -84,8 +87,7 @@ function AdHome() {
             
     }
     return (
-        isAuth() ? isAuth() && isAuth().role === 'admin' || isAuth().role === 'user'
-        ?  
+        isAuth() ? isAuth().role === 'admin'?   
         <Container fluid className="m-0 p-0">
             <Row className="d-flex">
                 <Col className="col-md-3">
@@ -130,6 +132,33 @@ function AdHome() {
                                                 />
                                             </Col></Row>
                                     </div>
+                                    <div className="form-group">
+                                        <Row><Col className="col-md-5 offset-md-1">
+                                            <Form.Label>Email Address:</Form.Label></Col>
+                                            <Col className="col-md-6">
+                                                <Control.text
+                                                    autoComplete="off"
+                                                    model=".email"
+                                                    id="email"
+                                                    className="form-control"
+                                                    placeholder="Enter Villager Email"
+                                                    value={email}
+                                                    onChange={(e) => setEmail(e.target.value)}
+                                                    validators={{
+                                                        required, validEmail
+                                                    }}
+                                                />
+                                                <Errors
+                                                    className="text-danger"
+                                                    model=".email"
+                                                    show="touched"
+                                                    messages={{
+                                                        required: 'Required ',
+                                                        validEmail: 'Enter a valid email address!'
+                                                    }}
+                                                />
+                                            </Col></Row>
+                                    </div>
                                     <Row><Col>
                                         <div className="form-group">
                                             <Row><Col className="col-md-5 offset-md-1"><Form.Label>Aadhar Number:</Form.Label></Col>
@@ -170,7 +199,7 @@ function AdHome() {
                         </Card></FadeTransform>
                 </Col>
             </Row>
-        </Container>:<Redirect to="/"/> : <Redirect to="/login"/>
+        </Container>:isAuth().role === 'user'?<Redirect to="/"/> :<Redirect to="/"/> : <Redirect to="/login"/>
     )
 }
 

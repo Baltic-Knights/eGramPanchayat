@@ -1,9 +1,9 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Sidebar from '../Sidebar';
 import * as FcIcons from "react-icons/fc";
 import { readRevenue } from '../../../Redux/actions/revenueActions';
-import { Container, Row, Card, Col, Accordion,Form } from 'react-bootstrap';
+import { Container, Row, Card, Col, Accordion, Form, Media, Button } from 'react-bootstrap';
 import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 import axiosInstance from '../../../helpers/axios';
 import { store } from 'react-notifications-component';
@@ -11,6 +11,8 @@ import 'react-notifications-component/dist/theme.css';
 import 'animate.css';
 import { Redirect } from 'react-router';
 import { isAuth } from '../../../helpers/auth';
+import moment from 'moment';
+import DataImg from './applicants.jpg'
 
 function AdRevenue() {
     const [home, setHome] = useState();
@@ -20,77 +22,115 @@ function AdRevenue() {
     const [penalty, setPenalty] = useState();
     const [warrant, setWarrant] = useState();
 
-    
+
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(readRevenue())
     }, [])
     const revenue = useSelector(state => state.revenue);
     let cards = "";
-    const generatePDF=(name,uid)=>{
+    const Approve = (data) => {
+        console.log(data)
         const revenueData = {
-            name:name,
-            UID:uid,
+            name: data.name,
+            email: data.email,
+            UID: data.UID,
+            picture: data.picture,
             home_tax: Number(home),
             water_tax: Number(water),
             health_tax: Number(health),
             light_tax: Number(light),
             penalty_tax: Number(penalty),
-            warrant_tax: Number(warrant),
-            date:new Date()
+            warrant_tax: Number(warrant)
         }
-        axiosInstance.post('revenue/download', revenueData)
-        .then(res=>{
-            store.addNotification({
-                title: `${res.data.message}`,
-                message: 'Residence certificate generated sucessfully!',
-                type: "success",                         
-                container: 'top-right',                
-                animationIn: ["animated", "fadeIn"],     
-                animationOut: ["animated", "fadeOut"],   
-                dismiss: {
-                  duration: 3000,
-                  showIcon:true
-                }
-              })
-              window.location.reload(false);
-        })
+        axiosInstance.post('revenue/approve', revenueData)
+            .then(res => {
+                store.addNotification({
+                    title: `${res.data.message}`,
+                    message: 'Check your email for updates!',
+                    type: "success",
+                    container: 'top-right',
+                    animationIn: ["animated", "fadeIn"],
+                    animationOut: ["animated", "fadeOut"],
+                    dismiss: {
+                        duration: 3000,
+                        showIcon: true
+                    }
+                })
+                window.location.reload(false);
+            })
     }
-    const Reject = (UID) => {
+    const Remove = (data) => {
+        console.log(data)
         const revenueData = {
-            UID: Number(UID),
+            email:data.email,
+            UID: data.UID
+        }
+        axiosInstance.post('revenue/remove', revenueData)
+            .then(res => {
+                store.addNotification({
+                    title: `${res.data.message}`,
+                    message: 'Check your email for updates!',
+                    type: "success",
+                    container: 'top-right',
+                    animationIn: ["animated", "fadeIn"],
+                    animationOut: ["animated", "fadeOut"],
+                    dismiss: {
+                        duration: 3000,
+                        showIcon: true
+                    }
+                })
+                window.location.reload(false);
+            })
+    }
+    const Reject = (data) => {
+        const revenueData = {
+            UID: Number(data.UID),
+            email: data.email
         }
         axiosInstance.post('revenue/reject', revenueData)
-        .then(res=>{
-            store.addNotification({
-                title: `${res.data.message}`,
-                message: 'Send Notification to villager.',
-                type: "danger",
-                container: 'top-right',
-                animationIn: ["animated", "fadeIn"],
-                animationOut: ["animated", "fadeOut"],
-                dismiss: {
-                    duration: 3000,
-                    showIcon: true
-                }
-            }) 
-            window.location.reload(false);
-        })
+            .then(res => {
+                store.addNotification({
+                    title: `${res.data.message}`,
+                    message: 'Send Notification to villager.',
+                    type: "danger",
+                    container: 'top-right',
+                    animationIn: ["animated", "fadeIn"],
+                    animationOut: ["animated", "fadeOut"],
+                    dismiss: {
+                        duration: 3000,
+                        showIcon: true
+                    }
+                })
+                window.location.reload(false);
+            })
     }
-    if (revenue?.revenueData?.data) {
-        const activeKey = revenue?.revenueData?.data[0]._id;
-        cards = revenue?.revenueData?.data.map((data, id) => {
-            return (
-                <Card className="col-md-12 col-sm-12 mt-5">
+    if (revenue?.revenueData.length) {
+        const activeKey = revenue?.revenueData[0]._id;
+        cards = revenue?.revenueData.map((data, id) => {
+                return (
+                    (data.display)?<Card key={id} className="col-md-12 col-sm-12 mt-5">
                     <Accordion className="myAccordian" defaultActiveKey={activeKey}>
                         <Accordion.Toggle as={Card.Header} className="back" eventKey={data._id}>
                             <h4>{data.name}</h4>
                         </Accordion.Toggle>
                         <Accordion.Collapse eventKey={data._id}>
                             <Card.Body>
-                                <h6 className="">Applicant Name:{data.name}</h6>
-                                <h6 className="mt-3">Adhar Number:{data.UID}</h6>
-                                <h6 className="mt-3">Application Date:{new Date().getDate()}/{new Date().getMonth()}/{new Date().getFullYear()}.</h6>
+                                <Media tag="li">
+                                    <img
+                                        width={200}
+                                        height={200}
+                                        className="mr-3 img-thumbnail"
+                                        src={data.picture}
+                                        alt={data.name}
+                                    />
+                                    <Media.Body className="ml-auto text-left">
+                                        <p><b>Applicant Name:</b>  {data.name}</p>
+                                        <p><b>Email Address:</b>  {data.email}</p>
+                                        <p><b>Adhaar Number:</b>  {data.UID}</p>
+                                        <p><b>Application Date:</b>  {moment(data.updatedAt).format('DD/MM/YYYY')}</p>
+                                    </Media.Body>
+                                </Media>
                                 <hr />
                                 <Form className="">
                                     <Row><Col>
@@ -130,7 +170,7 @@ function AdRevenue() {
                                                         autoComplete="off"
                                                         placeholder="Health tax"
                                                         name="Health tax"
-                                                        
+
                                                         value={health}
                                                         onChange={(e) => setHealth(e.target.value)}
                                                     />
@@ -141,7 +181,7 @@ function AdRevenue() {
                                                         autoComplete="off"
                                                         placeholder="Water tax"
                                                         name="Water tax"
-                                                        
+
                                                         value={water}
                                                         onChange={(e) => setWater(e.target.value)}
                                                     />
@@ -156,7 +196,7 @@ function AdRevenue() {
                                                         autoComplete="off"
                                                         placeholder="Penalty tax"
                                                         name="Pen. tax"
-                                                        
+
                                                         value={penalty}
                                                         onChange={(e) => setPenalty(e.target.value)}
                                                     />
@@ -167,39 +207,42 @@ function AdRevenue() {
                                                         autoComplete="off"
                                                         placeholder="War. tax"
                                                         name="Warrant tax"
-                                                        
+
                                                         value={warrant}
                                                         onChange={(e) => setWarrant(e.target.value)}
                                                     />
                                                 </Col></Row>
                                         </Form.Group></Col></Row>
-                                    <div className="mt-4">
-                                    <FcIcons.FcApprove className="icons" size={40} onClick={((e) => generatePDF(data.name, data.UID))} />
-                                    <FcIcons.FcDisapprove className="ml-3 icons" size={40}  onClick={((e) => Reject(data.UID))} />                                </div>
+                                    <Button target="blank" className="mr-auto mt-5" onClick={((e) => Approve(data))}>Approve</Button>
+                                    <Button variant="danger" onClick={((e) => Reject(data))} className="mr-auto ml-2 mt-5">Reject</Button>
+                                    <Button variant="warning" onClick={((e) => Remove(data))} className="mr-auto ml-2 mt-5">Remove</Button>
                                 </Form>
-                                
+
                             </Card.Body>
 
                         </Accordion.Collapse>
                     </Accordion>
-                </Card>
-            )
+                </Card>:""
+                )
         })
     }
     return (
-        isAuth() ? isAuth() && isAuth().role === 'admin' || isAuth().role === 'user'
-        ? 
-        <Container fluid className="m-0 p-0">
-            <Row className="d-flex">
-                <Col className="col-md-3">
-                    <Sidebar />
-                </Col>
-                <Col className="col-md-7 mt-5 mb-3 text-center">
-                    <h1>Applicants for Revenue Tax Receipt.</h1>
-                    <Stagger in><div>{cards}</div></Stagger>
-                </Col>
-            </Row>
-        </Container>:<Redirect to="/"/> : <Redirect to="/login"/>
+        isAuth() ? isAuth().role === 'admin' ?
+            <Container fluid className="m-0 p-0">
+                <Row className="d-flex">
+                    <Col className="col-md-3">
+                        <Sidebar />
+                    </Col>
+                    <Col className="col-md-7 mt-5 mb-3 text-center">
+                        <h1>Applicants for Revenue Tax Receipt.</h1>
+                        {(revenue?.revenueData.length) ? cards!=""?<Stagger in><div>{cards}</div></Stagger> :
+                        <div className="text-center mt-5"><h4>No Applicants here.</h4>
+                        <img className="mt-2" src={DataImg} width="300" height="200" /></div>:
+                            <div className="text-center mt-5"><h4>No Applicants here.</h4>
+                                <img className="mt-2" src={DataImg} width="300" height="200" /></div>}
+                    </Col>
+                </Row>
+            </Container> : isAuth().role === 'user' ? <Redirect to="/" /> : <Redirect to="/" /> : <Redirect to="/login" />
     )
 }
 

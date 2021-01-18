@@ -1,16 +1,39 @@
 const mongoose=require('mongoose');
 const residenceSchema=new mongoose.Schema({
     name:{
-        type:String
+        type:String,
+        trim:true
     },
     date:{
-        type:Date
+        type:Date,
+        trim:true
     },
     UID:{
         type:Number
     },
     picture:{
-        type:String
+        type:String,
+        trim:true
+    },
+    filename:{
+        type:String,
+        trim:true
+    },
+    age:{
+        type:String,
+        trim:true
+    },
+    noOfYears:{
+        type:String,
+        trim:true
+    },
+    profession:{
+        type:String,
+        trim:true
+    },
+    email:{
+        type:String,
+        trim:true
     }
 },{
     timestamps:true

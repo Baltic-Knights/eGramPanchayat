@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
 import './App.css';
+import AdminRouter from './components/onlyAdmin';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.css';
 import 'bootstrap-social/bootstrap-social.css';
 import Header from './components/Headers & footers/header';
 import Home from './components/Home/Home';
 import Schemes from './components/schemes/Schemes';
-import Payment from './components/payment/Payment';
+import Payment from './components/payment/Payments';
+import Payments from './components/payment/Payments';
 import Admin from './components/admin center/admin';
 import About from './components/about us/about us';
 import Village from './components/about village/About';
@@ -26,6 +28,7 @@ import AdRevenue from './components/admin center/pages/adRevenue';
 import AdRevenueReceipt from './components/admin center/pages/adRevenueReceipt';
 import AdSchemes from './components/admin center/pages/adSchemes';
 import AdVillager from './components/admin center/pages/adVillager';
+import adNotify from './components/admin center/pages/adNotify';
 import AdVillage from './components/admin center/pages/adVillage';
 import AdResidence from './components/admin center/pages/adResidence';
 import ReactNotification from 'react-notifications-component';
@@ -45,7 +48,7 @@ function App(props) {
           <Route path="/login" component={Loginpage}></Route>
           <Route path="/schemes" component={Schemes}></Route>
           <Route path="/village" component={Village}></Route>
-          <Route path="/payment" component={Payment}></Route>
+          <Route path="/payment" component={Payments}></Route>
           <Route path="/about" component={About}></Route>
           <Route path="/residence" component={Residence}></Route>
           <Route path="/revenue" component={Revenue}></Route>
@@ -61,6 +64,7 @@ function App(props) {
           <Route path="/adSchemes" component={AdSchemes}></Route>
           <Route path="/adVillage" component={AdVillage}></Route>
           <Route path="/adResidence" component={AdResidence}></Route>
+          <Route path="/adNotify" component={adNotify}></Route>
         </Switch>
         <Footer />
       </BrowserRouter>

@@ -3,6 +3,7 @@ const Villager = require('../models/villagerSchema');
 exports.addRecord = (req, res) => {
     const name = req.body.name;
     UID = req.body.UID;
+    email=req.body.email;
     Villager.findOne({ UID: req.body.UID })
         .then(data => {
             if (data) {
@@ -12,7 +13,8 @@ exports.addRecord = (req, res) => {
             } else {
                 const data = new Villager({
                     name,
-                    UID
+                    UID,
+                    email
                 });
                 data.save((err,data)=>{
                     if(data){

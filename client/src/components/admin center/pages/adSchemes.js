@@ -15,6 +15,7 @@ import 'react-notifications-component/dist/theme.css';
 import 'animate.css';
 import { Redirect } from 'react-router';
 import { isAuth } from '../../../helpers/auth';
+import DataImg from './data.jpg'
 
 const required = (val) => val && val.length;
 const validURL = (val) => /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/i.test(val);
@@ -59,6 +60,7 @@ function AdSchemes() {
             })
 
     }
+    console.log(schemes.length)
     if (schemes[0]?._id) {
         const activeKey = schemes[0]._id;
         cards = schemes.map((scheme, key) => {
@@ -124,8 +126,7 @@ function AdSchemes() {
         setIsModalOpen(!isModalOpen);
     }
     return (
-        isAuth() ? isAuth() && isAuth().role === 'admin' || isAuth().role === 'user'
-        ?
+        isAuth() ? isAuth().role === 'admin'? 
         <Container fluid className="m-0 p-0">
             <Modal isOpen={isModalOpen} toggle={toggleModal}>
                 <ModalHeader toggle={toggleModal}><BsPencilSquare className="mr-2" />Add Scheme.</ModalHeader>
@@ -281,11 +282,14 @@ function AdSchemes() {
                     <center><Button className="mt-4 col-md-5 " onClick={toggleModal}>
                         <BsPlusCircle size={25} className="mr-3" />Add New Scheme</Button></center>
                     <Stagger in>
-                        <div>{cards}</div>
+                    {schemes.length?<Stagger in>{cards}</Stagger>:
+                                <div className="text-center mt-3"><h4>No schemes Available</h4>
+                                <img className="mt-2" src={DataImg} width="300" height="200"/></div>}
+                        {/* <div>{cards}</div> */}
                     </Stagger>
                 </Col>
             </Row>
-        </Container>:<Redirect to="/"/> : <Redirect to="/login"/>
+        </Container>:isAuth().role === 'user'?<Redirect to="/"/> :<Redirect to="/"/> : <Redirect to="/login"/>
     )
 }
 

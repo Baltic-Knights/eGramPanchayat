@@ -4,7 +4,7 @@ import { Card } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { literacyFetch } from '../../Redux/actions/chartsAction';
 import { FadeTransform } from 'react-animation-components';
-
+import './styles.css';
 const Literacy = () => {
     const dispatch = useDispatch()
     const Record = useSelector((state) => state.chartsData)
@@ -18,7 +18,7 @@ const Literacy = () => {
                 exitTransform: 'scale(0.5) translateY(-50%)'
             }}>
             <Card>
-                <Card.Title className="text-center mt-3"><h2>Literacy from last 5 Surveys.</h2></Card.Title>
+                <Card.Title className="text-center mt-3"><h2 className="heads">Literacy from last 5 Surveys.</h2></Card.Title>
                 <Card.Body className="">
                     <Line
                         data={{
@@ -34,7 +34,7 @@ const Literacy = () => {
                                 {
                                     data: Record.litWomenCount,
                                     label: 'women',
-                                    borderColor: 'red',
+                                    borderColor: '#ec0101',
                                     fill: true,
 
                                 }],

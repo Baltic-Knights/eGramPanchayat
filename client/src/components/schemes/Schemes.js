@@ -4,9 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchSchemes } from '../../Redux/actions/schemesAction';
 import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 import { jsx,css } from "@emotion/react";
-// import ClipLoader from "react-spinners/ClipLoader";
 import "./schemes-style.css"
-
+import DataImg from './data.jpg'
 const override = css`
   display: block;
   margin: 0 auto;
@@ -22,7 +21,7 @@ const Schemes = () => {
   const schemes = useSelector(state => state.schemes.data);
   // if(schemes===undefined)
   const activeKey = schemes[0]?._id;
-
+  console.log(schemes)
   const schemesComponent = schemes.map((scheme) => {
     return (
       <Fade in>
@@ -59,23 +58,18 @@ const Schemes = () => {
   });
   return (
 
-    { schemes } ? <Container fluid className="mt-5 mb-5">
+    <Container fluid className="mt-5 mb-5">
       <Row className="mt-3 mb-3">
         <Col>
           <h2 className="text-center">Government Schemes.</h2>
         </Col>
       </Row>
-      <Stagger in>{schemesComponent}</Stagger>
+      {schemes.length?<Stagger in>{schemesComponent}</Stagger>:
+                                <div className="text-center mt-5"><h4>No schemes Available</h4>
+                                <img className="mt-2" src={DataImg} width="300" height="200"/></div>}
 
 
-    </Container> : <div>
-      {/* <ClipLoader
-      css={override}
-      size={150}
-      color={"#123abc"}
-      loading={this.state.loading}
-    /> */}
-    </div>
+    </Container> 
   );
 
 }

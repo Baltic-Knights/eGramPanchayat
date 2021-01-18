@@ -4,6 +4,7 @@ import { Card } from 'react-bootstrap';
 import {useDispatch,useSelector} from 'react-redux';
 import {populationFetch} from '../../Redux/actions/chartsAction';
 import { FadeTransform } from 'react-animation-components';
+import "./styles.css"
 
 const Population = () => {
     const dispatch=useDispatch()
@@ -17,17 +18,17 @@ const Population = () => {
             {
                 label: "Men",
                 data: Record.popMenCount,
-                backgroundColor: "#a6dcef"
+                backgroundColor: "#944e6c"
             },
             {
                 label: "Women",
                 data: Record.popWomenCount,
-                backgroundColor: "#fe7171"
+                backgroundColor: "#111d5e"
             },
             {
                 label: "Children",
                 data: Record.popChildrenCount,
-                backgroundColor: "#d2e603"
+                backgroundColor: "#c70039"
             }
         ]
     }
@@ -38,7 +39,7 @@ const Population = () => {
                 exitTransform: 'scale(0.5) translateY(-50%)'
             }}>
         <Card className="col-md-11">
-            <Card.Title className="text-center mt-3"><h2>Population from last 5 Surveys.</h2></Card.Title>
+            <Card.Title className="text-center mt-3"><h2 className="heads">Population from last 5 Surveys.</h2></Card.Title>
             <Card.Body className="mt-2">
                 <Bar
                     data={data}

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Sidebar from '../Sidebar';
-import { Container, Row, Col, Card, Accordion } from 'react-bootstrap';
+import { Container, Row, Col, Card, Accordion,Media,Button } from 'react-bootstrap';
 import { readApplicants } from '../../../Redux/actions/residenceActions';
 import { Stagger } from 'react-animation-components';
 import * as FcIcons from "react-icons/fc";
@@ -15,6 +15,8 @@ import './pages.css';
 import { Redirect } from 'react-router';
 import { isAuth } from '../../../helpers/auth';
 import history from '../../../helpers/history';
+import moment from 'moment';
+import DataImg from './applicants.jpg'
 
 function AdResidence() {
     const dispatch = useDispatch();
@@ -28,16 +30,37 @@ function AdResidence() {
     `;
     const applicants = useSelector(state => state.residence);
     let cards = "";
-    const Approve = (name, UID) => {
+    const Approve = (data) => {
+        // console.log(data)
         const residenceData = {
-            name: name,
-            UID: Number(UID),
+            name: data.name,
+            UID: Number(data.UID),
+            email:data.email,
+            age:data.age,
+            years:data.noOfYears,
+            profession:data.profession,
+            picture:data.picture
         }
         axiosInstance.post('residence/download', residenceData)
             .then(res => {
                 store.addNotification({
                     title: `${res.data.message}`,
                     message: 'Residence certificate generated sucessfully!',
+                    type: "success",
+                    container: 'top-right',
+                    animationIn: ["animated", "fadeIn"],
+                    animationOut: ["animated", "fadeOut"],
+                    dismiss: {
+                        duration: 3000,
+                        showIcon: true
+                    }
+                })
+                window.location.reload(false);
+            })
+            .catch(err=>{
+                store.addNotification({
+                    title: `No Payment Record found with name ${data.name}!`,
+                    message: 'Pay certificate fee first!',
                     type: "info",
                     container: 'top-right',
                     animationIn: ["animated", "fadeIn"],
@@ -50,9 +73,10 @@ function AdResidence() {
                 window.location.reload(false);
             })
     }
-    const Reject = (UID) => {
+    const Reject = (UID,email) => {
         const residenceData = {
             UID: Number(UID),
+            email:email
         }
         console.log(residenceData);
         axiosInstance.post('residence/reject', residenceData)
@@ -73,25 +97,35 @@ function AdResidence() {
             })
 
     }
-    if (applicants?.applicants?.data) {
-        const activeKey = applicants?.applicants?.data[0]._id;
-        cards = applicants?.applicants.data.map((data, id) => {
+    if (applicants?.applicants.length) {
+        const activeKey = applicants?.applicants[0]._id;
+        // console.log(applicants?.applicants)
+        cards = applicants?.applicants.map((data, key) => {
             return (
-                <Card className="col-md-12 col-sm-12 mt-5">
+                <Card key={key} className="col-md-12 col-sm-12 mt-5">
                     <Accordion className="myAccordian" defaultActiveKey={activeKey}>
                         <Accordion.Toggle as={Card.Header} className="back" eventKey={data._id}>
                             <h4>{data.name}</h4>
                         </Accordion.Toggle>
                         <Accordion.Collapse eventKey={data._id}>
                             <Card.Body>
-                                <h6 className="">Applicant Name:{data.name}</h6>
-                                <h6 className="mt-3">Adhar Number:{data.UID}</h6>
-                                <h6 className="mt-3">Application Date:{new Date().getDate()}/{new Date().getMonth()}/{new Date().getFullYear()}.</h6>
-                                <div className="mt-4">
-                                    <FcIcons.FcApprove className="icons" size={40} onClick={((e) => Approve(data.name, data.UID))} />
-                                    <FcIcons.FcDisapprove className="ml-3 icons" size={40} onClick={((e) => Reject(data.UID))} />
-                                    {/* <MdIcons.MdDelete className="ml-3 icons" size={30} /> */}
-                                </div>
+                            <Media tag="li">
+                                        <img
+                                            width={200}
+                                            height={200}
+                                            className="mr-3 img-thumbnail"
+                                            src={data.picture}
+                                            alt={data.name}
+                                        />
+                                        <Media.Body className="ml-auto text-left">
+                                            <p><b>Applicant Name:</b>  {data.name}</p>
+                                            <p><b>Email Address:</b>  {data.email}</p>
+                                            <p><b>Adhaar Number:</b>  {data.UID}</p>
+                                            <p><b>Application Date:</b>  {moment(data.createdAt).format('DD/MM/YYYY')}</p>
+                                            <Button href={data.weblink} target="blank" className="mr-auto mt-5" onClick={((e) => Approve(data))}>Approve</Button>
+                                            <Button variant="danger" onClick={((e) => Reject(data.UID,data.email))} className="mr-auto ml-2 mt-5">Reject</Button>
+                                        </Media.Body>
+                                    </Media>
                             </Card.Body>
 
                         </Accordion.Collapse>
@@ -101,8 +135,7 @@ function AdResidence() {
         })
     }
     return (
-        isAuth() ? isAuth() && isAuth().role === 'admin' || isAuth().role === 'user'
-        ? 
+        isAuth() ? isAuth().role === 'admin'? 
         <Container fluid className="m-0 p-0">
             <Row className="d-flex">
                 <Col className="col-md-3">
@@ -110,10 +143,12 @@ function AdResidence() {
                 </Col>
                 <Col className="col-md-7 mt-5 mb-3 text-center">
                     <h1>Applicants for Residence Certificate.</h1>
-                    <Stagger in><div>{cards}</div></Stagger>
+                    {(applicants?.applicants.length)?<Stagger in><div>{cards}</div></Stagger>:
+                                <div className="text-center mt-5"><h4>No Applicants here.</h4>
+                                <img className="mt-2" src={DataImg} width="300" height="200"/></div>}
                 </Col>
             </Row>
-        </Container>:<Redirect to="/"/> : <Redirect to="/login"/>
+        </Container>:isAuth().role === 'user'?<Redirect to="/"/> :<Redirect to="/"/> : <Redirect to="/login"/>
     )
 }
 

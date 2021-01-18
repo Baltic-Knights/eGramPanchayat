@@ -9,6 +9,7 @@ const path=require('path');
 const authRouter=require('./routes/authRouter')
 const schemeRouter=require('./routes/schemeRouter')
 const popRouter=require('./routes/popRouter')
+const notifyRouter=require('./routes/notifyRouter')
 const villagerRouter=require('./routes/villagerRoute')
 const ResRouter=require('./routes/ResRouter')
 const paymentRouter=require('./routes/paymentRouter')
@@ -17,13 +18,14 @@ const prevComRouter=require('./routes/prevCommitteeRouter.js')
 const RevenueRouter=require('./routes/revenueRoute')
 const litRouter=require('./routes/litRouter')
 const cookieSession=require('cookie-session');
-
+const fileUpload=require('express-fileupload');
+app.use(fileUpload());
 
 const PORT=process.env.PORT || 5000;
 mongoose.connect("mongodb+srv://eGram:@TeamIAF@cluster0.jtyap.mongodb.net/eGramPanchayat?retryWrites=true&w=majority",
 { useNewUrlParser: true,
     useUnifiedTopology: true,
-     useFindAndModify: true },()=>{
+     useFindAndModify: false },()=>{
     console.log("Connected to DB");
 });
 app.use(cookieSession({
@@ -45,8 +47,8 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.use('/public',express.static(path.join(__dirname,'schemeUploads')));
-app.use('/public',express.static(path.join(__dirname,'residence')));
-app.use('/public',express.static(path.join(__dirname,'/controller/applicants')));
+app.use('/residence',express.static(path.join(__dirname,'/controller/images/Residence certificate')));
+app.use('/revenue',express.static(path.join(__dirname,'/controller/images/Revenue tax receipt')));
 app.use('/user',authRouter);
 app.use('/populate',popRouter);
 app.use('/literate',litRouter);
@@ -56,6 +58,7 @@ app.use('/villager',villagerRouter);
 app.use('/schemes',schemeRouter);
 app.use('/currCommittee',currComRouter);
 app.use('/prevCommittee',prevComRouter);
+app.use('/notify',notifyRouter);
 app.use('/pay',paymentRouter);
 require('./models/userSchema');
 require('./services/passport');

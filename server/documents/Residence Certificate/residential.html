@@ -6,8 +6,8 @@
     <title>Document</title>
     <style>
         .head {
-            width: 50px;
-            height: 50px;
+            width: 100px;
+            height: 100px;
         }
 
         .invoice-box {
@@ -28,13 +28,18 @@
         }
 
         .cmp {
-            display: flex;
-            flex-direction: row-reverse;
+            position: absolute;
+            right: 150px;
+        }
+
+        .cmps {
+            position: absolute;
+            right: 150px;
+            margin-bottom: 2px;
         }
 
         .header {
             display: flexbox;
-
         }
 
         .center {
@@ -46,6 +51,11 @@
             line-height: 30pt;
             word-spacing: 5px;
         }
+
+        .image {
+            width: 200px;
+            height: 200px;
+        }
     </style>
 </head>
 
@@ -53,41 +63,42 @@
     <div class="invoice-box">
         <div class="center">
             <img src="ashoka pillar.png" class="head">
-            <h3 class="center">ग्रामपंचायत कार्यालय:तांदूळवाडी</h3>
-            <h3 class="center">तालुका:वाळवा,जिल्हा:सांगली.</h3>
+            <h3 class="center">ग्रामपंचायत कार्यालय:कडधे</h3>
+            <h3 class="center">तालुका:खेड,जिल्हा:पुणे.</h3>
         </div>
         <hr>
         <div class="center">
-            <h3 class="center">रहिवासी दाखला</h3>
-            <h3 class="center">Residence Certificate</h3>
+            <h3 class="center">रहिवासी स्व:घोषणा पत्र</h3>
         </div>
         <div class="container">
             <div>
-                <p>Certificate No:</p>
-                <p>Dispatch No:</p>
-            </div>
-            <div>
-                <div class="cmp"><p>Date:18/10/2020</p></div>
-                <div class="cmp"><img src="photo.JPG" class="head"></div>
+                <div class="cmp"><img class="head" src="photo.JPG" /></div>
             </div>
         </div>
 
-        <div style="margin-top: 0px;" >
-            <p class="paragraph">सरपंच / ग्रामसेवक / ग्रामविकास अधिकारी ग्रामपंचायत तांदूळवाडी ता.वाळवा जि.सांगली
-                यांजकडुन दाखला देण्यात येतो की श्री / श्रीमती / कु रोहित आनंद नाईकडे आधार क्रमांक १०१ हे
-                ग्रामपंचायत तांदूळवाडी हद्दीतील मौजे तांदूळवाडी ता. वाळवा जि. सांगली, महाराष्ट्र येथील कायमचे रहिवासी आहेत.
-                सदर दाखला त्यांचे विनंती अर्जानुसार, रहिवासी पुराव्याची पडताळणी व स्थानिक चौकशीच्या आधारे
-                देण्यात येत आहे.
+        <div style="margin-top: 0px;">
+            <p class="paragraph">मी कु/श्री/श्रीमती ${data.name} वर्षे आधार क्रमांक ${data.UID} व्यवसाय मौजे कडधे रा कडधे ता खेड जि पुणे येथील
+                रहिवासी असून या द्वारे घोषित करतो की मौजे कडधे ता खेड जि पुणे या ठिकाणी मागील वर्षांपासून वास्तव्यास
+                आहे.<br>
+                वरील सर्व माहिती व समजुतीनुसार खरी आहे.सदर माहिती खोटी आढळून आल्यास भारतीय दंड संहिता अन्वये आणि/किंंवा
+                संबंधित कायद्यानुसार माझ्यावर खटला भरला जाईल व त्यानुसार मी शिक्षेस पात्र राहीन.तसेच
+                स्व:घोषणापत्राद्वारे मिळालेले सर्व लाभ सर्वकषरित्या काढून घेण्यात येतील याची मला पुर्ण जाणीव आहे.
             </p>
         </div>
-        <div class="container">
+        <div style="float:right;">
             <div>
-                <p>Place:Tandulwadi.</p>
+                <p>अर्जदाराची सही:</p>
             </div>
             <div>
-                <div class="cmp"><img src="ashoka pillar.png" class="head"></div>
-                <div class="cmp"><p style="margin-bottom: 1px;">Signature with Stamp</p></div>
-                <div class="cmp"><p style="margin-top: 1px;">सरपंच / ग्रामसेवक / ग्रामविकास अधिकारी</p></div>
+                <p>अर्जदाराचे नाव:${data.name}</p>
+            </div>
+        </div>
+        <div>
+            <div>
+                <p>ठिकाण:कडधे</p>
+            </div>
+            <div>
+                <p>दिनांक:${`${today.getDate()}. ${today.getMonth() + 1}. ${today.getFullYear()}.`}</p>
             </div>
         </div>
     </div>

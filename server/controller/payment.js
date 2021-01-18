@@ -1,88 +1,144 @@
 const Record = require("../models/paymentSchema");
-const https = require("https");
-const qs = require("querystring");
-const express = require('express')
+const pdf = require('html-pdf')
+const pdfTemplate = require('../documents/payment/index')
+const Razorpay = require('razorpay')
+const shortid = require("shortid")
+const path = require("path");
+const fs = require('fs')
+const crypto = require("crypto")
+const key = require('../config/keys')
+const sgMail = require('@sendgrid/mail');
+const { userInfo } = require("os");
+sgMail.setApiKey(key.EmailKey);
 
-const checksum_lib = require("../Paytm/checksum");
-const config = require('../Paytm/config')
+const razorpay = new Razorpay({
+    key_id: 'rzp_test_Y179EKf01voYPw',
+    key_secret: 'azajU71KY1gEhtihUKe3340L'
+})
 
+exports.razorpay = async (req, res) => {
+    const payment_capture = 1
+    const currency = 'INR';
+    const amount = req.body.amount;
+    const number = req.body.number;
+    const name=req.body.name;
 
-exports.paynow = (req, res) => {
-    // Route for making payment
-    console.log(req.query);
-    var paymentDetails = {
-        amount: req.query.amount,
-        customerId: req.query.name,
-        customerEmail: req.query.emailId,
-        customerPhone: req.query.number,
-        orderId:req.query.orderId
-    }
-        var paytmParams = {};
-        paytmParams['MID'] = config.PaytmConfig.mid;
-        paytmParams['WEBSITE'] = config.PaytmConfig.website;
-        paytmParams['CHANNEL_ID'] = 'WEB';
-        paytmParams['INDUSTRY_TYPE_ID'] = 'Retail';
-        paytmParams['ORDER_ID'] = paymentDetails.orderId;
-        paytmParams['CUST_ID'] = paymentDetails.customerId;
-        paytmParams['TXN_AMOUNT'] = paymentDetails.amount;
-        paytmParams['CALLBACK_URL'] = 'http://localhost:5000/pay/callback';
-        paytmParams['EMAIL'] = paymentDetails.customerEmail;
-        paytmParams['MOBILE_NO'] = paymentDetails.customerPhone;
-
-
-        checksum_lib.genchecksum(paytmParams, config.PaytmConfig.key, function (err, checksum) {
-            console.log("checksum",checksum);
-            var params={
-                ...paytmParams,
-                CHECKSUMHASH:checksum
+    Record.findOne({ number: number }, async (err, user) => {
+        // console.log(user)
+        if (!user) {
+            const options = {
+                currency,
+                receipt: shortid.generate(),
+                payment_capture,
+                amount: amount * 100
             }
-            res.json(params)
-        });
-    // console.log(req.body)
-    // const name = req.body.name;
-    // const emailId = req.body.emailId;
-    // const amount = req.body.amount;
-    // const date=new Date();
-    // const forReason = req.body.forReason;
-    // const data = new Record({
-    //     name,
-    //     emailId,
-    //     amount,
-    //     date,
-    //     forReason
-    // });
-    // data.save((error, data) => {
-    //     if (error) {
-    //         return res.status(400).json({
-    //             message: error
-    //         });
-    //     }
-    //     if (data) {
-    // return res.status(201).json({
-    //     data: req.body
-    // });
-    //     }
-    // })
+
+            try {
+                const response = await razorpay.orders.create(options)
+                console.log(response)
+                res.status(200).json({
+                    data: {
+                        id: response.id,
+                        currency: response.currency,
+                        amount: response.amount
+                    }
+                })
+            } catch (error) {
+                console.log(error)
+            }
+        }else{
+            res.status(400).json({
+                error: "Payment Record with this number already exists!"
+            })
+        }
+    });
+
 }
 
-exports.callback = (req, res) => {
-    console.log("Reached")
-    var paytmChecksum="";
-    console.log(req.body)
-    var received_data=req.body;
-    console.log(received_data)
-    var paytmParams={};
-    for(var key in received_data){
-        if(key=="CHECKSUMHASH"){
-            paytmChecksum=received_data[key];
-        }else{
-            paytmParams[key]=received_data[key];
-        }
+exports.verification = (req, res) => {
+
+    const shasum = crypto.createHmac('sha256', key.SECRET_KEY)
+    shasum.update(JSON.stringify(req.body))
+    const digest = shasum.digest('hex')
+
+    // console.log(digest, req.headers['x-razorpay-signature'])
+
+    if (digest === req.headers['x-razorpay-signature']) {
+        // console.log('request is legit')
+        // process it
+        console.log(req.body.payload.payment.entity)
+        const name = req.body.payload.payment.entity.card.name;
+        const forReason = req.body.payload.payment.entity.description;
+        const date = new Date();
+        const number = req.body.payload.payment.entity.contact;
+        const amount = (req.body.payload.payment.entity.amount) / 100;
+        const email = req.body.payload.payment.entity.email;
+
+        Record.findOne({ number: number }, (err, user) => {
+            // console.log(err,user)
+            if (!user) {
+                const data = new Record({
+                    name,
+                    forReason,
+                    date,
+                    number,
+                    amount
+                });
+                
+                data.save((err, data) => {
+                    if (data) {
+                        pdf.create(pdfTemplate({ name, forReason, date, number, amount }), {}).toFile(path.join(__dirname, 'images/payment', name) + '.pdf', (error, success) => {
+                            if (error) {
+                                return res.status(400).json({
+                                    error: "Error while creating a PDF!"
+                                })
+                            } else {
+                                pathToAttachment = `${__dirname}/images/payment/${name}.pdf`;
+                                attachment = fs.readFileSync(pathToAttachment).toString("base64");
+                                sgMail.send({
+                                    from: key.EMAIL_FROM,
+                                    to: email,
+                                    subject: 'Your Payment Receipt generated Successfully!',
+                                    text: 'Download Payment Receipt and use it!',
+                                    attachments: [
+                                        {
+                                            content: attachment,
+                                            filename: `${name}.pdf`,
+                                            type: "application/pdf",
+                                            disposition: "attachment"
+                                        }
+                                    ]
+                                })
+                                    .then(sent => {
+                                        fs.unlinkSync(`${__dirname}/images/payment/${name}.pdf`);
+                                        return res.status(200).json({
+                                            message: `Your PDF has been sent to ${email}`
+                                        });
+                                    })
+                                    .catch(err => {
+                                        console.log(err);
+                                    });
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    } else {
+        sgMail.send({
+            from: key.EMAIL_FROM,
+            to: email,
+            subject: 'Opps,Your Payment with eGram Panchayat failed!',
+            text: `Kindly contact to ${key.EMAIL_FROM} or try again!`
+        })
+            .then(sent => {
+                return res.status(200).json({
+                    message: `Payment status update has been sent to ${email}`
+                });
+            })
+            .catch(err => {
+                console.log(err);
+            });
     }
-    var isValidChecksum=checksum_lib.verifychecksum(paytmParams,config.PaytmConfig.key,paytmChecksum);
-    if(isValidChecksum){
-        console.log("checksum matched!");
-    }else{
-        console.log("checksum mismatched!");
-    }
+    // res.json({ status: 'ok' })
 }
