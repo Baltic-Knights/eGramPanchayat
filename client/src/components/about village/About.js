@@ -12,6 +12,7 @@ import temple from './carousel images/khandoba.jpg';
 import { useDispatch, useSelector } from 'react-redux';
 import { committeeFetch } from '../../Redux/actions/committeeActions';
 import { FadeTransform, Fade, Stagger } from 'react-animation-components';
+import "./about.css";
 
 const About = () => {
     const dispatch = useDispatch()
@@ -59,111 +60,111 @@ const About = () => {
                                 exitTransform: 'scale(0.5) translateY(-50%)'
                             }}>
                             <Carousel>
-                                <Carousel.Item interval={1000}>
+                                <Carousel.Item interval={1000} className="carousel-item">
                                     <img
-                                        className="d-block h-50 w-100"
+                                        className="d-block h-50 w-100 image"
                                         src={village}
                                         alt="village"
                                     />
-                                    <Carousel.Caption>
-                                        <h3 style={{ color: "#000000" }}>Kadadhe Village.</h3>
-                                        <p style={{ color: "#000000" }}>Kadadhe is a Village in Khed Taluka in Pune District of Maharashtra State, India. It belongs to Desh or Paschim Maharashtra region . It belongs to Pune Division . It is located 56 KM towards North from District head quarters Pune. 15 KM from Khed. 116 KM from State capital Mumbai.</p>
+                                    <Carousel.Caption className="carousel-caption">
+                                        <h3 className="text-white">Kadadhe Village.</h3>
+                                        <p className="text-white">Kadadhe is a Village in Khed Taluka in Pune District of Maharashtra State, India. It belongs to Desh or Paschim Maharashtra region . It belongs to Pune Division . It is located 56 KM towards North from District head quarters Pune. 15 KM from Khed. 116 KM from State capital Mumbai.</p>
                                     </Carousel.Caption>
                                 </Carousel.Item>
-                                <Carousel.Item interval={1000}>
+                                <Carousel.Item interval={1000} className="carousel-item">
                                     <img
-                                        className="d-block w-100"
+                                        className="d-block w-100 image"
                                         src={dam}
                                         alt="dam"
                                     />
 
-                                    <Carousel.Caption>
-                                        <h3 style={{ color: "#000000" }}>ChasKaman Water Reservoir</h3>
-                                        <p style={{ color: "#000000" }}>The Chaskaman Dam is one of the important dams of Maharashtra and is built on the Bhima River at Rajgurunagar in Pune district.The capacity of Chas Kaman Dam to irrigate about 32824 ha of land of the villages nearby in Pune district.</p>
+                                    <Carousel.Caption className="carousel-caption">
+                                        <h3 className="text-white">ChasKaman Water Reservoir</h3>
+                                        <p className="text-white">The Chaskaman Dam is one of the important dams of Maharashtra and is built on the Bhima River at Rajgurunagar in Pune district.The capacity of Chas Kaman Dam to irrigate about 32824 ha of land of the villages nearby in Pune district.</p>
                                     </Carousel.Caption>
                                 </Carousel.Item>
-                                <Carousel.Item interval={1000}>
+                                <Carousel.Item interval={1000} className="carousel-item">
                                     <img
-                                        className="d-block w-100"
+                                        className="d-block w-100 image"
                                         src={powerhouse}
                                         alt="powerhouse"
                                     />
 
-                                    <Carousel.Caption>
-                                        <h3>Vindhyachal Hydro Power PVT. LTD</h3>
-                                        <p>Chaskaman Hydro-Power Plant is a 3 MW power station located at Chaskaman Dam on Bhima river near Rajgurunagar in Maharashtra, India.This is the second greenfield Hydel Power Project developed by the Company.</p>
+                                    <Carousel.Caption className="carousel-caption">
+                                        <h3 className="text-white">Vindhyachal Hydro Power PVT. LTD</h3>
+                                        <p className="text-white">Chaskaman Hydro-Power Plant is a 3 MW power station located at Chaskaman Dam on Bhima river near Rajgurunagar in Maharashtra, India.This is the second greenfield Hydel Power Project developed by the Company.</p>
                                     </Carousel.Caption>
                                 </Carousel.Item>
-                                <Carousel.Item interval={1000}>
+                                <Carousel.Item interval={1000} className="carousel-item">
                                     <img
-                                        className="d-block w-100"
+                                        className="d-block w-100 image"
                                         src={houses}
                                         alt="houses"
                                     />
 
-                                    <Carousel.Caption>
-                                        <h3>Permenant Agriculture Village.</h3>
-                                        <p>People from this village are mostly rely on farming over the generations.their houses are reflections of their sinple lifestyle.</p>
+                                    <Carousel.Caption className="carousel-caption">
+                                        <h3 className="text-white">Permenant Agriculture Village.</h3>
+                                        <p className="text-white">People from this village are mostly rely on farming over the generations.their houses are reflections of their sinple lifestyle.</p>
                                     </Carousel.Caption>
                                 </Carousel.Item>
-                                <Carousel.Item interval={1000}>
+                                <Carousel.Item interval={1000} className="carousel-item">
                                     <img
-                                        className="d-block w-100"
+                                        className="d-block w-100 image"
                                         src={temple}
                                         alt="temple"
                                     />
 
-                                    <Carousel.Caption>
-                                        <h3>Khandoba temple.</h3>
-                                        <p>Temple of God Khandoba on north side of village.This is the second Biggest temple in Pune District with development cost of 3 crores.</p>
+                                    <Carousel.Caption className="carousel-caption">
+                                        <h3 className="text-white">Khandoba temple.</h3>
+                                        <p className="text-white">Temple of God Khandoba on north side of village.This is the second Biggest temple in Pune District with development cost of 3 crores.</p>
                                     </Carousel.Caption>
                                 </Carousel.Item>
-                                <Carousel.Item interval={1000}>
+                                <Carousel.Item interval={1000} className="carousel-item">
                                     <img
-                                        className="d-block w-100"
+                                        className="d-block w-100 image"
                                         src={river}
                                         alt="river"
                                     />
 
-                                    <Carousel.Caption>
-                                        <h3 style={{ color: "#000000" }}>Bhima River.</h3>
-                                        <p>This village on Bank of holy river Bhima.This river is backbone of villagers in terms of water,farming.</p>
+                                    <Carousel.Caption className="carousel-caption">
+                                        <h3 className="text-white">Bhima River.</h3>
+                                        <p className="text-white">This village on Bank of holy river Bhima.This river is backbone of villagers in terms of water,farming.</p>
                                     </Carousel.Caption>
                                 </Carousel.Item>
-                                <Carousel.Item interval={1000}>
+                                <Carousel.Item interval={1000} className="carousel-item">
                                     <img
-                                        className="d-block w-100"
+                                        className="d-block w-100 image"
                                         src={children}
                                         alt="children"
                                     />
 
-                                    <Carousel.Caption>
-                                        <h3>Primary School.</h3>
-                                        <p>There is one primary school for children in village which focuses on overall growth of students.</p>
+                                    <Carousel.Caption className="carousel-caption">
+                                        <h3 className="text-white">Primary School.</h3>
+                                        <p className="text-white">There is one primary school for children in village which focuses on overall growth of students.</p>
                                     </Carousel.Caption>
                                 </Carousel.Item>
-                                <Carousel.Item interval={1000}>
+                                <Carousel.Item interval={1000} className="carousel-item">
                                     <img
-                                        className="d-block w-100"
+                                        className="d-block w-100 image"
                                         src={women}
                                         alt="women"
                                     />
 
-                                    <Carousel.Caption>
-                                        <h3>Independent Women.</h3>
-                                        <p>There are lots of work opportunities for women in our village.women can live independently and fulfil their family needs.</p>
+                                    <Carousel.Caption className="carousel-caption">
+                                        <h3 className="text-white">Independent Women.</h3>
+                                        <p className="text-white">There are lots of work opportunities for women in our village.women can live independently and fulfil their family needs.</p>
                                     </Carousel.Caption>
                                 </Carousel.Item>
-                                <Carousel.Item interval={1000}>
+                                <Carousel.Item interval={1000} className="carousel-item">
                                     <img
-                                        className="d-block w-100"
+                                        className="d-block w-100 image"
                                         src={roads}
                                         alt="roads"
                                     />
 
-                                    <Carousel.Caption>
-                                        <h3>Concrete roads.</h3>
-                                        <p>Village has network of concrete roads to connect village with main road.</p>
+                                    <Carousel.Caption className="carousel-caption">
+                                        <h3 className="text-white">Concrete roads.</h3>
+                                        <p className="text-white">Village has network of concrete roads to connect village with main road.</p>
                                     </Carousel.Caption>
                                 </Carousel.Item>
                             </Carousel>
@@ -171,10 +172,10 @@ const About = () => {
                     </Col>
                 </Row>
             </Container>
-            <Container fluid className="mt-4">
+            <Container fluid className="mt-5">
                 <Row className="d-flex justify-content-md-center">
                     <Col className="col-md-6 col-xs-6 mt-2">
-                        <h3>Last 5 village heads of village:</h3>
+                        <h3 className="text-center">Last 5 village heads of village:</h3>
                         <FadeTransform
                             in
                             transformProps={{
@@ -195,7 +196,7 @@ const About = () => {
                             </Table></FadeTransform>
                     </Col>
                     <Col className="col-md-6 col-xs-6 mt-2">
-                        <h3>Members of current committee:</h3>
+                        <h3 className="text-center">Members of current committee:</h3>
                         <FadeTransform
                             in
                             transformProps={{

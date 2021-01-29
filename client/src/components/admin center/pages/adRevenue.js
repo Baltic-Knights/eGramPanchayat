@@ -6,7 +6,6 @@ import { isAuth } from '../../../helpers/auth';
 
 function AdRevenueReceipt() {
     return (
-        isAuth() ? isAuth().role === 'admin'?  
         <Container fluid className="m-0 p-0">
         <Row className="d-flex">
             <Col className="col-md-3">
@@ -16,7 +15,7 @@ function AdRevenueReceipt() {
             <h1>Payment</h1>
             </Col>
         </Row>
-    </Container>:isAuth().role === 'user'?<Redirect to="/"/> :<Redirect to="/"/> : <Redirect to="/login"/>
+    </Container>
     )
 }
 

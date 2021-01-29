@@ -23,13 +23,8 @@ const PaymentReceipt = () => {
             name: name,
             email: email
         }
-        // console.log(paymentData);
-        // const res = axiosInstance.post('residence/create', residenceData)
-        // console.log(res)
     }
     return (
-        isAuth() ? isAuth() && isAuth().role === 'admin' || isAuth().role === 'user'
-        ?
         <Container fluid className="mb-3">
             <Row className="justify-content-md-center">
                 <Col className='col-md-5 mt-3' >
@@ -107,8 +102,7 @@ const PaymentReceipt = () => {
                             </Card.Body>
                         </Card></FadeTransform></Col>
             </Row>
-
-        </Container>:<Redirect to="/"/> : <Redirect to="/login"/>
+        </Container>
     )
 }
 

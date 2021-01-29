@@ -126,7 +126,6 @@ function AdSchemes() {
         setIsModalOpen(!isModalOpen);
     }
     return (
-        isAuth() ? isAuth().role === 'admin'? 
         <Container fluid className="m-0 p-0">
             <Modal isOpen={isModalOpen} toggle={toggleModal}>
                 <ModalHeader toggle={toggleModal}><BsPencilSquare className="mr-2" />Add Scheme.</ModalHeader>
@@ -289,7 +288,7 @@ function AdSchemes() {
                     </Stagger>
                 </Col>
             </Row>
-        </Container>:isAuth().role === 'user'?<Redirect to="/"/> :<Redirect to="/"/> : <Redirect to="/login"/>
+        </Container>
     )
 }
 

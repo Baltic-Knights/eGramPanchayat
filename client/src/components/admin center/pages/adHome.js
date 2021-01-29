@@ -99,7 +99,6 @@ function AdHome() {
         })
     }
     return (
-        isAuth() ? isAuth().role === 'admin' ?
             <Container fluid className="m-0 p-0">
                 <Row className="d-flex">
                     <Col className="col-md-3">
@@ -980,7 +979,7 @@ function AdHome() {
                             </Card></FadeTransform>
                     </Col>
                 </Row>
-            </Container> : isAuth().role === 'user' ? <Redirect to="/" /> : <Redirect to="/" /> : <Redirect to="/login" />
+            </Container> 
     )
 }
 

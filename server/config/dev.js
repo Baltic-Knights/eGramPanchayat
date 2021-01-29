@@ -4,7 +4,7 @@ module.exports={
     COOKIEKEY:"afdsjfodgjhgjlhlvjhpi",
     SECRET_KEY:'@TeamIAF',
     ResetPassword:'@TeamBalticKnights',
-    adminEmail:"naikaderohit833@gmail.com",
+    adminEmail:"balticknightsofficial@gmail.com",
     API:"http://localhost:5000",
     EmailKey:"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",
     EMAIL_TO:"naikaderohit833@gmail.com",

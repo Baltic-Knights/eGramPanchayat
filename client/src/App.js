@@ -1,15 +1,14 @@
 import React, { useEffect } from 'react';
 import './App.css';
 import AdminRouter from './components/onlyAdmin';
+import privateRouter from './privateRouter';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.css';
 import 'bootstrap-social/bootstrap-social.css';
 import Header from './components/Headers & footers/header';
 import Home from './components/Home/Home';
 import Schemes from './components/schemes/Schemes';
-import Payment from './components/payment/Payments';
 import Payments from './components/payment/Payments';
-import Admin from './components/admin center/admin';
 import About from './components/about us/about us';
 import Village from './components/about village/About';
 import Loginpage from './components/loginPage';
@@ -32,7 +31,6 @@ import adNotify from './components/admin center/pages/adNotify';
 import AdVillage from './components/admin center/pages/adVillage';
 import AdResidence from './components/admin center/pages/adResidence';
 import ReactNotification from 'react-notifications-component';
-import privateRouter from './helpers/privateRouter';
 import history from './helpers/history';
 function App(props) {
   useEffect(() => {
@@ -55,16 +53,15 @@ function App(props) {
           <Route path="/activate/:token" component={Activate}></Route>
           <Route path="/resetPassword/:token" component={Reset}></Route>
           <Route path="/forgotPassword" component={Forget}></Route>
-          <Route path="/adVillager" component={AdVillager}></Route>
-          <Route path="/admin" component={Admin}></Route>
+          <AdminRouter path="/adVillager" component={AdVillager}></AdminRouter>
           <Route path="/payreceipt" component={PaymentReceipt}></Route>
-          <Route path="/adHome" component={AdHome}></Route>
-          <Route path="/adRevenue" component={AdRevenue}></Route>
-          <Route path="/adRevenueReceipt" component={AdRevenueReceipt}></Route>
-          <Route path="/adSchemes" component={AdSchemes}></Route>
-          <Route path="/adVillage" component={AdVillage}></Route>
-          <Route path="/adResidence" component={AdResidence}></Route>
-          <Route path="/adNotify" component={adNotify}></Route>
+          <AdminRouter path="/adHome" component={AdHome}></AdminRouter>
+          <AdminRouter path="/adRevenue" component={AdRevenue}></AdminRouter>
+          <AdminRouter path="/adRevenueReceipt" component={AdRevenueReceipt}></AdminRouter>
+          <AdminRouter path="/adSchemes" component={AdSchemes}></AdminRouter>
+          <AdminRouter path="/adVillage" component={AdVillage}></AdminRouter>
+          <AdminRouter path="/adResidence" component={AdResidence}></AdminRouter>
+          <AdminRouter path="/adNotify" component={adNotify}></AdminRouter>
         </Switch>
         <Footer />
       </BrowserRouter>

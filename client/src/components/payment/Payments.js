@@ -98,8 +98,8 @@ const Payment = () => {
     }
 
     return (
-        isAuth() ? isAuth() && isAuth().role === 'admin' || isAuth().role === 'user'
-            ?
+        // isAuth() ? isAuth() && isAuth().role === 'admin' || isAuth().role === 'user'
+            // ?
             <Container fluid className="mb-3">
                 <Row className="justify-content-md-center">
                     <Col className='col-md-5 mt-3' >
@@ -244,7 +244,8 @@ const Payment = () => {
                             </Card></FadeTransform></Col>
                 </Row>
 
-            </Container> : <Redirect to="/" /> : <Redirect to="/login" />
+            </Container> 
+            // : <Redirect to="/" /> : <Redirect to="/login" />
     )
 }
 
