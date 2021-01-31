@@ -9,8 +9,7 @@ import axiosInstance from '../../../helpers/axios';
 import { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import 'animate.css';
-import { Redirect } from 'react-router';
-import { isAuth } from '../../../helpers/auth';
+import Medias from 'react-media';
 import moment from 'moment';
 import DataImg from './applicants.jpg'
 
@@ -63,7 +62,7 @@ function AdRevenue() {
     const Remove = (data) => {
         console.log(data)
         const revenueData = {
-            email:data.email,
+            email: data.email,
             UID: data.UID
         }
         axiosInstance.post('revenue/remove', revenueData)
@@ -108,8 +107,8 @@ function AdRevenue() {
     if (revenue?.revenueData.length) {
         const activeKey = revenue?.revenueData[0]._id;
         cards = revenue?.revenueData.map((data, id) => {
-                return (
-                    (data.display)?<Card key={id} className="col-md-12 col-sm-12 mt-5">
+            return (
+                (data.display) ? <Card key={id} className="col-md-12 col-sm-12 mt-5">
                     <Accordion className="myAccordian" defaultActiveKey={activeKey}>
                         <Accordion.Toggle as={Card.Header} className="back" eventKey={data._id}>
                             <h4>{data.name}</h4>
@@ -222,28 +221,34 @@ function AdRevenue() {
 
                         </Accordion.Collapse>
                     </Accordion>
-                </Card>:""
-                )
+                </Card> : ""
+            )
         })
     }
     return (
 
-        <Container fluid className="m-0 p-0">
-                <Row className="d-flex">
-                    <Col className="col-md-3">
-                        <Sidebar />
-                    </Col>
-                    <Col className="col-md-7 mt-5 mb-3 text-center">
-                        <h1>Applicants for Revenue Tax Receipt.</h1>
-                        {(revenue?.revenueData.length) ? cards!=""?<Stagger in><div>{cards}</div></Stagger> :
-                        <div className="text-center mt-5"><h4>No Applicants here.</h4>
-                        <img className="mt-2" src={DataImg} width="300" height="200" /></div>:
-                            <div className="text-center mt-5"><h4>No Applicants here.</h4>
-                                <img className="mt-2" src={DataImg} width="300" height="200" /></div>}
-                    </Col>
-                </Row>
-            </Container> 
-)
+        <Medias query="(min-width:1300px)">
+            {matches => {
+                return matches ? <Container fluid className="m-0 p-0">
+                    <Row className="d-flex">
+                        <Col className="col-md-3">
+                            <Sidebar />
+                        </Col>
+                        <Col className="col-md-7 mt-5 mb-3 text-center">
+                            <h1 className="titles">Applicants for Revenue Tax Receipt.</h1>
+                            {(revenue?.revenueData.length) ? cards != "" ? <Stagger in><div>{cards}</div></Stagger> :
+                                <div className="text-center mt-5"><h4 className="heads">No Applicants here.</h4>
+                                    <img className="mt-2" src={DataImg} width="300" height="200" /></div> :
+                                <div className="text-center mt-5"><h4 className="heads">No Applicants here.</h4>
+                                    <img className="mt-2" src={DataImg} width="300" height="200" /></div>}
+                        </Col>
+                    </Row>
+                </Container> : <div>
+                        <h3 className="text-center mt-5 mb-5 titles">This Section is accessible only from Desktop resolutions.</h3>
+                    </div>;
+            }}
+        </Medias>
+    )
 }
 
 export default AdRevenue;

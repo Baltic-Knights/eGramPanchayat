@@ -8,9 +8,17 @@ const paymentSchema=new mongoose.Schema({
         type:String,
         required:true
     },
-    date:{
+    order_id:{
         type:String,
         required:true
+    },
+    payment_id:{
+        type:String,
+        trim:true
+    },
+    isPaid:{
+        type:Boolean,
+        default:false
     },
     number:{
         type:String,
@@ -18,6 +26,10 @@ const paymentSchema=new mongoose.Schema({
     },
     amount:{
         type:Number,
+        required:true
+    },
+    email:{
+        type:String,
         required:true
     }
 },{

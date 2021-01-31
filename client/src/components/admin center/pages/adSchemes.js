@@ -6,15 +6,13 @@ import { Container, Row, Col, Card, Accordion, Button, Form, Media, ResponsiveEm
 import axiosInstance from '../../../helpers/axios';
 import { fetchSchemes } from '../../../Redux/actions/schemesAction';
 import { BsPlusCircle, BsPencilSquare } from "react-icons/bs";
-import { MdDelete } from "react-icons/md";
+import Medias from 'react-media';
 import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 import './pages.css';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import 'animate.css';
-import { Redirect } from 'react-router';
-import { isAuth } from '../../../helpers/auth';
 import DataImg from './data.jpg'
 
 const required = (val) => val && val.length;
@@ -69,7 +67,7 @@ function AdSchemes() {
                     <Card className="col-md-12 col-sm-12 mt-5">
                         <Accordion className="myAccordian" defaultActiveKey={activeKey}>
                             <Accordion.Toggle as={Card.Header} className="back" eventKey={scheme._id}>
-                                <h4>{scheme.title}</h4>
+                                <h4 className="heads">{scheme.title}</h4>
                             </Accordion.Toggle>
                             <Accordion.Collapse eventKey={scheme._id}>
                                 <Card.Body>
@@ -126,169 +124,175 @@ function AdSchemes() {
         setIsModalOpen(!isModalOpen);
     }
     return (
-        <Container fluid className="m-0 p-0">
-            <Modal isOpen={isModalOpen} toggle={toggleModal}>
-                <ModalHeader toggle={toggleModal}><BsPencilSquare className="mr-2" />Add Scheme.</ModalHeader>
-                <ModalBody>
-                    <LocalForm onSubmit={(values) => AddScheme(values)}>
-                        <div className="form-group">
-                            <Row><Col className="col-md-3 offset-md-1">
-                                <Form.Label>Title:</Form.Label></Col>
-                                <Col className="col-md-7">
-                                    <Control.text
-                                        model=".title"
-                                        className="form-control"
-                                        autocomplete="off"
-                                        placeholder="Enter Title"
-                                        name="title"
-                                        value={title}
-                                        onChange={(e) => setTitle(e.target.value)}
-                                        validators={{
-                                            required, validSentence
-                                        }}
-                                    />
-                                    <Errors
-                                        className="text-danger"
-                                        model=".title"
-                                        show="touched"
-                                        messages={{
-                                            required: 'Required ',
-                                            validSentence: 'Enter a valid Title!'
-                                        }}
-                                    />
-                                </Col></Row>
-                        </div>
-                        <div className="form-group">
-                            <Row><Col className="col-md-3 offset-md-1">
-                                <Form.Label>Department:</Form.Label></Col>
-                                <Col className="col-md-7">
-                                    <Control.text
-                                        model=".department"
-                                        className="form-control"
-                                        autocomplete="off"
-                                        placeholder="Enter Department"
-                                        name="department"
-                                        value={department}
-                                        onChange={(e) => setDepartment(e.target.value)}
-                                        validators={{
-                                            required, validSentence
-                                        }}
-                                    />
-                                    <Errors
-                                        className="text-danger"
-                                        model=".department"
-                                        show="touched"
-                                        messages={{
-                                            required: 'Required ',
-                                            validSentence: 'Enter a valid Title!'
-                                        }}
-                                    />
-                                </Col></Row>
-                        </div>
-                        <div className="form-group">
-                            <Row><Col className="col-md-3 offset-md-1">
-                                <Form.Label>Description:</Form.Label></Col>
-                                <Col className="col-md-7">
-                                    <Control.textarea
-                                        model=".description"
-                                        className="form-control"
-                                        autocomplete="off"
-                                        placeholder="Enter description"
-                                        name="description"
-                                        value={description}
-                                        onChange={(e) => setDescription(e.target.value)}
-                                        validators={{
-                                            required, validSentence
-                                        }}
-                                    />
-                                    <Errors
-                                        className="text-danger"
-                                        model=".description"
-                                        show="touched"
-                                        messages={{
-                                            required: 'Required ',
-                                            validSentence: 'Enter a valid Text!'
-                                        }}
-                                    />
-                                </Col></Row>
-                        </div>
-                        <Row><Col>
-                            <div className="form-group">
-                                <Row><Col className="col-md-3 offset-md-1"><Form.Label>scheme related web link:</Form.Label></Col>
-                                    <Col className="col-md-7">
-                                        <Control.text
-                                            model=".weblink"
-                                            className="form-control"
-                                            autoComplete="off"
-                                            placeholder="Enter web link"
-                                            name="weblink"
-                                            value={weblink}
-                                            onChange={(e) => setWeblink(e.target.value)}
-                                            validators={{
-                                                required, validURL
-                                            }}
-                                        />
-                                        <Errors
-                                            className="text-danger"
-                                            model=".weblink"
-                                            show="touched"
-                                            messages={{
-                                                required: 'Required ',
-                                                validURL: 'Enter a valid URL!'
-                                            }}
-                                        />
-                                    </Col></Row>
-                            </div></Col></Row>
-                        <div className="form-group">
-                            <Row><Col className="col-md-3 offset-md-1"><Form.Label>Picture:</Form.Label></Col>
-                                <Col className="col-md-7">
-                                    <Control.text
-                                        model=".picture"
-                                        className="form-control"
-                                        autoComplete="off"
-                                        placeholder="Enter picture URL:"
-                                        name="picture"
-                                        value={picture}
-                                        onChange={(e) => setPicture(e.target.value)}
-                                        validators={{
-                                            required, validURL
-                                        }}
-                                    />
-                                    <Errors
-                                        className="text-danger"
-                                        model=".picture"
-                                        show="touched"
-                                        messages={{
-                                            required: 'Required ',
-                                            validURL: 'Enter a valid URL!'
-                                        }}
-                                    />
-                                </Col></Row>
-                        </div>
-                        <Row className="text-center float-right mt-4">
-                            <Col><Button variant="primary" className="mr-3" type="submit">Create</Button>
-                                <Button variant="danger" onClick={toggleModal}>Cancel</Button></Col>
-                        </Row>
-                    </LocalForm>
-                </ModalBody>
-            </Modal>
-            <Row className="d-flex">
-                <Col className="col-md-3">
-                    <Sidebar />
-                </Col>
-                <Col className="col-md-7 mt-5 mb-3">
-                    <h1 className="d-flex justify-content-center">Post Section.</h1>
-                    <center><Button className="mt-4 col-md-5 " onClick={toggleModal}>
-                        <BsPlusCircle size={25} className="mr-3" />Add New Scheme</Button></center>
-                    <Stagger in>
-                    {schemes.length?<Stagger in>{cards}</Stagger>:
-                                <div className="text-center mt-3"><h4>No schemes Available</h4>
-                                <img className="mt-2" src={DataImg} width="300" height="200"/></div>}
-                        {/* <div>{cards}</div> */}
-                    </Stagger>
-                </Col>
-            </Row>
-        </Container>
+        <Medias query="(min-width:1300px)">
+            {matches => {
+                return matches ? <Container fluid className="m-0 p-0">
+                    <Modal isOpen={isModalOpen} toggle={toggleModal}>
+                        <ModalHeader toggle={toggleModal}><BsPencilSquare className="mr-2" />Add Scheme.</ModalHeader>
+                        <ModalBody>
+                            <LocalForm onSubmit={(values) => AddScheme(values)}>
+                                <div className="form-group">
+                                    <Row><Col className="col-md-3 offset-md-1">
+                                        <Form.Label>Title:</Form.Label></Col>
+                                        <Col className="col-md-7">
+                                            <Control.text
+                                                model=".title"
+                                                className="form-control"
+                                                autocomplete="off"
+                                                placeholder="Enter Title"
+                                                name="title"
+                                                value={title}
+                                                onChange={(e) => setTitle(e.target.value)}
+                                                validators={{
+                                                    required, validSentence
+                                                }}
+                                            />
+                                            <Errors
+                                                className="text-danger"
+                                                model=".title"
+                                                show="touched"
+                                                messages={{
+                                                    required: 'Required ',
+                                                    validSentence: 'Enter a valid Title!'
+                                                }}
+                                            />
+                                        </Col></Row>
+                                </div>
+                                <div className="form-group">
+                                    <Row><Col className="col-md-3 offset-md-1">
+                                        <Form.Label>Department:</Form.Label></Col>
+                                        <Col className="col-md-7">
+                                            <Control.text
+                                                model=".department"
+                                                className="form-control"
+                                                autocomplete="off"
+                                                placeholder="Enter Department"
+                                                name="department"
+                                                value={department}
+                                                onChange={(e) => setDepartment(e.target.value)}
+                                                validators={{
+                                                    required, validSentence
+                                                }}
+                                            />
+                                            <Errors
+                                                className="text-danger"
+                                                model=".department"
+                                                show="touched"
+                                                messages={{
+                                                    required: 'Required ',
+                                                    validSentence: 'Enter a valid Title!'
+                                                }}
+                                            />
+                                        </Col></Row>
+                                </div>
+                                <div className="form-group">
+                                    <Row><Col className="col-md-3 offset-md-1">
+                                        <Form.Label>Description:</Form.Label></Col>
+                                        <Col className="col-md-7">
+                                            <Control.textarea
+                                                model=".description"
+                                                className="form-control"
+                                                autocomplete="off"
+                                                placeholder="Enter description"
+                                                name="description"
+                                                value={description}
+                                                onChange={(e) => setDescription(e.target.value)}
+                                                validators={{
+                                                    required, validSentence
+                                                }}
+                                            />
+                                            <Errors
+                                                className="text-danger"
+                                                model=".description"
+                                                show="touched"
+                                                messages={{
+                                                    required: 'Required ',
+                                                    validSentence: 'Enter a valid Text!'
+                                                }}
+                                            />
+                                        </Col></Row>
+                                </div>
+                                <Row><Col>
+                                    <div className="form-group">
+                                        <Row><Col className="col-md-3 offset-md-1"><Form.Label>scheme related web link:</Form.Label></Col>
+                                            <Col className="col-md-7">
+                                                <Control.text
+                                                    model=".weblink"
+                                                    className="form-control"
+                                                    autoComplete="off"
+                                                    placeholder="Enter web link"
+                                                    name="weblink"
+                                                    value={weblink}
+                                                    onChange={(e) => setWeblink(e.target.value)}
+                                                    validators={{
+                                                        required, validURL
+                                                    }}
+                                                />
+                                                <Errors
+                                                    className="text-danger"
+                                                    model=".weblink"
+                                                    show="touched"
+                                                    messages={{
+                                                        required: 'Required ',
+                                                        validURL: 'Enter a valid URL!'
+                                                    }}
+                                                />
+                                            </Col></Row>
+                                    </div></Col></Row>
+                                <div className="form-group">
+                                    <Row><Col className="col-md-3 offset-md-1"><Form.Label>Picture:</Form.Label></Col>
+                                        <Col className="col-md-7">
+                                            <Control.text
+                                                model=".picture"
+                                                className="form-control"
+                                                autoComplete="off"
+                                                placeholder="Enter picture URL:"
+                                                name="picture"
+                                                value={picture}
+                                                onChange={(e) => setPicture(e.target.value)}
+                                                validators={{
+                                                    required, validURL
+                                                }}
+                                            />
+                                            <Errors
+                                                className="text-danger"
+                                                model=".picture"
+                                                show="touched"
+                                                messages={{
+                                                    required: 'Required ',
+                                                    validURL: 'Enter a valid URL!'
+                                                }}
+                                            />
+                                        </Col></Row>
+                                </div>
+                                <Row className="text-center float-right mt-4">
+                                    <Col><Button variant="primary" className="mr-3" type="submit">Create</Button>
+                                        <Button variant="danger" onClick={toggleModal}>Cancel</Button></Col>
+                                </Row>
+                            </LocalForm>
+                        </ModalBody>
+                    </Modal>
+                    <Row className="d-flex">
+                        <Col className="col-md-3">
+                            <Sidebar />
+                        </Col>
+                        <Col className="col-md-7 mt-5 mb-3">
+                            <h1 className="d-flex justify-content-center titles">Post Section.</h1>
+                            <center><Button className="mt-4 col-md-5 " onClick={toggleModal}>
+                                <BsPlusCircle size={25} className="mr-3" />Add New Scheme</Button></center>
+                            <Stagger in>
+                                {schemes.length ? <Stagger in>{cards}</Stagger> :
+                                    <div className="text-center mt-3"><h4>No schemes Available</h4>
+                                        <img className="mt-2" src={DataImg} width="300" height="200" /></div>}
+                                {/* <div>{cards}</div> */}
+                            </Stagger>
+                        </Col>
+                    </Row>
+                </Container> : <div>
+                        <h3 className="text-center mt-5 mb-5 titles">This Section is accessible only from Desktop resolutions.</h3>
+                    </div>;
+            }}
+        </Medias>
     )
 }
 

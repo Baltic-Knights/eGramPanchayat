@@ -25,12 +25,12 @@ exports.signup = (req, res) => {
         });
     } else {
         Villager.findOne({
-            UID: req.body.UID
+            UID: req.body.UID,name:req.body.name,email:req.body.email
         }, (err, user) => {
             // console.log(user)
             if (!user) {
                 return res.status(400).json({
-                    error: 'Adhar Number is not present in villager database!'
+                    error: 'User Details are not present in villager database!'
                 });
             } else {
                 User.findOne({
@@ -343,41 +343,49 @@ exports.google = (req, res) => {
             // console.log('GOOGLE LOGIN RESPONSE',response)
             const { email_verified, name, email } = response.payload;
             if (email_verified) {
-                User.findOne({ email }).exec((err, user) => {
+                User.findOne({ email:email }).exec((err, user) => {
                     if (user) {
                         const token = jwt.sign({ _id: user._id }, key.SECRET_KEY, {
                             expiresIn: '1d'
                         });
-                        const { _id, email, name, role } = user;
+                        var { _id, email, name, role } = user;
+                        if(email===key.adminEmail){
+                            role="admin";
+                        }else{
+                            role="user";
+                        }
                         return res.json({
                             token,
                             user: { _id, email, name, role }
                         });
                     } else {
-                        let password = email + key.SECRET_KEY;
-                        var role="user";
-                        if(email===key.adminEmail){
-                            role="admin";
-                        }
-                        user = new User({ name, email, password,username,role });
-                        user.save((err, data) => {
-                            if (err) {
-                                console.log('ERROR GOOGLE LOGIN ON USER SAVE', err);
-                                return res.status(400).json({
-                                    error: 'User signup failed with google'
-                                });
-                            } else {
-                                const token = jwt.sign(
-                                    { _id: data._id },
-                                    key.SECRET_KEY,
-                                    { expiresIn: '1d' }
-                                );
-                                const { _id, email, name, role } = data;
-                                return res.json({
-                                    token,
-                                    user: { _id, email, name, role }
-                                });
-                            }
+                        // let password = email + key.SECRET_KEY;
+                        // var role="user";
+                        // if(email===key.adminEmail){
+                        //     role="admin";
+                        // }
+                        // user = new User({ name, email, password,username,role });
+                        // user.save((err, data) => {
+                        //     if (err) {
+                        //         console.log('ERROR GOOGLE LOGIN ON USER SAVE', err);
+                        //         return res.status(400).json({
+                        //             error: 'User signup failed with google'
+                        //         });
+                        //     } else {
+                        //         const token = jwt.sign(
+                        //             { _id: data._id },
+                        //             key.SECRET_KEY,
+                        //             { expiresIn: '1d' }
+                        //         );
+                        //         const { _id, email, name, role } = data;
+                        //         return res.json({
+                        //             token,
+                        //             user: { _id, email, name, role }
+                        //         });
+                        //     }
+                        // });
+                        return res.status(400).json({
+                            error: "failed"
                         });
                     }
                 });
@@ -415,26 +423,29 @@ exports.facebook = (req, res) => {
                             user: { _id, email, name, role }
                         });
                     } else {
-                        let password = email + key.SECRET_KEY;
-                        user = new User({ name, email, password,username });
-                        user.save((err, data) => {
-                            if (err) {
-                                // console.log('ERROR FACEBOOK LOGIN ON USER SAVE', err);
-                                return res.status(400).json({
-                                    error: 'User signup failed with facebook'
-                                });
-                            } else {
-                                const token = jwt.sign(
-                                    { _id: data._id },
-                                    key.SECRET_KEY,
-                                    { expiresIn: '1d' }
-                                );
-                                const { _id, email, name, role } = data;
-                                return res.json({
-                                    token,
-                                    user: { _id, email, name, role }
-                                });
-                            }
+                        // let password = email + key.SECRET_KEY;
+                        // user = new User({ name, email, password,username });
+                        // user.save((err, data) => {
+                        //     if (err) {
+                        //         // console.log('ERROR FACEBOOK LOGIN ON USER SAVE', err);
+                        //         return res.status(400).json({
+                        //             error: 'User signup failed with facebook'
+                        //         });
+                        //     } else {
+                        //         const token = jwt.sign(
+                        //             { _id: data._id },
+                        //             key.SECRET_KEY,
+                        //             { expiresIn: '1d' }
+                        //         );
+                        //         const { _id, email, name, role } = data;
+                        //         return res.json({
+                        //             token,
+                        //             user: { _id, email, name, role }
+                        //         });
+                        //     }
+                        // });
+                        return res.status(400).json({
+                            error: "failed"
                         });
                     }
                 });

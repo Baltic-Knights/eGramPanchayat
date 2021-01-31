@@ -6,10 +6,9 @@ import { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import 'animate.css';
 import { Control, LocalForm, Errors } from 'react-redux-form';
-import { isAuth } from '../../../helpers/auth';
 import { FadeTransform } from 'react-animation-components';
 import Sidebar from '../Sidebar';
-import { Redirect } from 'react-router';
+import Media from 'react-media';
 
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => val && (val.length >= len);
@@ -61,14 +60,15 @@ function AdHome() {
     }
 
     return (
-        // isAuth() ? isAuth().role === 'admin'?   
-        <Container fluid className="m-0 p-0">
+        <Media query="(min-width:1300px)">
+        {matches => {
+            return matches ?<Container fluid className="m-0 p-0">
             <Row className="d-flex">
                 <Col className="col-md-3">
                     <Sidebar />
                 </Col>
                 <Col className="col-md-7 mt-4 mb-2 text-center">
-                    <h1>Notifications Section.</h1>
+                    <h1 className="titles">Notifications Section.</h1>
                     <FadeTransform
                         in
                         transformProps={{
@@ -143,8 +143,11 @@ function AdHome() {
                         </Card></FadeTransform>
                 </Col>
             </Row>
-        </Container>
-        // :isAuth().role === 'user'?<Redirect to="/"/> :<Redirect to="/"/> : <Redirect to="/login"/>
+        </Container>: <div>
+                        <h3 className="text-center mt-5 mb-5 titles">This Section is accessible only from Desktop resolutions.</h3>
+                        </div>;
+        }}
+        </Media>
     )
 }
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './admin.css';
 import { SidebarData } from './SidebarData';
-import { Fade,Stagger } from 'react-animation-components';
+
 const Sidebar = () => {
     return (
         <>
@@ -9,7 +9,6 @@ const Sidebar = () => {
                 <ul className="SidebarList">
                     {SidebarData.map((val, key) => {
                         return (
-                            <Fade in>
                             <li
                                 key={key}
                                 className="row"
@@ -20,7 +19,6 @@ const Sidebar = () => {
                             >
                                 <div id="icon">{val.icon}</div> <div id="title">{val.title}</div>
                             </li>
-                            </Fade>
                         );
                     })}
                 </ul>

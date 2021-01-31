@@ -63,6 +63,9 @@ module.exports = (data) => {
           <p>Amount:${data.amount}</p>
         </div>
         <div class="">
+          <p>OrderId:${data.order_id}</p>
+        </div>
+        <div class="">
           <p>Reason:${data.forReason}</p>
         </div>
       </div>

@@ -33,6 +33,7 @@
     "react-google-login": "^5.1.25",
     "react-google-maps": "^9.4.5",
     "react-icons": "^3.11.0",
+    "react-media": "^1.10.0",
     "react-notifications-component": "^3.0.3",
     "react-redux-form": "^1.16.14",
     "react-router-dom": "^5.2.0",

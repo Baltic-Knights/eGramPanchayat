@@ -21,11 +21,15 @@ exports.razorpay = async (req, res) => {
     const currency = 'INR';
     const amount = req.body.amount;
     const number = req.body.number;
-    const name=req.body.name;
+    const forReason = req.body.forReason;
+    const name = req.body.name;
+    const email = req.body.email;
+    const userid = req.body.userid;
 
     Record.findOne({ number: number }, async (err, user) => {
         // console.log(user)
         if (!user) {
+
             const options = {
                 currency,
                 receipt: shortid.generate(),
@@ -35,18 +39,32 @@ exports.razorpay = async (req, res) => {
 
             try {
                 const response = await razorpay.orders.create(options)
-                console.log(response)
-                res.status(200).json({
-                    data: {
-                        id: response.id,
-                        currency: response.currency,
-                        amount: response.amount
+                const orderid = response.id;
+                const data = new Record({
+                    name,
+                    email,
+                    forReason,
+                    number,
+                    amount,
+                    order_id: orderid
+                });
+
+                data.save((err, data) => {
+                    if (data) {
+                        res.status(200).json({
+                            data: {
+                                data,
+                                id: orderid,
+                                currency: response.currency,
+                                amount: response.amount
+                            }
+                        })
                     }
                 })
             } catch (error) {
                 console.log(error)
             }
-        }else{
+        } else {
             res.status(400).json({
                 error: "Payment Record with this number already exists!"
             })
@@ -57,73 +75,65 @@ exports.razorpay = async (req, res) => {
 
 exports.verification = (req, res) => {
 
-    const shasum = crypto.createHmac('sha256', key.SECRET_KEY)
-    shasum.update(JSON.stringify(req.body))
-    const digest = shasum.digest('hex')
+    // console.log(req.body)
+    // const shasum = crypto.createHmac('sha256', key.SECRET_KEY)
+    // shasum.update(JSON.stringify(req.body))
+    // const digest = shasum.digest('hex')
 
-    // console.log(digest, req.headers['x-razorpay-signature'])
+    // // console.log(digest, req.headers['x-razorpay-signature'])
 
-    if (digest === req.headers['x-razorpay-signature']) {
-        // console.log('request is legit')
-        // process it
-        console.log(req.body.payload.payment.entity)
-        const name = req.body.payload.payment.entity.card.name;
-        const forReason = req.body.payload.payment.entity.description;
-        const date = new Date();
-        const number = req.body.payload.payment.entity.contact;
-        const amount = (req.body.payload.payment.entity.amount) / 100;
-        const email = req.body.payload.payment.entity.email;
-
-        Record.findOne({ number: number }, (err, user) => {
-            // console.log(err,user)
-            if (!user) {
-                const data = new Record({
-                    name,
-                    forReason,
-                    date,
-                    number,
-                    amount
-                });
-                
-                data.save((err, data) => {
-                    if (data) {
-                        pdf.create(pdfTemplate({ name, forReason, date, number, amount }), {}).toFile(path.join(__dirname, 'images/payment', name) + '.pdf', (error, success) => {
-                            if (error) {
-                                return res.status(400).json({
-                                    error: "Error while creating a PDF!"
-                                })
-                            } else {
-                                pathToAttachment = `${__dirname}/images/payment/${name}.pdf`;
-                                attachment = fs.readFileSync(pathToAttachment).toString("base64");
-                                sgMail.send({
-                                    from: key.EMAIL_FROM,
-                                    to: email,
-                                    subject: 'Your Payment Receipt generated Successfully!',
-                                    text: 'Download Payment Receipt and use it!',
-                                    attachments: [
-                                        {
-                                            content: attachment,
-                                            filename: `${name}.pdf`,
-                                            type: "application/pdf",
-                                            disposition: "attachment"
-                                        }
-                                    ]
-                                })
-                                    .then(sent => {
-                                        fs.unlinkSync(`${__dirname}/images/payment/${name}.pdf`);
-                                        return res.status(200).json({
-                                            message: `Your PDF has been sent to ${email}`
-                                        });
-                                    })
-                                    .catch(err => {
-                                        console.log(err);
+    // if (digest === req.headers['x-razorpay-signature']) {
+    //     // console.log('request is legit')
+    //     // process it
+    //     console.log(req.body.payload.payment.entity)
+    if (req.body.response.razorpay_payment_id) {
+        Record.findOneAndUpdate({ number: req.body.number },
+            { $set: { isPaid: true, payment_id: req.body.response.razorpay_payment_id } }, (err, success) => {
+                // console.log(err,user)
+                if (success) {
+                    console.log(success)
+                    const date = success.updatedAt;
+                    const name = success.name;
+                    const forReason = success.forReason;
+                    const number = success.number;
+                    const amount = success.amount;
+                    const email = success.email;
+                    const order_id = success.order_id;
+                    pdf.create(pdfTemplate({ name, forReason, date, number, amount,order_id }), {}).toFile(path.join(__dirname, 'images/payment', name) + '.pdf', (error, success) => {
+                        if (error) {
+                            return res.status(400).json({
+                                error: "Error while creating a PDF!"
+                            })
+                        } else {
+                            pathToAttachment = `${__dirname}/images/payment/${name}.pdf`;
+                            attachment = fs.readFileSync(pathToAttachment).toString("base64");
+                            sgMail.send({
+                                from: key.EMAIL_FROM,
+                                to: email,
+                                subject: 'Your Payment Receipt generated Successfully!',
+                                text: 'Download Payment Receipt and use it!',
+                                attachments: [
+                                    {
+                                        content: attachment,
+                                        filename: `${name}.pdf`,
+                                        type: "application/pdf",
+                                        disposition: "attachment"
+                                    }
+                                ]
+                            })
+                                .then(sent => {
+                                    fs.unlinkSync(`${__dirname}/images/payment/${name}.pdf`);
+                                    return res.status(200).json({
+                                        message: `Your PDF has been sent to ${email}`
                                     });
-                            }
-                        })
-                    }
-                })
-            }
-        })
+                                })
+                                .catch(err => {
+                                    console.log(err);
+                                });
+                        }
+                    })
+                }
+            })
     } else {
         sgMail.send({
             from: key.EMAIL_FROM,
@@ -132,7 +142,7 @@ exports.verification = (req, res) => {
             text: `Kindly contact to ${key.EMAIL_FROM} or try again!`
         })
             .then(sent => {
-                return res.status(200).json({
+                return res.status(400).json({
                     message: `Payment status update has been sent to ${email}`
                 });
             })
@@ -140,5 +150,4 @@ exports.verification = (req, res) => {
                 console.log(err);
             });
     }
-    // res.json({ status: 'ok' })
 }

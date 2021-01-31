@@ -4,12 +4,10 @@ import axiosInstance from '../../../helpers/axios';
 import { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import 'animate.css';
-import { isAuth } from '../../../helpers/auth';
+import Media from 'react-media';
 import { FadeTransform } from 'react-animation-components';
 import Sidebar from '../Sidebar';
-import history from '../../../helpers/history';
 import { Control, LocalForm, Errors } from 'react-redux-form';
-import { Redirect } from 'react-router';
 const required = (val) => val && val.length;
 const validNumber = (val) => /^[0-9]*$/i.test(val);
 
@@ -99,20 +97,22 @@ function AdHome() {
         })
     }
     return (
-            <Container fluid className="m-0 p-0">
+        <Media query="(min-width:1300px)">
+        {matches => {
+            return matches ?<Container fluid className="m-0 p-0">
                 <Row className="d-flex">
                     <Col className="col-md-3">
                         <Sidebar />
                     </Col>
                     <Col className="col-md-7 mt-5 mb-3 text-center">
-                        <h1>Home section.</h1>
+                        <h1 className="titles">Home section.</h1>
                         <FadeTransform
                             in
                             transformProps={{
                                 exitTransform: 'scale(0.5) translateY(-50%)'
                             }}>
                             <Card className="mt-3">
-                                <Card.Header>Population of village in last Five surveys.</Card.Header>
+                                <Card.Header className="heads">Population of village in last Five surveys.</Card.Header>
                                 <Card.Body>
                                     <LocalForm>
                                         <Row className="col-md-12">
@@ -605,7 +605,7 @@ function AdHome() {
                                 exitTransform: 'scale(0.5) translateY(-50%)'
                             }}>
                             <Card className="mt-3">
-                                <Card.Header>Literacy Rate of village in last Five surveys.</Card.Header>
+                                <Card.Header className="heads">Literacy Rate of village in last Five surveys.</Card.Header>
                                 <Card.Body>
                                     <LocalForm>
                                         <Row className="col-md-12">
@@ -979,7 +979,11 @@ function AdHome() {
                             </Card></FadeTransform>
                     </Col>
                 </Row>
-            </Container> 
+            </Container> : <div>
+                        <h3 className="text-center mt-5 mb-5 titles">This Section is accessible only from Desktop resolutions.</h3>
+                        </div>;
+        }}
+        </Media>
     )
 }
 

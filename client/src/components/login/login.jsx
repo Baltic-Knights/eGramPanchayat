@@ -51,7 +51,20 @@ const Login = () => {
         window.location.reload(false);
       })
       .catch(error => {
-        console.log('GOOGLE SIGNIN ERROR', error.response);
+        // console.log('GOOGLE SIGNIN ERROR', error.response);
+        store.addNotification({
+          title: "You are not a registered user!",
+          message: 'Please register yourself with our system!',
+          type: "info",
+          container: 'top-right',
+          animationIn: ["animated", "fadeIn"],
+          animationOut: ["animated", "fadeOut"],
+          dismiss: {
+            duration: 3000,
+            showIcon: true
+          }
+        })
+        window.location.reload(false);
       });
   };
 
@@ -79,7 +92,19 @@ const Login = () => {
         window.location.reload(false);
       })
       .catch(error => {
-        console.log('GOOGLE SIGNIN ERROR', error.response);
+        store.addNotification({
+          title: "You are not a registered user!",
+          message: 'Please register yourself with our system!',
+          type: "info",
+          container: 'top-right',
+          animationIn: ["animated", "fadeIn"],
+          animationOut: ["animated", "fadeOut"],
+          dismiss: {
+            duration: 3000,
+            showIcon: true
+          }
+        })
+        window.location.reload(false);
       });
   };
 
@@ -183,6 +208,8 @@ const Login = () => {
                       <Col className="col-md-6">
                         <Control.text
                           autoComplete="off"
+                          autoCorrect="off"
+                          spellCheck="off"
                           model=".email"
                           id="email"
                           className="form-control"
@@ -211,6 +238,8 @@ const Login = () => {
                         <Col className="col-md-6">
                           <Control.text
                             autoComplete="off"
+                            autoCorrect="off"
+                            spellCheck="off"
                             model=".password"
                             type="password"
                             id="password"

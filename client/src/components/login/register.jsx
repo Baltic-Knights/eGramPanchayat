@@ -13,7 +13,7 @@ const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => val && (val.length >= len);
 const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
-const validName=(val)=> /^([a-zA-Z0-9]+|[a-zA-Z0-9]+\s{1}[a-zA-Z0-9]{1,}|[a-zA-Z0-9]+\s{1}[a-zA-Z0-9]{3,}\s{1}[a-zA-Z0-9]{1,})$/i.test(val);
+const validName = (val) => /^([a-zA-Z0-9]+|[a-zA-Z0-9]+\s{1}[a-zA-Z0-9]{1,}|[a-zA-Z0-9]+\s{1}[a-zA-Z0-9]{3,}\s{1}[a-zA-Z0-9]{1,})$/i.test(val);
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -23,12 +23,12 @@ const Register = () => {
   const [UID, setUID] = useState("");
 
   const handleSubmit = (values) => {
-    console.log(name, email,UID, password1, password2);
+    console.log(name, email, UID, password1, password2);
     const regData = {
       name,
       email,
-      UID:Number(UID),
-      password:password1
+      UID: Number(UID),
+      password: password1
     }
     if (password1 === password2) {
       axiosInstance.post('user/signup', regData)
@@ -47,7 +47,7 @@ const Register = () => {
           })
           window.location.reload(false);
         })
-        .catch(err=>{
+        .catch(err => {
           store.addNotification({
             title: `${err.response.data.error}`,
             message: 'Try again with another account!',
@@ -100,13 +100,15 @@ const Register = () => {
                         <Control.text
                           model=".fname"
                           autoComplete="off"
+                          autoCorrect="off"
+                          spellCheck="off"
                           id="fname"
                           className="form-control"
                           value={name}
                           onChange={e => setName(e.target.value)}
                           placeholder="Enter Your Full Name"
                           validators={{
-                            required, validName, maxLength: maxLength(15), minLength: minLength(3)
+                            required, validName, maxLength: maxLength(35), minLength: minLength(3)
                           }} />
                         <Errors
                           className="text-danger"
@@ -115,7 +117,7 @@ const Register = () => {
                           messages={{
                             required: 'Required ',
                             validName: 'Enter a valid Name!',
-                            maxLength: 'Length should be less than 15 characters!',
+                            maxLength: 'Length should be less than 35 characters!',
                             minLength: 'Length should be greater than 3 characters!'
                           }}
                         />
@@ -130,6 +132,8 @@ const Register = () => {
                           <Control.text
                             model=".UID"
                             autoComplete="off"
+                            autoCorrect="off"
+                            spellCheck="off"
                             id="UID"
                             value={UID}
                             onChange={e => setUID(e.target.value)}
@@ -158,6 +162,8 @@ const Register = () => {
                         <Col className="col-md-6">
                           <Control.text
                             autoComplete="off"
+                            autoCorrect="off"
+                            spellCheck="off"
                             model=".email"
                             id="email"
                             value={email}
@@ -188,6 +194,8 @@ const Register = () => {
                             model=".password"
                             type="password"
                             autoComplete="off"
+                            autoCorrect="off"
+                            spellCheck="off"
                             id="password"
                             className="form-control"
                             placeholder="Enter Your Password"
@@ -216,6 +224,8 @@ const Register = () => {
                           <Control.text
                             model=".rpassword"
                             autoComplete="off"
+                            autoCorrect="off"
+                            spellCheck="off"
                             id="rpassword"
                             type="password"
                             className="form-control"

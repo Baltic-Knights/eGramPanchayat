@@ -35,6 +35,12 @@ export const setLocalStorage = (key, value) => {
     }
 };
 
+export const getLocalStorage = () => {
+    if (window !== 'undefined') {
+        return JSON.parse(localStorage.getItem('user'));
+    }
+};
+
 // Remove from localstorage
 export const removeLocalStorage = key => {
     if (window !== 'undefined') {

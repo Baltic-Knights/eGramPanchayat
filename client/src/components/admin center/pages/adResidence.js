@@ -9,12 +9,9 @@ import axiosInstance from '../../../helpers/axios';
 import { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import 'animate.css';
-import { BeatLoader } from 'react-spinner';
 import { jsx, css } from "@emotion/react";
 import './pages.css';
-import { Redirect } from 'react-router';
-import { isAuth } from '../../../helpers/auth';
-import history from '../../../helpers/history';
+import Medias from 'react-media';
 import moment from 'moment';
 import DataImg from './applicants.jpg'
 
@@ -135,19 +132,25 @@ function AdResidence() {
         })
     }
     return (
-        <Container fluid className="m-0 p-0">
+        <Medias query="(min-width:1300px)">
+        {matches => {
+            return matches ?<Container fluid className="m-0 p-0">
             <Row className="d-flex">
                 <Col className="col-md-3">
                     <Sidebar />
                 </Col>
                 <Col className="col-md-7 mt-5 mb-3 text-center">
-                    <h1>Applicants for Residence Certificate.</h1>
+                    <h1 className="titles">Applicants for Residence Certificate.</h1>
                     {(applicants?.applicants.length)?<Stagger in><div>{cards}</div></Stagger>:
-                                <div className="text-center mt-5"><h4>No Applicants here.</h4>
+                                <div className="text-center mt-5"><h4 className="heads">No Applicants here.</h4>
                                 <img className="mt-2" src={DataImg} width="300" height="200"/></div>}
                 </Col>
             </Row>
-        </Container>
+        </Container>: <div>
+                        <h3 className="text-center mt-5 mb-5 titles">This Section is accessible only from Desktop resolutions.</h3>
+                        </div>;
+        }}
+        </Medias>
             )
 }
 

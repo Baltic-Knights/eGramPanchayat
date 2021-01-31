@@ -7,8 +7,7 @@ import 'react-notifications-component/dist/theme.css';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import 'animate.css';
 import { FadeTransform } from 'react-animation-components';
-import { Redirect } from 'react-router';
-import { isAuth } from '../../../helpers/auth';
+import Medias from 'react-media';
 
 const required = (val) => val && val.length;
 
@@ -95,20 +94,22 @@ function AdVillage() {
         })
     }
     return (
-            <Container fluid className="m-0 p-0">
+        <Medias query="(min-width:1300px)">
+        {matches => {
+            return matches ? <Container fluid className="m-0 p-0">
                 <Row className="d-flex">
                     <Col className="col-md-3">
                         <Sidebar />
                     </Col>
                     <Col className="col-md-7 mt-5 mb-3 text-center">
-                        <h1 className="">About Village Section.</h1>
+                        <h1 className="titles">About Village Section.</h1>
                         <FadeTransform
                             in
                             transformProps={{
                                 exitTransform: 'scale(0.5) translateY(-50%)'
                             }}>
                             <Card className="mt-3">
-                                <Card.Header>Last 5 Village Heads.</Card.Header>
+                                <Card.Header className="heads">Last 5 Village Heads.</Card.Header>
                                 <Card.Body>
                                     <LocalForm>
                                         <Row className="col-md-12">
@@ -472,7 +473,7 @@ function AdVillage() {
                                 exitTransform: 'scale(0.5) translateY(-50%)'
                             }}>
                             <Card className="mt-3">
-                                <Card.Header>Current Gram panchayat committee.</Card.Header>
+                                <Card.Header className="heads">Current Gram panchayat committee.</Card.Header>
                                 <Card.Body>
                                     <LocalForm>
                                         <Row className="col-md-12">
@@ -831,7 +832,11 @@ function AdVillage() {
                             </Card></FadeTransform>
                     </Col>
                 </Row>
-            </Container> 
+            </Container> : <div>
+                        <h3 className="text-center mt-5 mb-5 titles">This Section is accessible only from Desktop resolutions.</h3>
+                    </div>;
+            }}
+        </Medias>
     )
 }
 
